@@ -1,6 +1,7 @@
 package sungjin.mybooks.search;
 
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -14,18 +15,19 @@ public class BookSearchApi {
         webClient = WebClient.builder()
                 .baseUrl(properties.getHost() + properties.getUri())
                 .defaultHeader(HttpHeaders.AUTHORIZATION, properties.getAuthorization())
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
     }
 
     public BookSearchResult search(String query) {
-        ResponseEntity<BookSearchResult> response = webClient.get()
-                .uri(uriBuilder -> uriBuilder.path("/")
+        BookSearchResult result = webClient.get()
+                .uri(uriBuilder -> uriBuilder
                         .queryParam("query", query)
                         .build())
                 .retrieve()
-                .toEntity(BookSearchResult.class)
+                .bodyToMono(BookSearchResult.class)
                 .block();
 
-        return response.getBody();
+        return result;
     }
 }
