@@ -1,4 +1,4 @@
-package sungjin.domain;
+package sungjin.mybooks.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
