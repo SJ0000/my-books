@@ -2,9 +2,14 @@ package sungjin.mybooks.domain;
 
 
 import jakarta.persistence.*;
+import lombok.Builder;
 
 @Entity
+@Builder
 public class Review {
+
+    protected Review() {
+    }
 
     @Id
     private Long id;
@@ -17,5 +22,9 @@ public class Review {
 
     @Lob
     private String content;
+
+    public void writtenBy(Long writerId){
+
+    }
 
 }
