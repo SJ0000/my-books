@@ -5,10 +5,16 @@ import jakarta.persistence.*;
 import lombok.Builder;
 
 @Entity
-@Builder
 public class Review {
 
     protected Review() {
+    }
+
+    @Builder
+    public Review(User user, Book book, String content) {
+        this.user = user;
+        this.book = book;
+        this.content = content;
     }
 
     @Id

@@ -12,7 +12,7 @@ import sungjin.mybooks.service.BookService;
 @RequiredArgsConstructor
 public class BookController {
 
-    private BookService bookService;
+    private final BookService bookService;
 
     @GetMapping("/book/{id}")
     public Book getBook(@PathVariable Long id){

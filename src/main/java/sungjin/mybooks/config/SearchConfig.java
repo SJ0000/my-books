@@ -1,16 +1,18 @@
-package sungjin.mybooks.search;
+package sungjin.mybooks.config;
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import sungjin.mybooks.search.BookSearchApi;
+import sungjin.mybooks.search.BookSearchApiProperties;
 
 @Configuration
 @EnableConfigurationProperties(BookSearchApiProperties.class)
-public class SearchConfiguration {
+public class SearchConfig {
 
     private final BookSearchApiProperties properties;
 
-    public SearchConfiguration(BookSearchApiProperties properties) {
+    public SearchConfig(BookSearchApiProperties properties) {
         this.properties = properties;
     }
 

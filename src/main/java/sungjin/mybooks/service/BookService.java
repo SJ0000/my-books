@@ -16,5 +16,4 @@ public class BookService {
                 .orElseThrow(()-> new RuntimeException("book find error. id = " + id));
     }
 
-
 }
