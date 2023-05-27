@@ -11,13 +11,13 @@ import sungjin.mybooks.repository.ReviewRepository;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ReviewService {
 
     private final ReviewRepository reviewRepository;
     private final BookService bookService;
     private final UserService userService;
 
-    @Transactional
     public Review writeReview(Long userId, Long bookId, String content){
         // Review 생성
         User user = userService.findUser(userId);
@@ -30,4 +30,11 @@ public class ReviewService {
 
         return reviewRepository.save(review);
     }
+
+    @Transactional(readOnly = true)
+    public Review findReview(Long id){
+        return reviewRepository.findById(id)
+                .orElseThrow( ()-> new RuntimeException("find review error. id = " + id));
+    }
+
 }
