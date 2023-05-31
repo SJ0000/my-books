@@ -7,6 +7,7 @@ import org.springframework.util.StringUtils;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.stream.IntStream;
 
 public class MessageDigestTest {
 
@@ -25,6 +26,6 @@ public class MessageDigestTest {
         }
 
         System.out.println(sb.toString());
-
     }
+
 }
