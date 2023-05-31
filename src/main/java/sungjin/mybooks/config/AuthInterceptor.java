@@ -1,4 +1,4 @@
-package sungjin.mybooks.auth;
+package sungjin.mybooks.config;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

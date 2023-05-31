@@ -1,0 +1,8 @@
+### 테스트 요청
+
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+  "email": "asdc@naver.com"
+}
