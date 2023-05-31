@@ -7,6 +7,9 @@ import sungjin.mybooks.domain.User;
 import sungjin.mybooks.exception.InvalidLoginInformation;
 import sungjin.mybooks.repository.UserRepository;
 
+import javax.crypto.Cipher;
+import java.security.MessageDigest;
+
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -21,6 +24,6 @@ public class AuthService {
         if(!user.isCorrectPassword(rawPassword)){
             throw new InvalidLoginInformation();
         }
-    }
 
+    }
 }
