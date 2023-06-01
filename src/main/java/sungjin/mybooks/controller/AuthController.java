@@ -19,14 +19,6 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @GetMapping("/test")
-    public String authTest(UserSession session){
-
-
-
-
-        return "ok";
-    }
 
     @PostMapping("/login")
     public String login(@Valid @RequestBody Login login){

@@ -3,6 +3,7 @@ package sungjin.mybooks.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import sungjin.mybooks.config.PasswordEncoder;
 import sungjin.mybooks.domain.User;
 import sungjin.mybooks.exception.InvalidLoginInformation;
 import sungjin.mybooks.repository.UserRepository;
@@ -14,16 +15,15 @@ import java.security.MessageDigest;
 @RequiredArgsConstructor
 public class AuthService {
 
-    private final UserRepository userRepository;
-
+    private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
     public void validateUser(String email, String rawPassword){
-        User user = userRepository.findByEmail(email);
+        User user = userService.findUser(email);
+        String encodedPassword = passwordEncoder.encode(rawPassword);
 
-        // 암호화 처리 필요
-        if(!user.isCorrectPassword(rawPassword)){
+        if(!user.isCorrectPassword(encodedPassword)){
             throw new InvalidLoginInformation();
         }
-
     }
 }

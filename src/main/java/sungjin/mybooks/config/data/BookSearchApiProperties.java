@@ -1,4 +1,4 @@
-package sungjin.mybooks.search;
+package sungjin.mybooks.config.data;
 
 
 

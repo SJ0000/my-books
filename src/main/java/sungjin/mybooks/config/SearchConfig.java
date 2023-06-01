@@ -4,7 +4,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import sungjin.mybooks.search.BookSearchApi;
-import sungjin.mybooks.search.BookSearchApiProperties;
+import sungjin.mybooks.config.data.BookSearchApiProperties;
 
 @Configuration
 @EnableConfigurationProperties(BookSearchApiProperties.class)

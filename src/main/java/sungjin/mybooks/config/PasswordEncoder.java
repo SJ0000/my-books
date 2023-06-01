@@ -1,11 +1,19 @@
 package sungjin.mybooks.config;
 
 
+import sungjin.mybooks.config.data.PasswordEncoderProperties;
+
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.stream.IntStream;
+
+
+/**
+ * salt, keystretchingcount를 application.yml에서 읽어오도록 변경
+ * + session 방식 로그인 강의 듣고 추가
+ *
+ */
 
 public class PasswordEncoder {
 
@@ -15,9 +23,9 @@ public class PasswordEncoder {
     private final String salt;
     private final int keyStretchingCount;
 
-    public PasswordEncoder(String salt, int keyStretchingCount) {
-        this.salt = salt;
-        this.keyStretchingCount = keyStretchingCount;
+    public PasswordEncoder(PasswordEncoderProperties properties) {
+        this.salt = properties.getSalt();
+        this.keyStretchingCount = properties.getKeyStretchCount();
     }
 
     public String encode(String text){

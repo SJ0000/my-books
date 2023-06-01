@@ -2,10 +2,8 @@ package sungjin.mybooks.search;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.reactive.function.client.WebClient;
-
-import java.util.Optional;
+import sungjin.mybooks.config.data.BookSearchApiProperties;
 
 public class BookSearchApi {
 

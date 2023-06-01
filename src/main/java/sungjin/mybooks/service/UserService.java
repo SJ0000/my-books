@@ -11,9 +11,9 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public User findUser(Long id){
-        return userRepository.findById(id)
-                .orElseThrow(()-> new RuntimeException("find user error. id = " + id));
+    public User findUser(String email){
+        return userRepository.findByEmail(email)
+                .orElseThrow(()-> new RuntimeException("find user error. email = " + email));
     }
 
 
