@@ -3,6 +3,7 @@ package sungjin.mybooks.config;
 import io.netty.handler.codec.http.cookie.CookieHeaderNames;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -31,7 +32,8 @@ public class AuthResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-        HttpServletRequest request = (HttpServletRequest) webRequest;
+        HttpServletRequest request = Optional.ofNullable(webRequest.getNativeRequest(HttpServletRequest.class))
+                .orElseThrow(Unauthorized::new);
 
         Cookie cookie  = CookieUtils.findCookie(request.getCookies(), CookieNames.SESSION_ID)
                         .orElseThrow(()-> new RuntimeException("Session Id cookie가 존재하지 않습니다."));
