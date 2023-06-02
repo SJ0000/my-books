@@ -3,11 +3,13 @@ package sungjin.mybooks.domain;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
 @Table(name = "USERS")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {

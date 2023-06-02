@@ -16,6 +16,10 @@ import sungjin.mybooks.domain.User;
 import sungjin.mybooks.request.Login;
 import sungjin.mybooks.service.AuthService;
 import sungjin.mybooks.service.UserService;
+import sungjin.mybooks.util.CookieNames;
+import sungjin.mybooks.util.CookieUtils;
+
+import java.util.UUID;
 
 @Slf4j
 @RestController("/auth")
@@ -30,16 +34,14 @@ public class AuthController {
     public String login(@Valid @RequestBody Login login, HttpServletResponse response){
         log.info("email = {}, password = {}",login.getEmail(),login.getPassword());
 
-        // db에서 조회
         authService.validateUser(login.getEmail(),login.getPassword());
         User user = userService.findUser(login.getEmail());
-
-        // Session 생성
         Session session = authService.createSession(user);
 
-        // 토큰 응답
-        response.addCookie(new Cookie("mybooks_sessionid",session.getAccessToken()));
-        return session.getAccessToken();
+        Cookie sessionIdCookie = new Cookie(CookieNames.SESSION_ID, session.getAccessToken());
+        response.addCookie(sessionIdCookie);
+
+        return "redirect:/";
     }
 
     @PostMapping("/logout")
