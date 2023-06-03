@@ -59,8 +59,19 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public String logout(){
+    public ResponseEntity<Void> logout(){
 
-        return "ok";
+        ResponseCookie cookie = ResponseCookie.from(CookieNames.SESSION_ID, "")
+                .domain("localhost")
+                .path("/")
+                .httpOnly(true)
+                .secure(false)
+                .maxAge(0)
+                .sameSite("Strict")
+                .build();
+
+        return ResponseEntity.noContent()
+                .header(HttpHeaders.SET_COOKIE,cookie.toString())
+                .build();
     }
 }

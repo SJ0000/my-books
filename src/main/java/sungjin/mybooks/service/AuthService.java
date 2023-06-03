@@ -41,7 +41,6 @@ public class AuthService {
                 .accessToken(UUID.randomUUID().toString())
                 .user(user)
                 .build();
-        sessionRepository.save(session);
-        return session;
+        return sessionRepository.save(session);
     }
 }
