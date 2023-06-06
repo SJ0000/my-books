@@ -32,7 +32,8 @@ class UserRepositoryTest {
         userRepository.save(user);
 
         // when
-        User findUser = userRepository.findByEmail(email);
+        User findUser = userRepository.findByEmail(email)
+                .get();
 
         // then
         assertThat(user).isEqualTo(findUser);

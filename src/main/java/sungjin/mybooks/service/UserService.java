@@ -15,7 +15,7 @@ import sungjin.mybooks.request.Join;
 public class UserService {
 
     private final UserRepository userRepository;
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public Long joinUser(Join join){
@@ -37,6 +37,11 @@ public class UserService {
     public User findUser(String email){
         return userRepository.findByEmail(email)
                 .orElseThrow(()-> new RuntimeException("find user error. email = " + email));
+    }
+
+    public User findUser(Long id){
+        return userRepository.findById(id)
+                .orElseThrow(()-> new RuntimeException("find user error. id = " + id));
     }
 
     private boolean existsUser(String email){

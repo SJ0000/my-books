@@ -16,12 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 import sungjin.mybooks.config.data.UserSession;
 import sungjin.mybooks.domain.Session;
 import sungjin.mybooks.domain.User;
+import sungjin.mybooks.request.Join;
 import sungjin.mybooks.request.Login;
 import sungjin.mybooks.service.AuthService;
 import sungjin.mybooks.service.UserService;
 import sungjin.mybooks.util.CookieNames;
 import sungjin.mybooks.util.CookieUtils;
 
+import java.net.URI;
 import java.time.Duration;
 import java.util.UUID;
 
@@ -35,6 +37,13 @@ public class AuthController {
     private final UserService userService;
     private final AuthService authService;
 
+    @PostMapping
+    public ResponseEntity<Void> join(@Valid @RequestBody Join join){
+        Long userId = userService.joinUser(join);
+
+        return ResponseEntity.created(URI.create("/users/"+userId))
+                .build();
+    }
 
     @PostMapping("/login")
     public ResponseEntity<Void> login(@Valid @RequestBody Login login){
@@ -74,4 +83,5 @@ public class AuthController {
                 .header(HttpHeaders.SET_COOKIE,cookie.toString())
                 .build();
     }
+
 }
