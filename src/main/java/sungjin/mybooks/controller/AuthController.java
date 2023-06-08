@@ -37,7 +37,7 @@ public class AuthController {
     private final UserService userService;
     private final AuthService authService;
 
-    @PostMapping
+    @PostMapping("/join")
     public ResponseEntity<Void> join(@Valid @RequestBody Join join){
         Long userId = userService.joinUser(join);
 
