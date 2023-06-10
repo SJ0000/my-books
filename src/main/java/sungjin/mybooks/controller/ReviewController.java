@@ -1,10 +1,10 @@
 package sungjin.mybooks.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import sungjin.mybooks.domain.Review;
+import sungjin.mybooks.request.ReviewCreate;
 import sungjin.mybooks.service.ReviewService;
 
 @RestController
@@ -19,6 +19,10 @@ public class ReviewController {
         return reviewService.findReview(id);
     }
 
-
-
+    @PostMapping("/review")
+    public Review createReview(@RequestBody @Valid ReviewCreate reviewCreate){
+        // todo : userId 받아오기
+        Review review = reviewService.writeReview(null, reviewCreate);
+        return review;
+    }
 }

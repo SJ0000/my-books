@@ -8,6 +8,7 @@ import sungjin.mybooks.domain.Book;
 import sungjin.mybooks.domain.Review;
 import sungjin.mybooks.domain.User;
 import sungjin.mybooks.repository.ReviewRepository;
+import sungjin.mybooks.request.ReviewCreate;
 
 @Service
 @RequiredArgsConstructor
@@ -18,14 +19,14 @@ public class ReviewService {
     private final BookService bookService;
     private final UserService userService;
 
-    public Review writeReview(Long userId, Long bookId, String content){
+    public Review writeReview(Long userId, ReviewCreate reviewCreate){
         // Review 생성
         User user = userService.findUser(userId);
-        Book book = bookService.findBook(bookId);
+        Book book = bookService.findBook(reviewCreate.getBookId());
         Review review = Review.builder()
                 .user(user)
                 .book(book)
-                .content(content)
+                .content(reviewCreate.getContent())
                 .build();
 
         return reviewRepository.save(review);
