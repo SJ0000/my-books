@@ -25,17 +25,16 @@ import sungjin.mybooks.util.CookieUtils;
 
 import java.net.URI;
 import java.time.Duration;
-import java.util.UUID;
 
-import static org.springframework.boot.web.server.Cookie.SameSite.*;
 
 @Slf4j
-@RestController("/auth")
+@RestController
 @RequiredArgsConstructor
 public class AuthController {
 
     private final UserService userService;
     private final AuthService authService;
+
 
     @PostMapping("/join")
     public ResponseEntity<Void> join(@Valid @RequestBody Join join){

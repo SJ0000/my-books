@@ -12,6 +12,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import sungjin.mybooks.config.data.UserSession;
 import sungjin.mybooks.domain.Session;
+import sungjin.mybooks.domain.User;
 import sungjin.mybooks.exception.Unauthorized;
 import sungjin.mybooks.repository.SessionRepository;
 import sungjin.mybooks.util.CookieNames;
@@ -43,7 +44,9 @@ public class AuthResolver implements HandlerMethodArgumentResolver {
         Session session = sessionRepository.findByAccessToken(accessToken)
                 .orElseThrow(Unauthorized::new);
 
-        return session.getUser().getId();
+        return UserSession.builder()
+                .userId(session.getUser().getId())
+                .name(session.getUser().getName())
+                .build();
     }
-
 }

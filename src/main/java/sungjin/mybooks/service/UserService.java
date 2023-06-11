@@ -1,6 +1,5 @@
 package sungjin.mybooks.service;
 
-import jakarta.validation.constraints.Email;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +23,7 @@ public class UserService {
             throw new RuntimeException("이미 존재하는 사용자입니다. email = " + join.getEmail());
         }
 
-        String password = passwordEncoder.encode(join.getRawPassword());
+        String password = passwordEncoder.encode(join.getPassword());
         User user = User.builder()
                 .email(join.getEmail())
                 .name(join.getName())

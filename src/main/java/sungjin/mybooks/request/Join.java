@@ -12,12 +12,12 @@ public class Join {
 
     private String email;
     private String name;
-    private String rawPassword;
+    private String password;
 
     @Builder
-    public Join(String email, String name, String rawPassword) {
+    public Join(String email, String name, String password) {
         this.email = email;
         this.name = name;
-        this.rawPassword = rawPassword;
+        this.password = password;
     }
 }
