@@ -36,10 +36,8 @@ public class AuthResolver implements HandlerMethodArgumentResolver {
         HttpServletRequest request = Optional.ofNullable(webRequest.getNativeRequest(HttpServletRequest.class))
                 .orElseThrow(Unauthorized::new);
 
-        Cookie cookie  = CookieUtils.findCookie(request.getCookies(), CookieNames.SESSION_ID)
+        String accessToken  = CookieUtils.getCookieValue(request.getCookies(), CookieNames.SESSION_ID)
                         .orElseThrow(()-> new RuntimeException("Session Id cookie가 존재하지 않습니다."));
-
-        String accessToken = cookie.getValue();
 
         Session session = sessionRepository.findByAccessToken(accessToken)
                 .orElseThrow(Unauthorized::new);
