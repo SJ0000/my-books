@@ -16,4 +16,12 @@ public class CookieUtils {
                 .map(Cookie::getValue)
                 .findAny();
     }
+
+    public static boolean hasCookie(Cookie[] cookies, String name){
+        if(cookies == null)
+            return false;
+
+        return Arrays.stream(cookies)
+                .anyMatch(c -> c.getName().equals(name));
+    }
 }

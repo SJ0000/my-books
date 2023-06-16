@@ -3,6 +3,7 @@ package sungjin.mybooks.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import sungjin.mybooks.repository.SessionRepository;
 
@@ -14,6 +15,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     private final SessionRepository sessionRepository;
 
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new AuthInterceptor());
+    }
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
