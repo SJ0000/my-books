@@ -1,9 +1,6 @@
 package sungjin.mybooks.config;
 
-import io.netty.handler.codec.http.cookie.CookieHeaderNames;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -12,19 +9,18 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import sungjin.mybooks.config.data.UserSession;
 import sungjin.mybooks.domain.Session;
-import sungjin.mybooks.domain.User;
 import sungjin.mybooks.exception.Unauthorized;
 import sungjin.mybooks.repository.SessionRepository;
 import sungjin.mybooks.util.CookieNames;
 import sungjin.mybooks.util.CookieUtils;
 
-import java.util.Arrays;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-public class AuthResolver implements HandlerMethodArgumentResolver {
+public class UserSessionResolver implements HandlerMethodArgumentResolver {
 
     private final SessionRepository sessionRepository;
+
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {

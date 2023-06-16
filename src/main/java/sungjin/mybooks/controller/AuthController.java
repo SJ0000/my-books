@@ -3,6 +3,7 @@ package sungjin.mybooks.controller;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import sungjin.mybooks.annotation.AuthRequired;
 import sungjin.mybooks.config.data.UserSession;
 import sungjin.mybooks.domain.Session;
 import sungjin.mybooks.domain.User;
@@ -81,6 +83,15 @@ public class AuthController {
         return ResponseEntity.noContent()
                 .header(HttpHeaders.SET_COOKIE,cookie.toString())
                 .build();
+    }
+
+    @AuthRequired
+    @GetMapping("/aop-test")
+    public String foo(HttpSession session){
+        String value = (String) session.getAttribute("dog");
+        System.out.println(session.getAttribute("dog"));
+        session.setAttribute("dog",value+"a");
+        return "foo";
     }
 
 }
