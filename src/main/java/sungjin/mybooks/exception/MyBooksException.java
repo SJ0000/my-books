@@ -8,5 +8,5 @@ public abstract class MyBooksException extends RuntimeException{
         super(message);
     }
 
-    abstract int getStatusCode();
+    public abstract int getStatusCode();
 }

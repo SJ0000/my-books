@@ -9,7 +9,7 @@ public class InvalidLoginInformation extends MyBooksException{
     }
 
     @Override
-    int getStatusCode() {
+    public int getStatusCode() {
         return 400;
     }
 }
