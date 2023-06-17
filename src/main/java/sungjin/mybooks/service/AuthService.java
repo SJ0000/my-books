@@ -25,8 +25,6 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final SessionRepository sessionRepository;
 
-
-
     public void validateUser(String email, String rawPassword){
         User user = userService.findUser(email);
         String encodedPassword = passwordEncoder.encode(rawPassword);

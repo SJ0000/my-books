@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import sungjin.mybooks.config.PasswordEncoder;
 import sungjin.mybooks.domain.User;
 import sungjin.mybooks.repository.UserRepository;
-import sungjin.mybooks.request.Join;
+import sungjin.mybooks.request.SignUp;
 
 @Service
 @RequiredArgsConstructor
@@ -17,7 +17,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public Long joinUser(Join join){
+    public Long signUpUser(SignUp join){
 
         if(existsUser(join.getEmail())){
             throw new RuntimeException("이미 존재하는 사용자입니다. email = " + join.getEmail());

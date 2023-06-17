@@ -3,20 +3,11 @@ package sungjin.mybooks.service;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.transaction.annotation.Transactional;
-import sungjin.mybooks.config.AuthConfig;
 import sungjin.mybooks.domain.User;
-import sungjin.mybooks.repository.UserRepository;
-import sungjin.mybooks.request.Join;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.BDDMockito.*;
+import sungjin.mybooks.request.SignUp;
 
 @SpringBootTest
 @Transactional
@@ -30,19 +21,19 @@ class UserServiceTest {
     void joinExistsEmail() {
         // given
         String email = "alpha@beta.com";
-        Join user = Join.builder()
+        SignUp user = SignUp.builder()
                 .email(email)
                 .build();
 
-        userService.joinUser(user);
+        userService.signUpUser(user);
 
         // when, then
-        Join newUser = Join.builder()
+        SignUp newUser = SignUp.builder()
                 .email(email)
                 .build();
 
         Assertions.assertThatThrownBy(() ->
-                        userService.joinUser(newUser))
+                        userService.signUpUser(newUser))
                 .isInstanceOf(RuntimeException.class);
     }
 
@@ -52,13 +43,13 @@ class UserServiceTest {
         // given
         String email = "alpha@beta.com";
         String rawPassword = "abcdefg";
-        Join join = Join.builder()
+        SignUp join = SignUp.builder()
                 .email(email)
                 .rawPassword(rawPassword)
                 .build();
 
         // when
-        Long userId = userService.joinUser(join);
+        Long userId = userService.signUpUser(join);
         User user = userService.findUser(userId);
 
         // then

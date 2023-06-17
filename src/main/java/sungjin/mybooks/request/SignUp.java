@@ -8,14 +8,14 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class Join {
+public class SignUp {
 
     private String email;
     private String name;
     private String password;
 
     @Builder
-    public Join(String email, String name, String password) {
+    public SignUp(String email, String name, String password) {
         this.email = email;
         this.name = name;
         this.password = password;

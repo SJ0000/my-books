@@ -6,19 +6,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import sungjin.mybooks.request.Join;
+import sungjin.mybooks.request.SignUp;
 import sungjin.mybooks.request.Login;
-import sungjin.mybooks.service.AuthService;
 import sungjin.mybooks.service.UserService;
 import sungjin.mybooks.util.CookieNames;
-import sungjin.mybooks.util.CookieUtils;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.MediaType.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -41,12 +35,12 @@ class AuthControllerTest {
         // given
         String email = "1234@naver.com";
         String password = "alphabet";
-        Join info = Join.builder()
+        SignUp info = SignUp.builder()
                 .email(email)
-                .rawPassword(password)
+                .password(password)
                 .name("sj")
                 .build();
-        userService.joinUser(info);
+        userService.signUpUser(info);
 
         // expected
         Login login = Login.builder()
@@ -58,6 +52,29 @@ class AuthControllerTest {
                     .accept(APPLICATION_JSON)
                     .contentType(APPLICATION_JSON)
                     .content(om.writeValueAsString(login)))
+                .andExpect(status().isOk())
+                .andExpect(cookie().exists(CookieNames.SESSION_ID));
+    }
+
+    @Test
+    @DisplayName("회원가입 후 비밀번호는 암호화하여")
+    void join() throws Exception {
+        // given
+        String email = "1234@naver.com";
+        String password = "alphabet";
+        SignUp info = SignUp.builder()
+                .email(email)
+                .password(password)
+                .name("sj")
+                .build();
+        userService.signUpUser(info);
+
+        // expected
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/login")
+                        .accept(APPLICATION_JSON)
+                        .contentType(APPLICATION_JSON)
+                        .content(om.writeValueAsString(join)))
                 .andExpect(status().isOk())
                 .andExpect(cookie().exists(CookieNames.SESSION_ID));
     }

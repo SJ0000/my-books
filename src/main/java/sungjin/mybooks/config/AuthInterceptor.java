@@ -13,14 +13,24 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        HandlerMethod handlerMethod = (HandlerMethod) handler;
-        if(!isAuthenticated(request,handlerMethod))
+        if(!(handler instanceof HandlerMethod handlerMethod))
+            return true;
+
+        if(!isAuthenticateRequired(handlerMethod))
+            return true;
+
+        if(!isAuthenticated(request))
             throw new Unauthorized();
 
         return true;
     }
 
-    private boolean isAuthenticated(HttpServletRequest request ,HandlerMethod handler){
-        return handler.hasMethodAnnotation(AuthRequired.class) && CookieUtils.hasCookie(request.getCookies(), CookieNames.SESSION_ID);
+    private boolean isAuthenticated(HttpServletRequest request){
+        return CookieUtils.hasCookie(request.getCookies(), CookieNames.SESSION_ID);
     }
+
+    private boolean isAuthenticateRequired(HandlerMethod handlerMethod){
+        return handlerMethod.hasMethodAnnotation(AuthRequired.class);
+    }
+
 }

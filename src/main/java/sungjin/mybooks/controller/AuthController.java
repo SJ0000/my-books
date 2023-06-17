@@ -1,30 +1,23 @@
 package sungjin.mybooks.controller;
 
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import sungjin.mybooks.annotation.AuthRequired;
 import sungjin.mybooks.config.data.UserSession;
 import sungjin.mybooks.domain.Session;
 import sungjin.mybooks.domain.User;
-import sungjin.mybooks.repository.SessionRepository;
-import sungjin.mybooks.request.Join;
+import sungjin.mybooks.request.SignUp;
 import sungjin.mybooks.request.Login;
 import sungjin.mybooks.service.AuthService;
 import sungjin.mybooks.service.UserService;
 import sungjin.mybooks.util.CookieNames;
-import sungjin.mybooks.util.CookieUtils;
 
 import java.net.URI;
 import java.time.Duration;
@@ -39,9 +32,9 @@ public class AuthController {
     private final AuthService authService;
 
 
-    @PostMapping("/join")
-    public ResponseEntity<Void> join(@Valid @RequestBody Join join){
-        Long userId = userService.joinUser(join);
+    @PostMapping("/signup")
+    public ResponseEntity<Void> signUp(@Valid @RequestBody SignUp singUp){
+        Long userId = userService.signUpUser(singUp);
 
         return ResponseEntity.created(URI.create("/users/"+userId))
                 .build();
@@ -87,5 +80,6 @@ public class AuthController {
                 .header(HttpHeaders.SET_COOKIE,cookie.toString())
                 .build();
     }
+
 
 }
