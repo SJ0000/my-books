@@ -12,11 +12,13 @@ public class UserSession {
 
     private Long userId;
     private String name;
+    private String accessToken;
 
     @Builder
-    public UserSession(Long userId, String name) {
+    public UserSession(Long userId, String name, String accessToken) {
         this.userId = userId;
         this.name = name;
+        this.accessToken = accessToken;
     }
 
 }

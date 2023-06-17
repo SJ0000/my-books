@@ -18,6 +18,7 @@ import sungjin.mybooks.annotation.AuthRequired;
 import sungjin.mybooks.config.data.UserSession;
 import sungjin.mybooks.domain.Session;
 import sungjin.mybooks.domain.User;
+import sungjin.mybooks.repository.SessionRepository;
 import sungjin.mybooks.request.Join;
 import sungjin.mybooks.request.Login;
 import sungjin.mybooks.service.AuthService;
@@ -69,7 +70,9 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<Void> logout(){
+    public ResponseEntity<Void> logout(UserSession userSession){
+
+        authService.removeSession(userSession.getAccessToken());
 
         ResponseCookie cookie = ResponseCookie.from(CookieNames.SESSION_ID, "")
                 .domain("localhost")
@@ -83,15 +86,6 @@ public class AuthController {
         return ResponseEntity.noContent()
                 .header(HttpHeaders.SET_COOKIE,cookie.toString())
                 .build();
-    }
-
-    @AuthRequired
-    @GetMapping("/aop-test")
-    public String foo(HttpSession session){
-        String value = (String) session.getAttribute("dog");
-        System.out.println(session.getAttribute("dog"));
-        session.setAttribute("dog",value+"a");
-        return "foo";
     }
 
 }

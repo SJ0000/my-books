@@ -13,6 +13,7 @@ import sungjin.mybooks.repository.UserRepository;
 
 import javax.crypto.Cipher;
 import java.security.MessageDigest;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -43,4 +44,12 @@ public class AuthService {
                 .build();
         return sessionRepository.save(session);
     }
+
+    @Transactional
+    public void removeSession(String accessToken){
+        Session session = sessionRepository.findByAccessToken(accessToken)
+                .orElseThrow(() -> new RuntimeException("Session not found. access token = " + accessToken));
+        sessionRepository.delete(session);
+    }
+
 }
