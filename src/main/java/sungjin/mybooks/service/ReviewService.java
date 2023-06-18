@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import sungjin.mybooks.domain.Book;
 import sungjin.mybooks.domain.Review;
 import sungjin.mybooks.domain.User;
+import sungjin.mybooks.exception.NotFound;
 import sungjin.mybooks.repository.ReviewRepository;
 import sungjin.mybooks.request.ReviewCreate;
 
@@ -35,7 +36,7 @@ public class ReviewService {
     @Transactional(readOnly = true)
     public Review findReview(Long id){
         return reviewRepository.findById(id)
-                .orElseThrow( ()-> new RuntimeException("find review error. id = " + id));
+                .orElseThrow( ()-> new NotFound(Review.class, "id", id));
     }
 
 }

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sungjin.mybooks.config.PasswordEncoder;
 import sungjin.mybooks.domain.User;
+import sungjin.mybooks.exception.NotFound;
 import sungjin.mybooks.repository.UserRepository;
 import sungjin.mybooks.request.SignUp;
 
@@ -35,12 +36,12 @@ public class UserService {
 
     public User findUser(String email){
         return userRepository.findByEmail(email)
-                .orElseThrow(()-> new RuntimeException("find user error. email = " + email));
+                .orElseThrow(()-> new NotFound(User.class, "email", email));
     }
 
     public User findUser(Long id){
         return userRepository.findById(id)
-                .orElseThrow(()-> new RuntimeException("find user error. id = " + id));
+                .orElseThrow(()-> new NotFound(User.class, "id", id));
     }
 
     private boolean existsUser(String email){

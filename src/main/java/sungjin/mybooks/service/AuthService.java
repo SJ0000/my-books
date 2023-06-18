@@ -8,6 +8,7 @@ import sungjin.mybooks.config.PasswordEncoder;
 import sungjin.mybooks.domain.Session;
 import sungjin.mybooks.domain.User;
 import sungjin.mybooks.exception.InvalidLoginInformation;
+import sungjin.mybooks.exception.NotFound;
 import sungjin.mybooks.repository.SessionRepository;
 import sungjin.mybooks.repository.UserRepository;
 
@@ -46,7 +47,7 @@ public class AuthService {
     @Transactional
     public void removeSession(String accessToken){
         Session session = sessionRepository.findByAccessToken(accessToken)
-                .orElseThrow(() -> new RuntimeException("Session not found. access token = " + accessToken));
+                .orElseThrow(() -> new NotFound(Session.class, "access token", accessToken));
         sessionRepository.delete(session);
     }
 

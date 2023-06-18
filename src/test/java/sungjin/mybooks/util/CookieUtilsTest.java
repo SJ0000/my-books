@@ -13,7 +13,7 @@ class CookieUtilsTest {
 
 
     @Test
-    @DisplayName("쿠키 배열에서 특정 이름을 가진 쿠키를 가져온다")
+    @DisplayName("쿠키 배열에서 특정 이름을 가진 쿠키 값을 가져온다")
     void findCookieTest() throws Exception {
         // given
         Cookie[] cookies = new Cookie[]{
@@ -22,11 +22,11 @@ class CookieUtilsTest {
         };
 
         // when
-        Optional<Cookie> id = CookieUtils.findCookie(cookies, "id");
+        Optional<String> value = CookieUtils.getCookieValue(cookies, "id");
 
         // then
-        Assertions.assertThat(id.isPresent()).isTrue();
-        Assertions.assertThat(id.get().getValue()).isEqualTo("1234");
+        Assertions.assertThat(value.isPresent()).isTrue();
+        Assertions.assertThat(value.get()).isEqualTo("1234");
     }
 
     @Test
@@ -38,7 +38,7 @@ class CookieUtilsTest {
         };
 
         // when
-        Optional<Cookie> id = CookieUtils.findCookie(cookies, "id");
+        Optional<String> id = CookieUtils.getCookieValue(cookies, "id");
 
         // then
         Assertions.assertThat(id.isEmpty()).isTrue();

@@ -2,15 +2,17 @@ package sungjin.mybooks.search;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import sungjin.mybooks.config.data.BookSearchApiProperties;
+
 
 public class BookSearchApi {
 
     private final WebClient webClient;
 
     public BookSearchApi(BookSearchApiProperties properties) {
-        webClient = WebClient.builder()
+        this.webClient = WebClient.builder()
                 .baseUrl(properties.getHost() + properties.getUri())
                 .defaultHeader(HttpHeaders.AUTHORIZATION, properties.getAuthorization())
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)

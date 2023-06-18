@@ -45,7 +45,7 @@ class UserServiceTest {
         String rawPassword = "abcdefg";
         SignUp join = SignUp.builder()
                 .email(email)
-                .rawPassword(rawPassword)
+                .password(rawPassword)
                 .build();
 
         // when
