@@ -12,6 +12,7 @@ public class PageResponse<T> {
     private List<T> data;
     private PageInfo pageInfo;
 
+    @Builder
     public PageResponse(List<T> data, int totalElements, int totalPage, boolean isLast) {
         this.data = data;
         this.pageInfo = new PageInfo(totalElements, totalPage, isLast);

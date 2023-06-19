@@ -43,6 +43,12 @@ public class BookService {
                                 .build())
                 .toList();
 
-        return new PageResponse<>(data,meta.getTotalCount(), meta.getPageableCount(), meta.getIsEnd());
+        return PageResponse.<BookInfo>builder()
+                .data(data)
+                .totalElements(meta.getTotalCount())
+                .totalPage(meta.getPageableCount())
+                .isLast(meta.getIsEnd())
+                .build();
+
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import sungjin.mybooks.domain.Book;
 import sungjin.mybooks.dto.response.BookInfo;
+import sungjin.mybooks.dto.response.PageResponse;
 import sungjin.mybooks.service.BookService;
 
 @RestController
@@ -21,11 +22,7 @@ public class BookController {
     }
 
     @GetMapping("/search/books")
-    public Page<BookInfo> searchBook(@RequestParam String query, @RequestParam int page){
-
-        bookService.apiSearch(query,page);
-
-
+    public PageResponse<BookInfo> searchBook(@RequestParam String query, @RequestParam int page){
+        return bookService.apiSearch(query, page);
     }
-
 }
