@@ -1,4 +1,4 @@
-package sungjin.mybooks.response;
+package sungjin.mybooks.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;

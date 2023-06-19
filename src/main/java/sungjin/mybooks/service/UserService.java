@@ -7,7 +7,7 @@ import sungjin.mybooks.config.PasswordEncoder;
 import sungjin.mybooks.domain.User;
 import sungjin.mybooks.exception.NotFound;
 import sungjin.mybooks.repository.UserRepository;
-import sungjin.mybooks.request.SignUp;
+import sungjin.mybooks.dto.request.SignUp;
 
 @Service
 @RequiredArgsConstructor

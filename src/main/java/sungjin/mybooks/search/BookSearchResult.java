@@ -19,7 +19,7 @@ public class BookSearchResult {
 
     @Data
     @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-    static class Meta{
+    public static class Meta{
         private Integer totalCount;
         private Integer pageableCount;
         private Boolean isEnd;
@@ -27,7 +27,7 @@ public class BookSearchResult {
 
     @Data
     @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-    static class Document{
+    public static class Document{
         private String title;
         private String contents;
         private String url;
@@ -41,5 +41,6 @@ public class BookSearchResult {
         private String thumbnail;
         private String status;
     }
+
 
 }

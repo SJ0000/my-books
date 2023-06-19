@@ -2,7 +2,6 @@ package sungjin.mybooks.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.Cookie;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +14,9 @@ import sungjin.mybooks.domain.Session;
 import sungjin.mybooks.domain.User;
 import sungjin.mybooks.repository.SessionRepository;
 import sungjin.mybooks.repository.UserRepository;
-import sungjin.mybooks.request.SignUp;
-import sungjin.mybooks.request.Login;
+import sungjin.mybooks.dto.request.SignUp;
+import sungjin.mybooks.dto.request.Login;
 import sungjin.mybooks.service.AuthService;
-import sungjin.mybooks.service.UserService;
 import sungjin.mybooks.util.CookieNames;
 
 import java.util.Optional;

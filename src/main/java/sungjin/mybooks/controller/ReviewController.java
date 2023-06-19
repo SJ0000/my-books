@@ -4,7 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import sungjin.mybooks.domain.Review;
-import sungjin.mybooks.request.ReviewCreate;
+import sungjin.mybooks.dto.request.ReviewCreate;
 import sungjin.mybooks.service.ReviewService;
 
 @RestController

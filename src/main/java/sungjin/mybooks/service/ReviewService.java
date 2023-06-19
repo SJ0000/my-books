@@ -9,7 +9,7 @@ import sungjin.mybooks.domain.Review;
 import sungjin.mybooks.domain.User;
 import sungjin.mybooks.exception.NotFound;
 import sungjin.mybooks.repository.ReviewRepository;
-import sungjin.mybooks.request.ReviewCreate;
+import sungjin.mybooks.dto.request.ReviewCreate;
 
 @Service
 @RequiredArgsConstructor

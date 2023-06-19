@@ -1,4 +1,4 @@
-package sungjin.mybooks.request;
+package sungjin.mybooks.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;

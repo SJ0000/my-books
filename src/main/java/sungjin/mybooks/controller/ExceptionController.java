@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import sungjin.mybooks.exception.MyBooksException;
-import sungjin.mybooks.response.ErrorResponse;
+import sungjin.mybooks.dto.response.ErrorResponse;
 
 @ControllerAdvice
 public class ExceptionController {
