@@ -10,6 +10,7 @@ import sungjin.mybooks.dto.response.BookInfo;
 import sungjin.mybooks.dto.response.PageResponse;
 import sungjin.mybooks.exception.NotFound;
 import sungjin.mybooks.repository.BookRepository;
+import sungjin.mybooks.repository.UserBookRepository;
 import sungjin.mybooks.search.BookSearchApi;
 import sungjin.mybooks.search.BookSearchResult;
 
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 public class BookService {
 
     private final BookRepository bookRepository;
+    private final UserBookRepository userBookRepository;
     private final BookSearchApi bookSearchApi;
 
     public Book findBook(Long id){
@@ -49,6 +51,5 @@ public class BookService {
                 .totalPage(meta.getPageableCount())
                 .isLast(meta.getIsEnd())
                 .build();
-
     }
 }

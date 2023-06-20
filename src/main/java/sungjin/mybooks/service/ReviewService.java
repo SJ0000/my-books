@@ -13,30 +13,36 @@ import sungjin.mybooks.dto.request.ReviewCreate;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class ReviewService {
 
     private final ReviewRepository reviewRepository;
     private final BookService bookService;
     private final UserService userService;
 
-    public Review writeReview(Long userId, ReviewCreate reviewCreate){
+    @Transactional
+    public Long writeReview(Long userId, ReviewCreate reviewCreate){
         // Review 생성
         User user = userService.findUser(userId);
-        Book book = bookService.findBook(reviewCreate.getBookId());
+        Book book = bookService.findBook(reviewCreate.getUserBookId());
         Review review = Review.builder()
                 .user(user)
                 .book(book)
                 .content(reviewCreate.getContent())
                 .build();
 
-        return reviewRepository.save(review);
+        reviewRepository.save(review);
+        return review.getId();
     }
 
-    @Transactional(readOnly = true)
     public Review findReview(Long id){
         return reviewRepository.findById(id)
                 .orElseThrow( ()-> new NotFound(Review.class, "id", id));
+    }
+
+    public void editReview(Long id, String content){
+        Review review = findReview(id);
+        review.editContent(content);
     }
 
 }

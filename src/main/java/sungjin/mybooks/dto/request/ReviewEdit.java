@@ -9,10 +9,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ReviewCreate {
-
-    @NotEmpty
-    private Long userBookId;
+public class ReviewEdit {
 
     @NotBlank
     private String content;

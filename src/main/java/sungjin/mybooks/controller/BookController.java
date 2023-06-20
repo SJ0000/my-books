@@ -25,4 +25,5 @@ public class BookController {
     public PageResponse<BookInfo> searchBook(@RequestParam String query, @RequestParam int page){
         return bookService.apiSearch(query, page);
     }
+
 }

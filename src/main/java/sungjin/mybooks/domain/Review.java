@@ -3,8 +3,10 @@ package sungjin.mybooks.domain;
 
 import jakarta.persistence.*;
 import lombok.Builder;
+import lombok.Getter;
 
 @Entity
+@Getter
 public class Review {
 
     protected Review() {
@@ -29,8 +31,8 @@ public class Review {
     @Lob
     private String content;
 
-    public void writtenBy(Long writerId){
-
+    public void editContent(String content){
+        this.content = content;
     }
 
 }
