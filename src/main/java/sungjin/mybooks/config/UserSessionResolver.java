@@ -40,7 +40,6 @@ public class UserSessionResolver implements HandlerMethodArgumentResolver {
 
         return UserSession.builder()
                 .userId(session.getUser().getId())
-                .name(session.getUser().getName())
                 .accessToken(accessToken)
                 .build();
     }

@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import sungjin.mybooks.config.data.UserSession;
 import sungjin.mybooks.domain.Review;
 import sungjin.mybooks.dto.request.ReviewCreate;
 import sungjin.mybooks.dto.request.ReviewEdit;
@@ -24,9 +25,9 @@ public class ReviewController {
     }
 
     @PostMapping("/review")
-    public ResponseEntity<Void> createReview(@RequestBody @Valid ReviewCreate reviewCreate){
-        // todo : userId 받아오기
-        Long id = reviewService.writeReview(null, reviewCreate);
+    public ResponseEntity<Void> createReview(@RequestBody @Valid ReviewCreate reviewCreate, UserSession userSession){
+        Long userId = userSession.getUserId();
+        Long id = reviewService.writeReview(userId, reviewCreate);
 
         return ResponseEntity.created(URI.create("/review/"+id))
                 .build();

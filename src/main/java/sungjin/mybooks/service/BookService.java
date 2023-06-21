@@ -5,7 +5,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import sungjin.mybooks.domain.Book;
+import sungjin.mybooks.domain.UserBook;
 import sungjin.mybooks.dto.response.BookInfo;
 import sungjin.mybooks.dto.response.PageResponse;
 import sungjin.mybooks.exception.NotFound;
@@ -19,6 +21,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class BookService {
 
     private final BookRepository bookRepository;
@@ -29,6 +32,17 @@ public class BookService {
         return bookRepository.findById(id)
                 .orElseThrow(()-> new NotFound(Book.class, "id", id));
     }
+
+    public UserBook findUserBook(Long id){
+        return userBookRepository.findById(id)
+                .orElseThrow(()-> new NotFound(UserBook.class, "id", id));
+    }
+
+    public void deleteUserBook(Long id){
+        userBookRepository.deleteById(id);
+    }
+
+
 
     public PageResponse<BookInfo> apiSearch(String query, int page){
         BookSearchResult result = bookSearchApi.search(query, page);
@@ -52,4 +66,6 @@ public class BookService {
                 .isLast(meta.getIsEnd())
                 .build();
     }
+
+
 }
