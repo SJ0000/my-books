@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+import sungjin.mybooks.config.data.UserSession;
 import sungjin.mybooks.domain.Book;
 import sungjin.mybooks.dto.response.BookInfo;
 import sungjin.mybooks.dto.response.PageResponse;
@@ -21,9 +22,17 @@ public class BookController {
         return bookService.findBook(id);
     }
 
-    @GetMapping("/search/books")
+    @GetMapping("/search/book")
     public PageResponse<BookInfo> searchBook(@RequestParam String query, @RequestParam int page){
         return bookService.apiSearch(query, page);
     }
+
+//    @GetMapping("/search/userbook")
+//    public PageResponse<BookInfo> searchUserBook(UserSession userSession, @RequestParam String query, @RequestParam int page){
+//
+//
+//
+//    }
+
 
 }

@@ -14,7 +14,7 @@ class BookSearchApiTest {
 
     @Test
     void test(){
-        BookSearchResult dog = searchApi.search("dog");
+        BookSearchResult dog = searchApi.search("dog",0);
         BookSearchResult.Meta meta = dog.getMeta();
         System.out.println(meta);
         System.out.println(dog.getDocuments());

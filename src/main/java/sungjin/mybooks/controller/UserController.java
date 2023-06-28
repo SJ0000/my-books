@@ -22,9 +22,4 @@ public class UserController {
         return userService.findUser(id);
     }
 
-    @GetMapping("/foo")
-    public User foo(UserSession userSession){
-        log.info("{}",userSession);
-        return userService.findUser(userSession.getUserId());
-    }
 }

@@ -42,6 +42,12 @@ public class BookService {
         userBookRepository.deleteById(id);
     }
 
+//    public PageResponse<BookInfo> searchUserBooks(Long userId, String query, int page){
+//
+//        userBookRepository
+//
+//
+//    }
 
 
     public PageResponse<BookInfo> apiSearch(String query, int page){

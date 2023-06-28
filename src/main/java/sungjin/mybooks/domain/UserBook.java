@@ -2,6 +2,7 @@ package sungjin.mybooks.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -20,4 +21,9 @@ public class UserBook {
     @ManyToOne(fetch = FetchType.LAZY)
     private Book book;
 
+    @Builder
+    public UserBook(User user, Book book) {
+        this.user = user;
+        this.book = book;
+    }
 }
