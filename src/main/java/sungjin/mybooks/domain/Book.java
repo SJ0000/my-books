@@ -31,4 +31,9 @@ public class Book {
         this.thumbnail = thumbnail;
         this.author = author;
     }
+
+    public String[] getAuthors(){
+        return author.split(" ");
+    }
+
 }

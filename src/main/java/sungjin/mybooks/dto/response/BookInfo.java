@@ -4,6 +4,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import sungjin.mybooks.domain.Book;
+import sungjin.mybooks.domain.UserBook;
 
 @Getter
 @Setter
@@ -22,4 +24,13 @@ public class BookInfo {
         this.thumbnail = thumbnail;
         this.authors = authors;
     }
+
+    public BookInfo(Book book){
+        this.isbn = book.getIsbn();
+        this.title = book.getTitle();
+        this.thumbnail = book.getThumbnail();
+        this.authors = book.getAuthors();
+    }
+
+
 }

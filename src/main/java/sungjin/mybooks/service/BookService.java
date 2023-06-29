@@ -3,6 +3,7 @@ package sungjin.mybooks.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,12 +43,19 @@ public class BookService {
         userBookRepository.deleteById(id);
     }
 
-//    public PageResponse<BookInfo> searchUserBooks(Long userId, String query, int page){
-//
-//        userBookRepository
-//
-//
-//    }
+    public PageResponse<BookInfo> searchUserBooks(Long userId, String query, int page){
+        Page<UserBook> result = userBookRepository.findAllByBookTitle(userId, query, PageRequest.of(page, 10));
+        List<BookInfo> data = result.stream()
+                .map(userBook -> new BookInfo(userBook.getBook()))
+                .toList();
+
+        return PageResponse.<BookInfo>builder()
+                .data(data)
+                .totalPage(result.getTotalPages())
+                .totalElements(result.getTotalElements())
+                .isLast(result.isLast())
+                .build();
+    }
 
 
     public PageResponse<BookInfo> apiSearch(String query, int page){
