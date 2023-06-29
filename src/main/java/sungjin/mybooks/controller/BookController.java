@@ -27,12 +27,15 @@ public class BookController {
         return bookService.apiSearch(query, page);
     }
 
-//    @GetMapping("/search/userbook")
-//    public PageResponse<BookInfo> searchUserBook(UserSession userSession, @RequestParam String query, @RequestParam int page){
-//
-//
-//
-//    }
+    @GetMapping("/users/books")
+    public PageResponse<BookInfo> getUserBooks(UserSession userSession, @RequestParam int page){
+        Long userId = userSession.getUserId();
+        return bookService.searchUserBooks(userId,"", page);
+    }
 
-
+    @GetMapping("/search")
+    public PageResponse<BookInfo> searchUserBook(UserSession userSession, @RequestParam String query, @RequestParam int page){
+        Long userId = userSession.getUserId();
+        return bookService.searchUserBooks(userId,query,page);
+    }
 }
