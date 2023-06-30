@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import sungjin.mybooks.util.IsbnUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +41,10 @@ public class BookSearchResult {
         private Integer salePrice;
         private String thumbnail;
         private String status;
+
     }
+
+
 
 
 }

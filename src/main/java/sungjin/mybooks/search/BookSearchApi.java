@@ -3,6 +3,7 @@ package sungjin.mybooks.search;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.reactive.function.client.WebClient;
 import sungjin.mybooks.config.data.BookSearchApiProperties;
 
@@ -31,4 +32,6 @@ public class BookSearchApi {
 
         return result;
     }
+
+
 }

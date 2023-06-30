@@ -16,6 +16,7 @@ import sungjin.mybooks.repository.BookRepository;
 import sungjin.mybooks.repository.UserBookRepository;
 import sungjin.mybooks.search.BookSearchApi;
 import sungjin.mybooks.search.BookSearchResult;
+import sungjin.mybooks.util.IsbnUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -66,7 +67,7 @@ public class BookService {
         List<BookInfo> data = result.getDocuments().stream()
                 .map(document ->
                         BookInfo.builder()
-                                .isbn(document.getIsbn())
+                                .isbn(IsbnUtils.convertToISBN(document.getIsbn()))
                                 .title(document.getTitle())
                                 .thumbnail(document.getThumbnail())
                                 .authors(document.getAuthors())
