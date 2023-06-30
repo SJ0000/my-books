@@ -11,13 +11,12 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Session {
+public class Session extends BaseTimeEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String accessToken;
-    private LocalDateTime createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;

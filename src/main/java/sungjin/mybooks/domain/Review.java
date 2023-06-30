@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @Entity
 @Getter
-public class Review {
+public class Review extends BaseTimeEntity{
 
     protected Review() {
     }
