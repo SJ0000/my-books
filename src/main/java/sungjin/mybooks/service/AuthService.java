@@ -10,11 +10,6 @@ import sungjin.mybooks.domain.User;
 import sungjin.mybooks.exception.InvalidLoginInformation;
 import sungjin.mybooks.exception.NotFound;
 import sungjin.mybooks.repository.SessionRepository;
-import sungjin.mybooks.repository.UserRepository;
-
-import javax.crypto.Cipher;
-import java.security.MessageDigest;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service

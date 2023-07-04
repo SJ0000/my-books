@@ -44,6 +44,20 @@ public class BookService {
         userBookRepository.deleteById(id);
     }
 
+    public PageResponse<BookInfo> searchRecentUserbooks(Long userId, int page){
+        Page<UserBook> result = userBookRepository.findRecentUserBooks(userId, PageRequest.of(page, 10));
+        List<BookInfo> data = result.stream()
+                .map(userBook -> new BookInfo(userBook.getBook()))
+                .toList();
+
+        return PageResponse.<BookInfo>builder()
+                .data(data)
+                .totalPage(result.getTotalPages())
+                .totalElements(result.getTotalElements())
+                .isLast(result.isLast())
+                .build();
+    }
+
     public PageResponse<BookInfo> searchUserBooks(Long userId, String query, int page){
         Page<UserBook> result = userBookRepository.findAllByBookTitle(userId, query, PageRequest.of(page, 10));
         List<BookInfo> data = result.stream()

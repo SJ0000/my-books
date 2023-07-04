@@ -30,7 +30,7 @@ public class BookController {
     @GetMapping("/users/books")
     public PageResponse<BookInfo> getUserBooks(UserSession userSession, @RequestParam int page){
         Long userId = userSession.getUserId();
-        return bookService.searchUserBooks(userId,"", page);
+        return bookService.searchRecentUserbooks(userId, page);
     }
 
     @GetMapping("/search")
