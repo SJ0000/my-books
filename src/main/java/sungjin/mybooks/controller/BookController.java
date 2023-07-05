@@ -24,18 +24,18 @@ public class BookController {
 
     @GetMapping("/search/book")
     public PageResponse<BookInfo> searchBook(@RequestParam String query, @RequestParam int page){
-        return bookService.apiSearch(query, page);
+        return bookService.apiSearch(query, page-1);
     }
 
     @GetMapping("/users/books")
     public PageResponse<BookInfo> getUserBooks(UserSession userSession, @RequestParam int page){
         Long userId = userSession.getUserId();
-        return bookService.searchRecentUserbooks(userId, page);
+        return bookService.searchRecentUserbooks(userId, page-1);
     }
 
     @GetMapping("/search")
     public PageResponse<BookInfo> searchUserBook(UserSession userSession, @RequestParam String query, @RequestParam int page){
         Long userId = userSession.getUserId();
-        return bookService.searchUserBooks(userId,query,page);
+        return bookService.searchUserBooks(userId,query,page-1);
     }
 }
