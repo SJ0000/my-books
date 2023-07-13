@@ -47,7 +47,7 @@ class AuthControllerTest {
     ObjectMapper om = new ObjectMapper();
 
     @Test
-    @DisplayName("로그인 성공 후 status는 200이고 세션쿠키가 만들어져야 한다")
+    @DisplayName("로그인 성공 후 세션 ID를 저장한 쿠키를 담아 응답")
     void login() throws Exception {
         // given
         String email = "1234@naver.com";

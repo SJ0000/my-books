@@ -1,4 +1,4 @@
-package sungjin.mybooks;
+package sungjin.mybooks.etc;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
