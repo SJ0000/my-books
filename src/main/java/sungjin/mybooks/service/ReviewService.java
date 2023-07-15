@@ -13,7 +13,6 @@ import sungjin.mybooks.dto.request.ReviewCreate;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class ReviewService {
 
     private final ReviewRepository reviewRepository;
@@ -35,11 +34,13 @@ public class ReviewService {
         return review.getId();
     }
 
+    @Transactional(readOnly = true)
     public Review findReview(Long id){
         return reviewRepository.findById(id)
                 .orElseThrow( ()-> new NotFound(Review.class, "id", id));
     }
 
+    @Transactional
     public void editReview(Long id, String content){
         Review review = findReview(id);
         review.editContent(content);

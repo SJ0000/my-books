@@ -11,7 +11,6 @@ import sungjin.mybooks.dto.request.SignUp;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = false)
 public class UserService {
 
     private final UserRepository userRepository;
@@ -34,16 +33,19 @@ public class UserService {
         return user.getId();
     }
 
+    @Transactional(readOnly = true)
     public User findUser(String email){
         return userRepository.findByEmail(email)
                 .orElseThrow(()-> new NotFound(User.class, "email", email));
     }
 
+    @Transactional(readOnly = true)
     public User findUser(Long id){
         return userRepository.findById(id)
                 .orElseThrow(()-> new NotFound(User.class, "id", id));
     }
 
+    @Transactional(readOnly = true)
     private boolean existsUser(String email){
         return userRepository.findByEmail(email).isPresent();
     }

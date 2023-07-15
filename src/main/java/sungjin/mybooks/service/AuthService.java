@@ -14,13 +14,13 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class AuthService {
 
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
     private final SessionRepository sessionRepository;
 
+    @Transactional(readOnly = true)
     public void validateUser(String email, String rawPassword){
         User user = userService.findUser(email);
         String encodedPassword = passwordEncoder.encode(rawPassword);

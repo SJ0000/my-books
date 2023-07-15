@@ -23,27 +23,30 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class BookService {
 
     private final BookRepository bookRepository;
     private final UserBookRepository userBookRepository;
     private final BookSearchApi bookSearchApi;
 
+    @Transactional(readOnly = true)
     public Book findBook(Long id){
         return bookRepository.findById(id)
                 .orElseThrow(()-> new NotFound(Book.class, "id", id));
     }
 
+    @Transactional(readOnly = true)
     public UserBook findUserBook(Long id){
         return userBookRepository.findById(id)
                 .orElseThrow(()-> new NotFound(UserBook.class, "id", id));
     }
 
+    @Transactional
     public void deleteUserBook(Long id){
         userBookRepository.deleteById(id);
     }
 
+    @Transactional(readOnly = true)
     public PageResponse<BookInfo> searchRecentUserbooks(Long userId, int page){
         Page<UserBook> result = userBookRepository.findRecentUserBooks(userId, PageRequest.of(page, 10));
         List<BookInfo> data = result.stream()
@@ -58,6 +61,7 @@ public class BookService {
                 .build();
     }
 
+    @Transactional(readOnly = true)
     public PageResponse<BookInfo> searchUserBooks(Long userId, String query, int page){
         Page<UserBook> result = userBookRepository.findAllByBookTitle(userId, query, PageRequest.of(page, 10));
         List<BookInfo> data = result.stream()
