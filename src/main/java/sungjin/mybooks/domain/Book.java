@@ -10,6 +10,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.swing.text.html.Option;
+import java.util.Optional;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -33,7 +36,8 @@ public class Book {
     }
 
     public String[] getAuthors(){
-        return author.split(" ");
+        return Optional.ofNullable(author)
+                .orElse("")
+                .split(" ");
     }
-
 }

@@ -25,6 +25,9 @@ import static org.assertj.core.api.Assertions.*;
 import static org.springframework.http.MediaType.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+/**
+ * Controller Test는 통합테스트로 작성
+ */
 
 @Transactional
 @SpringBootTest

@@ -8,7 +8,7 @@ import java.util.Optional;
 public class IsbnUtils {
 
     public static String convertToISBN(String isbn){
-        if(StringUtils.hasText(isbn))
+        if(!StringUtils.hasText(isbn))
             throw new RuntimeException("isbn is empty.");
 
         if(isbn.split(" ").length >= 2){

@@ -18,16 +18,4 @@ public class PageResponse<T> {
         this.pageInfo = new PageInfo(totalElements, totalPage, isLast);
     }
 
-    @Data
-    static class PageInfo {
-        private long totalElements;
-        private int totalPage;
-        private boolean isLast;
-
-        public PageInfo(long totalElements, int totalPage, boolean isLast) {
-            this.totalElements = totalElements;
-            this.totalPage = totalPage;
-            this.isLast = isLast;
-        }
-    }
 }
