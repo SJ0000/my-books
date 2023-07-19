@@ -100,5 +100,10 @@ public class BookService {
                 .build();
     }
 
+    @Transactional
+    public boolean isUserBookOwner(Long userId, Long userBookId){
+        UserBook userBook = findUserBook(userBookId);
+        return userBook.isOwner(userId);
+    }
 
 }

@@ -7,26 +7,30 @@ import org.springframework.transaction.annotation.Transactional;
 import sungjin.mybooks.domain.Book;
 import sungjin.mybooks.domain.Review;
 import sungjin.mybooks.domain.User;
+import sungjin.mybooks.domain.UserBook;
 import sungjin.mybooks.exception.NotFound;
 import sungjin.mybooks.repository.ReviewRepository;
 import sungjin.mybooks.dto.request.ReviewCreate;
+import sungjin.mybooks.repository.UserBookRepository;
 
 @Service
 @RequiredArgsConstructor
 public class ReviewService {
 
-    private final ReviewRepository reviewRepository;
     private final BookService bookService;
     private final UserService userService;
+    private final ReviewRepository reviewRepository;
+    private final UserBookRepository userBookRepository;
 
     @Transactional
-    public Long writeReview(Long userId, ReviewCreate reviewCreate){
+    public Long writeReview(ReviewCreate reviewCreate){
         // Review 생성
-        User user = userService.findUser(userId);
-        Book book = bookService.findBook(reviewCreate.getUserBookId());
+        Long userBookId = reviewCreate.getUserBookId();
+        UserBook userBook = userBookRepository.findById(userBookId)
+                .orElseThrow(() -> new NotFound(UserBook.class, "id", userBookId));
+
         Review review = Review.builder()
-                .user(user)
-                .book(book)
+                .userBook(userBook)
                 .content(reviewCreate.getContent())
                 .build();
 

@@ -13,9 +13,8 @@ public class Review extends BaseTimeEntity{
     }
 
     @Builder
-    public Review(User user, Book book, String content) {
-        this.user = user;
-        this.book = book;
+    public Review(UserBook userBook, String content) {
+        this.userBook = userBook;
         this.content = content;
     }
 
@@ -23,10 +22,8 @@ public class Review extends BaseTimeEntity{
     private Long id;
 
     @OneToOne
-    private User user;
+    private UserBook userBook;
 
-    @ManyToOne
-    private Book book;
 
     @Lob
     private String content;

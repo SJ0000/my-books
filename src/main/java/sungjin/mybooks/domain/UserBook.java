@@ -26,4 +26,9 @@ public class UserBook extends BaseTimeEntity{
         this.user = user;
         this.book = book;
     }
+
+    public boolean isOwner(Long userId){
+        return user.getId().equals(userId);
+    }
+
 }
