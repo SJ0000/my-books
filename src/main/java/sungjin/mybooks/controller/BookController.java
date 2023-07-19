@@ -1,10 +1,6 @@
 package sungjin.mybooks.controller;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sungjin.mybooks.config.data.UserSession;
@@ -30,17 +26,18 @@ public class BookController {
 
     /**
      * @param page
-     * page는 api 요청 스펙이 1부터 시작하기 때문에 -1을 하지 않는다.
+     * Spring Data JPA와는 다르게
+     * kakao api에서 1부터 시작하기 때문에 -1을 하지 않는다.
      */
     @GetMapping("/search/book")
-    public ResponseEntity<PageResponse<BookInfo>> searchBook(@RequestParam String query, @RequestParam int page){
+    public ResponseEntity<PageResponse<BookInfo>> searchBook(@RequestParam String query, @RequestParam(defaultValue = "1") int page){
         PageResponse<BookInfo> result = bookService.apiSearch(query, page);
         return ResponseEntity.ok()
                 .body(result);
     }
 
     @GetMapping("/users/books")
-    public ResponseEntity<PageResponse<BookInfo>> getUserBooks(UserSession userSession, @RequestParam int page){
+    public ResponseEntity<PageResponse<BookInfo>> getUserBooks(UserSession userSession, @RequestParam(defaultValue = "1") int page){
         Long userId = userSession.getUserId();
         PageResponse<BookInfo> result = bookService.searchRecentUserbooks(userId, page - 1);
         return ResponseEntity.ok()
@@ -48,7 +45,7 @@ public class BookController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<PageResponse<BookInfo>> searchUserBook(UserSession userSession, @RequestParam String query, @RequestParam int page){
+    public ResponseEntity<PageResponse<BookInfo>> searchUserBook(UserSession userSession, @RequestParam String query, @RequestParam(defaultValue = "1") int page){
         Long userId = userSession.getUserId();
         PageResponse<BookInfo> result = bookService.searchUserBooks(userId, query, page - 1);
         return ResponseEntity.ok()
