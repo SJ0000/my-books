@@ -1,7 +1,5 @@
 package sungjin.mybooks.service;
 
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
 import org.mockito.Mockito;
@@ -14,7 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import sungjin.mybooks.domain.Book;
 import sungjin.mybooks.domain.User;
 import sungjin.mybooks.domain.UserBook;
-import sungjin.mybooks.dto.response.BookInfo;
+import sungjin.mybooks.dto.response.BookResponse;
 import sungjin.mybooks.dto.response.PageInfo;
 import sungjin.mybooks.dto.response.PageResponse;
 import sungjin.mybooks.repository.UserBookRepository;
@@ -58,10 +56,10 @@ class BookServiceTest {
                 .willReturn(page);
 
         // when
-        PageResponse<BookInfo> result = bookService.searchRecentUserbooks(1L, 1);
+        PageResponse<BookResponse> result = bookService.searchRecentUserbooks(1L, 1);
 
         // then
-        List<BookInfo> data = result.getData();
+        List<BookResponse> data = result.getData();
         PageInfo pageInfo = result.getPageInfo();
         assertThat(data.size()).isEqualTo(4);
         assertThat(pageInfo.getTotalPage()).isEqualTo(1);
