@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sungjin.mybooks.config.data.UserSession;
 import sungjin.mybooks.domain.Book;
-import sungjin.mybooks.dto.response.BookInfo;
+import sungjin.mybooks.dto.response.BookResponse;
 import sungjin.mybooks.dto.response.PageResponse;
 import sungjin.mybooks.service.BookService;
 
@@ -16,9 +16,9 @@ public class BookController {
     private final BookService bookService;
 
     @GetMapping("/books/{id}")
-    public ResponseEntity<BookInfo> getBook(@PathVariable Long id){
+    public ResponseEntity<BookResponse> getBook(@PathVariable Long id){
         Book book = bookService.findBook(id);
-        BookInfo bookInfo = new BookInfo(book);
+        BookResponse bookInfo = new BookResponse(book);
 
         return ResponseEntity.ok()
                 .body(bookInfo);
@@ -30,24 +30,24 @@ public class BookController {
      * kakao api에서 1부터 시작하기 때문에 -1을 하지 않는다.
      */
     @GetMapping("/search/book")
-    public ResponseEntity<PageResponse<BookInfo>> searchBook(@RequestParam String query, @RequestParam(defaultValue = "1") int page){
-        PageResponse<BookInfo> result = bookService.apiSearch(query, page);
+    public ResponseEntity<PageResponse<BookResponse>> searchBook(@RequestParam String query, @RequestParam(defaultValue = "1") int page){
+        PageResponse<BookResponse> result = bookService.apiSearch(query, page);
         return ResponseEntity.ok()
                 .body(result);
     }
 
     @GetMapping("/users/books")
-    public ResponseEntity<PageResponse<BookInfo>> getUserBooks(UserSession userSession, @RequestParam(defaultValue = "1") int page){
+    public ResponseEntity<PageResponse<BookResponse>> getUserBooks(UserSession userSession, @RequestParam(defaultValue = "1") int page){
         Long userId = userSession.getUserId();
-        PageResponse<BookInfo> result = bookService.searchRecentUserbooks(userId, page - 1);
+        PageResponse<BookResponse> result = bookService.searchRecentUserbooks(userId, page - 1);
         return ResponseEntity.ok()
                 .body(result);
     }
 
     @GetMapping("/search")
-    public ResponseEntity<PageResponse<BookInfo>> searchUserBook(UserSession userSession, @RequestParam String query, @RequestParam(defaultValue = "1") int page){
+    public ResponseEntity<PageResponse<BookResponse>> searchUserBook(UserSession userSession, @RequestParam String query, @RequestParam(defaultValue = "1") int page){
         Long userId = userSession.getUserId();
-        PageResponse<BookInfo> result = bookService.searchUserBooks(userId, query, page - 1);
+        PageResponse<BookResponse> result = bookService.searchUserBooks(userId, query, page - 1);
         return ResponseEntity.ok()
                 .body(result);
     }

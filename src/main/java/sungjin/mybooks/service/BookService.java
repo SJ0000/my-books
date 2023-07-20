@@ -2,14 +2,12 @@ package sungjin.mybooks.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sungjin.mybooks.domain.Book;
 import sungjin.mybooks.domain.UserBook;
-import sungjin.mybooks.dto.response.BookInfo;
+import sungjin.mybooks.dto.response.BookResponse;
 import sungjin.mybooks.dto.response.PageResponse;
 import sungjin.mybooks.exception.NotFound;
 import sungjin.mybooks.repository.BookRepository;
@@ -19,7 +17,6 @@ import sungjin.mybooks.search.BookSearchResult;
 import sungjin.mybooks.util.IsbnUtils;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -47,13 +44,13 @@ public class BookService {
     }
 
     @Transactional(readOnly = true)
-    public PageResponse<BookInfo> searchRecentUserbooks(Long userId, int page){
+    public PageResponse<BookResponse> searchRecentUserbooks(Long userId, int page){
         Page<UserBook> result = userBookRepository.findRecentUserBooks(userId, PageRequest.of(page, 10));
-        List<BookInfo> data = result.stream()
-                .map(userBook -> new BookInfo(userBook.getBook()))
+        List<BookResponse> data = result.stream()
+                .map(userBook -> new BookResponse(userBook.getBook()))
                 .toList();
 
-        return PageResponse.<BookInfo>builder()
+        return PageResponse.<BookResponse>builder()
                 .data(data)
                 .totalPage(result.getTotalPages())
                 .totalElements(result.getTotalElements())
@@ -62,13 +59,13 @@ public class BookService {
     }
 
     @Transactional(readOnly = true)
-    public PageResponse<BookInfo> searchUserBooks(Long userId, String query, int page){
+    public PageResponse<BookResponse> searchUserBooks(Long userId, String query, int page){
         Page<UserBook> result = userBookRepository.findAllByBookTitle(userId, query, PageRequest.of(page, 10));
-        List<BookInfo> data = result.stream()
-                .map(userBook -> new BookInfo(userBook.getBook()))
+        List<BookResponse> data = result.stream()
+                .map(userBook -> new BookResponse(userBook.getBook()))
                 .toList();
 
-        return PageResponse.<BookInfo>builder()
+        return PageResponse.<BookResponse>builder()
                 .data(data)
                 .totalPage(result.getTotalPages())
                 .totalElements(result.getTotalElements())
@@ -77,14 +74,14 @@ public class BookService {
     }
 
 
-    public PageResponse<BookInfo> apiSearch(String query, int page){
+    public PageResponse<BookResponse> apiSearch(String query, int page){
         BookSearchResult result = bookSearchApi.search(query, page);
 
         BookSearchResult.Meta meta = result.getMeta();
 
-        List<BookInfo> data = result.getDocuments().stream()
+        List<BookResponse> data = result.getDocuments().stream()
                 .map(document ->
-                        BookInfo.builder()
+                        BookResponse.builder()
                                 .isbn(IsbnUtils.convertToISBN(document.getIsbn()))
                                 .title(document.getTitle())
                                 .thumbnail(document.getThumbnail())
@@ -92,7 +89,7 @@ public class BookService {
                                 .build())
                 .toList();
 
-        return PageResponse.<BookInfo>builder()
+        return PageResponse.<BookResponse>builder()
                 .data(data)
                 .totalElements(meta.getTotalCount())
                 .totalPage(meta.getPageableCount())

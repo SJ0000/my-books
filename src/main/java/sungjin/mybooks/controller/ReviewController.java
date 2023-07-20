@@ -8,6 +8,8 @@ import sungjin.mybooks.config.data.UserSession;
 import sungjin.mybooks.domain.Review;
 import sungjin.mybooks.dto.request.ReviewCreate;
 import sungjin.mybooks.dto.request.ReviewEdit;
+import sungjin.mybooks.dto.response.ReviewResponse;
+import sungjin.mybooks.repository.ReviewRepository;
 import sungjin.mybooks.service.ReviewService;
 
 import java.net.URI;
@@ -21,8 +23,10 @@ public class ReviewController {
 
 
     @GetMapping("/review/{id}")
-    public Review getReview(@PathVariable Long id){
-        return reviewService.findReview(id);
+    public ResponseEntity<ReviewResponse> getReview(@PathVariable Long id){
+        Review review = reviewService.findReview(id);
+        return ResponseEntity.ok()
+                .body(new ReviewResponse(review));
     }
 
     @PostMapping("/review")
