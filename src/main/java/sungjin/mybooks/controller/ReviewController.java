@@ -32,7 +32,7 @@ public class ReviewController {
     @PostMapping("/review")
     public ResponseEntity<Void> createReview(@RequestBody @Valid ReviewCreate reviewCreate, UserSession userSession){
         Long userId = userSession.getUserId();
-        Long id = reviewService.writeReview(reviewCreate);
+        Long id = reviewService.writeReview(userId, reviewCreate);
 
         return ResponseEntity.created(URI.create("/review/"+id))
                 .build();
