@@ -9,6 +9,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import sungjin.mybooks.MyBooksTestUtils;
 import sungjin.mybooks.domain.Book;
 import sungjin.mybooks.domain.User;
 import sungjin.mybooks.domain.UserBook;
@@ -19,6 +20,7 @@ import sungjin.mybooks.repository.UserBookRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -35,23 +37,14 @@ class BookServiceTest {
     @Test
     void searchRecentUserbooksTest() throws Exception {
         // given
-        User mockUser = User.builder()
-                .build();
+        User user = MyBooksTestUtils.createUser();
+        List<Book> books = MyBooksTestUtils.createBooks(4);
 
-        List<UserBook> content = new ArrayList<>();
-        for (int i = 1; i <= 4; i++) {
-            Book book = Book.builder()
-                    .title("book " + i)
-                    .build();
-            content.add(
-                    UserBook.builder()
-                            .user(mockUser)
-                            .book(book)
-                            .build()
-            );
-        }
+        List<UserBook> userBooks = books.stream().map(book ->
+                MyBooksTestUtils.createUserBook(user, book)
+        ).toList();
 
-        Page<UserBook> page = new PageImpl(content, PageRequest.of(0,10),4);
+        Page<UserBook> page = new PageImpl(userBooks, PageRequest.of(0,10),4);
         BDDMockito.given(userBookRepository.findRecentUserBooks(Mockito.anyLong(), Mockito.any()))
                 .willReturn(page);
 

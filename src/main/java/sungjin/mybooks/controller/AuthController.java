@@ -42,8 +42,6 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<Void> login(@Valid @RequestBody Login login){
-        log.info("email = {}, password = {}",login.getEmail(),login.getPassword());
-
         authService.validateUser(login.getEmail(),login.getPassword());
         User user = userService.findUser(login.getEmail());
         Session session = authService.createSession(user);

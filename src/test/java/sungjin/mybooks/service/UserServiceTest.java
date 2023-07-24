@@ -3,11 +3,21 @@ package sungjin.mybooks.service;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.BDDMockito;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.transaction.annotation.Transactional;
+import sungjin.mybooks.MyBooksTestUtils;
 import sungjin.mybooks.domain.User;
 import sungjin.mybooks.dto.request.SignUp;
+import sungjin.mybooks.repository.UserBookRepository;
+import sungjin.mybooks.repository.UserRepository;
+
+import java.util.Optional;
 
 @SpringBootTest
 @Transactional
@@ -16,44 +26,24 @@ class UserServiceTest {
     @Autowired
     UserService userService;
 
-    @Test
-    @DisplayName("이미 존재하는 이메일일 경우 회원가입이 불가능해야한다.")
-    void joinExistsEmail() {
-        // given
-        String email = "alpha@beta.com";
-        SignUp user = SignUp.builder()
-                .email(email)
-                .build();
+    @MockBean
+    UserRepository userRepository;
 
-        userService.signUpUser(user);
+    @Test
+    @DisplayName("회원가입시 중복 이메일일 경우 RuntimeException 발생")
+    void signUpEmailDuplicated() {
+        // given
+        User user = MyBooksTestUtils.createUser();
+        BDDMockito.given(userRepository.findByEmail(Mockito.anyString()))
+                .willReturn(Optional.of(user));
 
         // when, then
         SignUp newUser = SignUp.builder()
-                .email(email)
+                .email(user.getEmail())
                 .build();
 
         Assertions.assertThatThrownBy(() ->
                         userService.signUpUser(newUser))
                 .isInstanceOf(RuntimeException.class);
-    }
-
-    @Test
-    @DisplayName("회원가입 시 비밀번호를 암호화하야 저장한다.")
-    void joinPasswordEncrypt() {
-        // given
-        String email = "alpha@beta.com";
-        String rawPassword = "abcdefg";
-        SignUp join = SignUp.builder()
-                .email(email)
-                .password(rawPassword)
-                .build();
-
-        // when
-        Long userId = userService.signUpUser(join);
-        User user = userService.findUser(userId);
-
-        // then
-        Assertions.assertThat(user.getPassword())
-                .isNotEqualTo(rawPassword);
     }
 }

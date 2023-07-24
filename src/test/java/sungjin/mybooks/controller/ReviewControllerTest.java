@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
+import sungjin.mybooks.MyBooksTestUtils;
 import sungjin.mybooks.domain.*;
 import sungjin.mybooks.dto.request.ReviewCreate;
 import sungjin.mybooks.repository.BookRepository;
@@ -56,29 +57,19 @@ class ReviewControllerTest {
     @DisplayName("특정 리뷰 조회")
     void getReviewTest() throws Exception {
         // given
-        User user = User.builder()
-                .name("user")
-                .email("abcd@efgh.com")
-                .password("1234")
-                .build();
+        User user = MyBooksTestUtils.createUser();
         userRepository.save(user);
-
-        Book book = Book.builder()
-                .title("book 1")
-                .isbn("123456789012")
-                .build();
+        Book book = MyBooksTestUtils.createBook();
         bookRepository.save(book);
 
         UserBook userbook = UserBook.builder()
                 .user(user)
                 .book(book)
                 .build();
+
         userBookRepository.save(userbook);
 
-        Review review = Review.builder()
-                .userBook(userbook)
-                .content("Review 01")
-                .build();
+        Review review = MyBooksTestUtils.createReview(userbook);
         reviewRepository.save(review);
 
         Long reviewId = review.getId();
@@ -93,23 +84,13 @@ class ReviewControllerTest {
     @DisplayName("리뷰 작성")
     void createReviewTest() throws Exception {
         // given
-        User user = User.builder()
-                .name("user")
-                .email("abcd@efgh.com")
-                .password("1234")
-                .build();
+        User user = MyBooksTestUtils.createUser();
         userRepository.save(user);
 
-        Book book = Book.builder()
-                .title("book 1")
-                .isbn("123456789012")
-                .build();
+        Book book = MyBooksTestUtils.createBook();
         bookRepository.save(book);
 
-        UserBook userbook = UserBook.builder()
-                .user(user)
-                .book(book)
-                .build();
+        UserBook userbook =MyBooksTestUtils.createUserBook(user,book);
         userBookRepository.save(userbook);
 
         Session session = authService.createSession(user);

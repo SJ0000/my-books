@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.transaction.annotation.Transactional;
+import sungjin.mybooks.MyBooksTestUtils;
 import sungjin.mybooks.domain.Book;
 import sungjin.mybooks.domain.Session;
 import sungjin.mybooks.domain.User;
@@ -54,12 +55,7 @@ class BookControllerTest {
     @DisplayName("개별 도서 조회")
     void getBookTest() throws Exception {
         // given
-        Book book = Book.builder()
-                .title("test book")
-                .author("author1 author2")
-                .isbn("1234567890123")
-                .thumbnail("https://localhost:8080/sample1.jpg")
-                .build();
+        Book book = MyBooksTestUtils.createBook();
         bookRepository.save(book);
         Long bookId = book.getId();
 
@@ -69,7 +65,7 @@ class BookControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.title").value(book.getTitle()))
                 .andExpect(jsonPath("$.authors").isArray())
-                .andExpect(jsonPath("$.authors", Matchers.hasItems("author1", "author2")))
+                .andExpect(jsonPath("$.authors", Matchers.hasItems(book.getAuthors())))
                 .andExpect(jsonPath("$.isbn").value(book.getIsbn()));
     }
 
@@ -93,22 +89,18 @@ class BookControllerTest {
     @DisplayName("특정 사용자의 도서 리스트 조회")
     void getUserBooksTest() throws Exception {
         // given
-        User user = User.builder()
-                .name("user")
-                .email("abcd@efgh.com")
-                .password("1234")
-                .build();
+        User user = MyBooksTestUtils.createUser();
         userRepository.save(user);
         Session session = authService.createSession(user);
 
         IntStream.range(1, 21).forEach(
                 i -> {
                     Book book = Book.builder()
-                            .title("book 1")
+                            .title("book "+i)
                             .isbn("9782313456451")
                             .build();
                     bookRepository.save(book);
-                    UserBook userBook = new UserBook(user, book);
+                    UserBook userBook = MyBooksTestUtils.createUserBook(user,book);
                     userBookRepository.save(userBook);
                 }
         );

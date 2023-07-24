@@ -7,7 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import sungjin.mybooks.MyBooksTestUtils;
 import sungjin.mybooks.domain.User;
+
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -23,19 +26,15 @@ class UserRepositoryTest {
     @DisplayName("findByEmail 호출 쿼리 테스트")
     void findByEmailTest() throws Exception {
         // given
-        String email = "abcd@gmail.com";
-        User user = User.builder()
-                .email(email)
-                .name("sungjin")
-                .password("aa")
-                .build();
+        User user = MyBooksTestUtils.createUser();
         userRepository.save(user);
 
         // when
-        User findUser = userRepository.findByEmail(email)
-                .get();
+        Optional<User> optionalUser = userRepository.findByEmail(user.getEmail());
 
         // then
+        assertThat(optionalUser.isPresent()).isTrue();
+        User findUser = optionalUser.get();
         assertThat(user).isEqualTo(findUser);
     }
 }

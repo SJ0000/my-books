@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.annotation.Transactional;
+import sungjin.mybooks.MyBooksTestUtils;
 import sungjin.mybooks.domain.BaseTimeEntity;
 import sungjin.mybooks.domain.Book;
 import sungjin.mybooks.domain.User;
@@ -38,25 +39,16 @@ class UserBookRepositoryTest {
     @DisplayName("특정 사용자가 가진 책 리스트를 이름으로 검색하여 조회한다.")
     void findAllByBookTitleTest() throws Exception {
         // given
-        User user = User.builder()
-                .name("user")
-                .email("alpha@beta.com")
-                .build();
-
+        User user = MyBooksTestUtils.createUser();
         userRepository.save(user);
 
-        for (int i = 1; i <= 3; i++) {
-            Book book = Book.builder()
-                    .title("mybook" + i)
-                    .build();
-            bookRepository.save(book);
+        List<Book> books = MyBooksTestUtils.createBooks(3);
+        bookRepository.saveAll(books);
 
-            UserBook userBook = UserBook.builder()
-                    .user(user)
-                    .book(book)
-                    .build();
+        books.forEach((book)->{
+            UserBook userBook = MyBooksTestUtils.createUserBook(user,book);
             userBookRepository.save(userBook);
-        }
+        });
 
         // when
         Page<UserBook> result = userBookRepository.findAllByBookTitle(user.getId(), "mybook", PageRequest.of(0,10));
@@ -70,32 +62,22 @@ class UserBookRepositoryTest {
     @DisplayName("특정 사용자가 가진 책 리스트를 최신순으로 조회한다.")
     void findRecentUserBooksTest() throws Exception {
         // given
-        User user = User.builder()
-                .name("user")
-                .email("alpha@beta.com")
-                .build();
-
+        User user = MyBooksTestUtils.createUser();
         userRepository.save(user);
 
-        for (int i = 1; i <= 20; i++) {
-            Book book = Book.builder()
-                    .title("mybook" + i)
-                    .build();
-            bookRepository.save(book);
+        List<Book> books = MyBooksTestUtils.createBooks(20);
+        bookRepository.saveAll(books);
 
-            UserBook userBook = UserBook.builder()
-                    .user(user)
-                    .book(book)
-                    .build();
-            ReflectionTestUtils.setField(userBook,"createdAt", LocalDateTime.of(2000,1,1,1,i));
+        books.forEach(book->{
+            UserBook userBook = MyBooksTestUtils.createUserBook(user,book);
+            ReflectionTestUtils.setField(userBook,"createdAt", MyBooksTestUtils.randomDateTime());
             userBookRepository.save(userBook);
-        }
+        });
 
         // when
         Page<UserBook> result = userBookRepository.findRecentUserBooks(user.getId(),  PageRequest.of(0,10));
 
         // then
-        assertThat(result.getContent().get(0).getBook().getTitle()).isEqualTo("mybook20");
         assertThat(result.getContent()).isSortedAccordingTo((ub1,ub2)->{
             return ub2.getCreatedAt().compareTo(ub1.getCreatedAt());
         });

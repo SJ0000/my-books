@@ -8,6 +8,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import sungjin.mybooks.MyBooksTestUtils;
 import sungjin.mybooks.config.PasswordEncoder;
 import sungjin.mybooks.domain.User;
 import sungjin.mybooks.exception.InvalidLoginInformation;
@@ -37,19 +38,14 @@ class AuthServiceTest {
     @DisplayName("비밀번호가 일치하지 않을 경우 InvalidLoginInformation Exception 발생")
     void validateUserTest() throws Exception {
         // given
-        String email = "abcd@erfgh.com";
-        String rawPassword = "1234";
-        String encodedPassword = passwordEncoder.encode(rawPassword);
-        User mockUser = User.builder()
-                .email(email)
-                .password(encodedPassword)
-                .build();
+        String password = "raw password";
+        User user = MyBooksTestUtils.createUser(password);
 
         BDDMockito.given(userService.findUser(Mockito.anyString()))
-                .willReturn(mockUser);
+                .willReturn(user);
 
         // expected
-        Assertions.assertThatThrownBy(()-> authService.validateUser(email,"wrong password"))
+        Assertions.assertThatThrownBy(()-> authService.validateUser(user.getEmail(),"wrong password"))
                 .isInstanceOf(InvalidLoginInformation.class);
     }
 

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.util.ReflectionTestUtils;
+import sungjin.mybooks.MyBooksTestUtils;
 import sungjin.mybooks.domain.User;
 import sungjin.mybooks.domain.UserBook;
 import sungjin.mybooks.dto.request.ReviewCreate;
@@ -53,8 +54,7 @@ class ReviewServiceTest {
     void writeReviewUnauthorized() throws Exception {
         // given
         long userId = 1L;
-        User mockUser = User.builder()
-                .build();
+        User mockUser = MyBooksTestUtils.createUser();
         ReflectionTestUtils.setField(mockUser,"id",userId);
         UserBook mockUserBook = UserBook.builder()
                 .user(mockUser)

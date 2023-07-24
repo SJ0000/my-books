@@ -18,7 +18,6 @@ public class UserService {
 
     @Transactional
     public Long signUpUser(SignUp join){
-
         if(existsUser(join.getEmail())){
             throw new RuntimeException("이미 존재하는 사용자입니다. email = " + join.getEmail());
         }
@@ -46,7 +45,7 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    private boolean existsUser(String email){
+    public boolean existsUser(String email){
         return userRepository.findByEmail(email).isPresent();
     }
 

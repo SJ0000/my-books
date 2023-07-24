@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.transaction.annotation.Transactional;
+import sungjin.mybooks.MyBooksTestUtils;
 import sungjin.mybooks.domain.Session;
 import sungjin.mybooks.domain.User;
 
@@ -28,13 +29,12 @@ class SessionRepositoryTest {
     void findByAccessToken() throws Exception {
         // given
         String tokenName = "test-token";
-        String username = "user";
-        String email = "abcd@efgh.com";
-        User user = new User(email, username, "");
+        User user = MyBooksTestUtils.createUser();
         Session session = Session.builder()
                 .accessToken(tokenName)
                 .user(user)
                 .build();
+
         sessionRepository.save(session);
         userRepository.save(user);
 
@@ -44,8 +44,8 @@ class SessionRepositoryTest {
 
         // then
         assertThat(findSession.getAccessToken()).isEqualTo(tokenName);
-        assertThat(findSession.getUser().getEmail()).isEqualTo(email);
-        assertThat(findSession.getUser().getName()).isEqualTo(username);
+        assertThat(findSession.getUser().getEmail()).isEqualTo(user.getEmail());
+        assertThat(findSession.getUser().getName()).isEqualTo(user.getName());
     }
 
     @Test
@@ -53,7 +53,7 @@ class SessionRepositoryTest {
     void notExistAccessToken() throws Exception {
         // given
         String tokenName = "test-token";
-        User user = new User("abcd@efgh.com", "user", "");
+        User user = MyBooksTestUtils.createUser();
         Session session = Session.builder()
                 .accessToken(tokenName)
                 .user(user)

@@ -10,6 +10,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import sungjin.mybooks.MyBooksTestUtils;
+import sungjin.mybooks.config.PasswordEncoder;
 import sungjin.mybooks.domain.Session;
 import sungjin.mybooks.domain.User;
 import sungjin.mybooks.repository.SessionRepository;
@@ -46,6 +48,8 @@ class AuthControllerTest {
     @Autowired
     SessionRepository sessionRepository;
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     ObjectMapper om = new ObjectMapper();
 
@@ -53,18 +57,14 @@ class AuthControllerTest {
     @DisplayName("로그인 성공 후 세션 ID를 저장한 쿠키를 담아 응답")
     void login() throws Exception {
         // given
-        String email = "1234@naver.com";
-        String password = "alphabet";
-        User user = User.builder()
-                .name("testuser")
-                .password(password)
-                .email(email)
-                .build();
+        String password = "test-user-password";
+        String encodedPassword = passwordEncoder.encode(password);
+        User user = MyBooksTestUtils.createUser(encodedPassword);
         userRepository.save(user);
 
         // expected
         Login login = Login.builder()
-                .email(email)
+                .email(user.getEmail())
                 .password(password)
                 .build();
 
@@ -107,13 +107,8 @@ class AuthControllerTest {
     @DisplayName("로그아웃시 세션 정보는 삭제되어야 한다.")
     void logout() throws Exception {
         // given
-        User user = User.builder()
-                .name("testuser")
-                .password("123")
-                .email("alpha@beta.com")
-                .build();
+        User user = MyBooksTestUtils.createUser();
         userRepository.save(user);
-
         Session session = authService.createSession(user);
 
         // expected
