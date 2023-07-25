@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import sungjin.mybooks.annotation.AuthRequired;
 import sungjin.mybooks.config.data.UserSession;
 import sungjin.mybooks.domain.Session;
 import sungjin.mybooks.domain.User;
@@ -60,6 +61,7 @@ public class AuthController {
                 .build();
     }
 
+    @AuthRequired
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(UserSession userSession){
 

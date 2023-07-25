@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import sungjin.mybooks.annotation.AuthRequired;
 import sungjin.mybooks.config.data.UserSession;
 import sungjin.mybooks.domain.Review;
 import sungjin.mybooks.dto.request.ReviewCreate;
@@ -29,6 +30,7 @@ public class ReviewController {
                 .body(new ReviewResponse(review));
     }
 
+    @AuthRequired
     @PostMapping("/review")
     public ResponseEntity<Void> createReview(@RequestBody @Valid ReviewCreate reviewCreate, UserSession userSession){
         Long userId = userSession.getUserId();
@@ -38,6 +40,7 @@ public class ReviewController {
                 .build();
     }
 
+    @AuthRequired
     @PatchMapping("/review/{id}")
     public ResponseEntity<Void> editReview(@PathVariable Long id, @RequestBody @Valid ReviewEdit reviewEdit){
         reviewService.editReview(id, reviewEdit.getContent());
