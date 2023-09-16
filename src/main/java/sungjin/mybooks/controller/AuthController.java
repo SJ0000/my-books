@@ -7,9 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 import sungjin.mybooks.annotation.AuthRequired;
 import sungjin.mybooks.config.data.UserSession;
 import sungjin.mybooks.domain.Session;
@@ -25,13 +24,17 @@ import java.time.Duration;
 
 
 @Slf4j
-@RestController
+@Controller
 @RequiredArgsConstructor
 public class AuthController {
 
     private final UserService userService;
     private final AuthService authService;
 
+    @GetMapping("/login")
+    public String loginForm(){
+        return "login";
+    }
 
     @PostMapping("/signup")
     public ResponseEntity<Void> signUp(@Valid @RequestBody SignUp singUp){
@@ -42,7 +45,8 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Void> login(@Valid @RequestBody Login login){
+    public ResponseEntity<Void> login(@Valid Login login){
+
         authService.validateUser(login.getEmail(),login.getPassword());
         User user = userService.findUser(login.getEmail());
         Session session = authService.createSession(user);
