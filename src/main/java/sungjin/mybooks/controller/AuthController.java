@@ -36,14 +36,6 @@ public class AuthController {
         return "login";
     }
 
-    @PostMapping("/signup")
-    public ResponseEntity<Void> signUp(@Valid @RequestBody SignUp singUp){
-        Long userId = userService.signUpUser(singUp);
-
-        return ResponseEntity.created(URI.create("/users/"+userId))
-                .build();
-    }
-
     @PostMapping("/login")
     public ResponseEntity<Void> login(@Valid Login login){
 
@@ -62,6 +54,20 @@ public class AuthController {
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE,cookie.toString())
+                .build();
+    }
+
+    @GetMapping("/signup")
+    public String signUpForm(){
+        System.out.println("signup called");
+        return "singup";
+    }
+
+    @PostMapping("/signup")
+    public ResponseEntity<Void> signUp(@Valid SignUp singUp){
+        Long userId = userService.signUpUser(singUp);
+
+        return ResponseEntity.created(URI.create("/users/"+userId))
                 .build();
     }
 

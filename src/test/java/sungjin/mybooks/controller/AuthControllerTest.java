@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,8 +72,8 @@ class AuthControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.post("/login")
                         .accept(APPLICATION_JSON)
-                        .contentType(APPLICATION_JSON)
-                        .content(om.writeValueAsString(login)))
+                        .contentType(APPLICATION_FORM_URLENCODED)
+                        .content(MyBooksTestUtils.toFormData(login)))
                 .andExpect(status().isOk())
                 .andExpect(cookie().exists(CookieNames.SESSION_ID));
     }
@@ -91,9 +93,8 @@ class AuthControllerTest {
 
         // expected
         mockMvc.perform(MockMvcRequestBuilders.post("/signup")
-                        .accept(APPLICATION_JSON)
-                        .contentType(APPLICATION_JSON)
-                        .content(om.writeValueAsString(signUp)))
+                        .contentType(APPLICATION_FORM_URLENCODED)
+                        .content(MyBooksTestUtils.toFormData(signUp)))
                 .andExpect(status().isCreated());
 
         User user = userRepository.findByEmail(email).get();
