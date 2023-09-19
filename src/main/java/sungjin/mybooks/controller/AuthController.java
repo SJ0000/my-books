@@ -60,7 +60,7 @@ public class AuthController {
     @GetMapping("/signup")
     public String signUpForm(){
         System.out.println("signup called");
-        return "singup";
+        return "signup";
     }
 
     @PostMapping("/signup")

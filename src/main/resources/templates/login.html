@@ -1,21 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="bootstrap/bootstrap.min.css"/>
+    <style>
+        .w-30{
+            width: 30%;
+        }
+
+    </style>
 </head>
 <body>
-<form action="/login" method="post">
-    <h2>login</h2>
-    <div>
-        <label for="email-input">email</label>
-        <input type="email" id="email-input" name="email">
+<main class="container" style="max-width: 330px">
+    <div class="text-center">
+        <h2>MY BOOKS</h2>
     </div>
-    <div>
-        <label for="password-input">password</label>
-        <input type="password" id="password-input" name="password">
+    <div class="row">
+        <form class="container" action="/login" method="post" >
+            <div class="input-group mb-3">
+                <span class="input-group-text w-30">이메일</span>
+                <input class="form-control" type="email" id="email-input" name="email" aria-label="email">
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text w-30">비밀번호</span>
+                <input class="form-control" type="password" id="password-input" name="password" aria-label="password">
+            </div>
+            <a href="/signin" class="btn btn-primary">회원가입</a>
+            <button type="submit" class="btn btn-primary">로그인</button>
+        </form>
     </div>
-    <button type="submit">Login</button>
-</form>
+</main>
+<script type="text/javascript" src="bootstrap/bootstrap.min.js"></script>
 </body>
 </html>

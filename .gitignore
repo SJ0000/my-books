@@ -73,6 +73,8 @@ application-local.yml
 application-production.yml
 **/src/main/generated/ 
 **/src/main/resources/static/docs/
+**/src/main/resources/templates/bootstrap/
 **/log/
+
 
 .DS_Store
