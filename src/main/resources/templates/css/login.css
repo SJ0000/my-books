@@ -1,0 +1,8 @@
+html, body{
+    height: 100%;
+}
+
+
+.main-content{
+    min-width: 20rem;
+}
