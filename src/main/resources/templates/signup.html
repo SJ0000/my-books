@@ -2,20 +2,36 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>MY BOOKS : 회원가입</title>
+    <link rel="stylesheet" href="bootstrap/bootstrap.min.css"/>
+    <link rel="stylesheet" href="bootstrap/custom.css"/>
+    <link rel="stylesheet" href="css/signup.css"/>
 </head>
 <body>
-<form action="/signup" method="post">
-    <h2>login</h2>
-    <div>
-        <label for="email-input">email</label>
-        <input type="email" id="email-input" name="email">
-    </div>
-    <div>
-        <label for="password-input">password</label>
-        <input type="password" id="password-input" name="password">
-    </div>
-    <button type="submit">Login</button>
-</form>
+<div class="d-flex justify-content-center align-items-center h-100">
+    <main class="main-content">
+        <div class="text-center">
+            <h2>MY BOOKS</h2>
+        </div>
+        <div>
+            <form action="/signup" method="post">
+                <div class="input-group mb-3">
+                    <span class="input-group-text w-30">이메일</span>
+                    <input class="form-control" type="email" id="email-input" name="email" aria-label="email">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text w-30">이름</span>
+                    <input class="form-control" type="email" id="name-input" name="name" aria-label="name">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text w-30">비밀번호</span>
+                    <input class="form-control" type="password" id="password-input" name="password" aria-label="password">
+                </div>
+                <button type="submit" class="form-control btn btn-primary m-1">회원가입</button>
+            </form>
+        </div>
+    </main>
+</div>
+<script type="text/javascript" src="bootstrap/bootstrap.min.js"></script>
 </body>
 </html>
