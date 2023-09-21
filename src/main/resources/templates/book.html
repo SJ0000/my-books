@@ -3,14 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <title>#{book name}</title>
+    <link rel="stylesheet" href="bootstrap/bootstrap.min.css"/>
+    <link rel="stylesheet" href="bootstrap/custom.css"/>
 </head>
 <body>
-    <div>
-        개별 도서 이름 카드 형태로
+<nav class="navbar navbar-expand-md bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">MY BOOKS</a>
     </div>
-    <div>
-        <label for="review"></label>
-        <textarea id="review" name="review" rows="30" cols="50" readonly></textarea>
+</nav>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <article>
+                <header class="mb-4">
+                    <h1 class="fw-bolder mb-1">BOOK NAME</h1>
+                    <div class="text-muted fst-italic mb-2">Posted on January 1, 2023</div>
+                </header>
+                <textarea class="form-control" readonly rows="20" cols="50" aria-label="content">1234</textarea>
+            </article>
+        </div>
     </div>
+</div>
+<footer>
+
+</footer>
+<script type="text/javascript" src="bootstrap/bootstrap.min.js"></script>
 </body>
 </html>

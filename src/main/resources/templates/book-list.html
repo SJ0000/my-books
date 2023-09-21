@@ -2,27 +2,70 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>book list</title>
+    <title>MY BOOKS : 책 리스트</title>
+    <link rel="stylesheet" href="bootstrap/bootstrap.min.css"/>
+    <link rel="stylesheet" href="bootstrap/custom.css"/>
+    <link rel="stylesheet" href="css/book-list.css">
 </head>
 <body>
-<div>
-    <h2>#{user name} 님의 책 리스트</h2>
-</div>
-<div>
-    <label for="search-book-input"></label>
-    <input type="text" id="search-book-input" name="search-book"/>
-    <button type="button" id="search-button">검색</button>
-</div>
-<div>
-    <button type="button" id="add-book-button">추가</button>
-</div>
-<div>
-    <div>
-        부트스트랩으로 카드 만들기
+<nav class="navbar navbar-expand-md bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">MY BOOKS</a>
+    </div>
+</nav>
+<div class="container">
+    <div class="row text-center mt-4">
+        <h2 class="col">XXX 님의 책 리스트</h2>
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="책 제목" aria-label="book-name">
+                <button class="input-group-text" id="basic-addon1">검색</button>
+            </div>
+        </div>
+        <div class="offset-5 col-md-1">
+            <button type="button" class="btn btn-primary">추가</button>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="card book-item">
+            <img src="image/book-sample.jpeg" class="card-img-top" alt="book image">
+            <div class="card-body">
+                <h5 class="card-title">Book Name</h5>
+                <p class="card-text">Review 요약</p>
+            </div>
+        </div>
+        <div class="card book-item" style="width: 18rem;">
+            <img src="image/book-sample.jpeg" class="card-img-top" alt="book image">
+            <div class="card-body">
+                <h5 class="card-title">Book Name</h5>
+                <p class="card-text">Review 요약</p>
+            </div>
+        </div>
+        <div class="card book-item" style="width: 18rem;">
+            <img src="image/book-sample.jpeg" class="card-img-top" alt="book image">
+            <div class="card-body">
+                <h5 class="card-title">Book Name</h5>
+                <p class="card-text">Review 요약</p>
+            </div>
+        </div>
+        <div class="card book-item" style="width: 18rem;">
+            <img src="image/book-sample.jpeg" class="card-img-top" alt="book image">
+            <div class="card-body">
+                <h5 class="card-title">Book Name</h5>
+                <p class="card-text">Review 요약</p>
+            </div>
+        </div>
+        <div class="card book-item" style="width: 18rem;">
+            <img src="image/book-sample.jpeg" class="card-img-top" alt="book image">
+            <div class="card-body">
+                <h5 class="card-title">Book Name</h5>
+                <p class="card-text">Review 요약</p>
+            </div>
+        </div>
     </div>
 </div>
-<div>
-    paging 그냥 버튼 여러개로
-</div>
+<script type="text/javascript" src="bootstrap/bootstrap.min.js"></script>
 </body>
 </html>
