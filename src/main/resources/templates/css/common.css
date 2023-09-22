@@ -6,3 +6,7 @@
 .search-bar{
     max-width: 20rem;
 }
+
+.small-form-container{
+    min-width: 20rem;
+}
