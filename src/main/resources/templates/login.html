@@ -1,34 +1,26 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
+<head th:replace="fragments/head :: head">
     <title>MY BOOKS : 로그인</title>
-    <link rel="stylesheet" href="bootstrap/bootstrap.min.css"/>
-    <link rel="stylesheet" href="bootstrap/custom.css"/>
-    <link rel="stylesheet" href="css/common.css"/>
 </head>
 <body class="vh-100">
+<nav th:replace="fragments/nav :: nav"></nav>
 <div class="d-flex justify-content-center align-items-center h-100">
     <main class="small-form-container">
-        <div class="text-center">
-            <h2>MY BOOKS</h2>
-        </div>
-        <div>
-            <form action="/login" method="post">
-                <div class="input-group mb-3">
-                    <span class="input-group-text w-30">이메일</span>
-                    <input class="form-control" type="email" id="email-input" name="email" aria-label="email">
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text w-30">비밀번호</span>
-                    <input class="form-control" type="password" id="password-input" name="password" aria-label="password">
-                </div>
-                <button type="submit" class="form-control btn btn-primary m-1">로그인</button>
-                <a href="/signup" class="form-control btn btn-secondary m-1">회원가입</a>
-            </form>
-        </div>
+        <form action="/login" method="post">
+            <div class="input-group mb-3">
+                <span class="input-group-text w-30">이메일</span>
+                <input class="form-control" type="email" id="email-input" name="email" aria-label="email">
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text w-30">비밀번호</span>
+                <input class="form-control" type="password" id="password-input" name="password" aria-label="password">
+            </div>
+            <button type="submit" class="form-control btn btn-primary m-1">로그인</button>
+            <a href="/signup" class="form-control btn btn-secondary m-1">회원가입</a>
+        </form>
     </main>
 </div>
-<script type="text/javascript" src="bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="../static/bootstrap/bootstrap.min.js"></script>
 </body>
 </html>

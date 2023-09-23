@@ -1,17 +1,10 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
+<head th:replace="fragments/head :: head">
     <title>#{book name}</title>
-    <link rel="stylesheet" href="bootstrap/bootstrap.min.css"/>
-    <link rel="stylesheet" href="bootstrap/custom.css"/>
 </head>
 <body>
-<nav class="navbar navbar-expand-md bg-body-tertiary">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">MY BOOKS</a>
-    </div>
-</nav>
+<nav th:replace="fragments/nav :: nav"></nav>
 <div class="container mt-5" style="width: 100vh">
     <div class="row" style="">
         <div class="col-md-12">
@@ -32,6 +25,6 @@
 <footer>
 
 </footer>
-<script type="text/javascript" src="bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="../static/bootstrap/bootstrap.min.js"></script>
 </body>
 </html>
