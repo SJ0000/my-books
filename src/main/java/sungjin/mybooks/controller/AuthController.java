@@ -4,7 +4,9 @@ package sungjin.mybooks.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.web.server.Cookie;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -49,11 +51,12 @@ public class AuthController {
                 .httpOnly(true)
                 .secure(false)
                 .maxAge(Duration.ofDays(30))
-                .sameSite("Strict")
+                .sameSite(Cookie.SameSite.STRICT.toString())
                 .build();
 
-        return ResponseEntity.ok()
+        return ResponseEntity.status(HttpStatus.FOUND)
                 .header(HttpHeaders.SET_COOKIE,cookie.toString())
+                .header(HttpHeaders.LOCATION,"/")
                 .build();
     }
 
@@ -64,11 +67,9 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<Void> signUp(@Valid SignUp singUp){
+    public String signUp(@Valid SignUp singUp){
         Long userId = userService.signUpUser(singUp);
-
-        return ResponseEntity.created(URI.create("/users/"+userId))
-                .build();
+        return "redirect:/login?after_signup=true";
     }
 
     @AuthRequired
