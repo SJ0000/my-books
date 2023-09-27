@@ -17,8 +17,6 @@ public class AuthConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder(){
-        System.out.println("properties salt = " + properties.getSalt());
         return new PasswordEncoder(properties);
     }
-
 }

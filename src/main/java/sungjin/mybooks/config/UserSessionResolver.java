@@ -16,6 +16,9 @@ import sungjin.mybooks.util.CookieUtils;
 
 import java.util.Optional;
 
+/*
+  Cookie로 전달된 Session id를 읽어서 Controller에 UserSession 객체로 넘겨주는 역할
+ */
 @RequiredArgsConstructor
 public class UserSessionResolver implements HandlerMethodArgumentResolver {
 

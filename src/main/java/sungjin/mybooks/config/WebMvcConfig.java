@@ -18,10 +18,14 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new AuthInterceptor());
+        registry.addInterceptor(new UserInfoInterceptor(sessionRepository));
     }
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(new UserSessionResolver(sessionRepository));
     }
+
+
+
 }
