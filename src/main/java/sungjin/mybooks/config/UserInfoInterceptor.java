@@ -27,16 +27,24 @@ public class UserInfoInterceptor implements HandlerInterceptor {
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        System.out.println("UserInfoInterceptor.postHandle");
-        Optional<String> optionalSessionId = CookieUtils.getCookieValue(request.getCookies(), CookieNames.SESSION_ID);
-
-        if(optionalSessionId.isEmpty() || modelAndView == null){
+        if (userInfoNeeded(request, modelAndView)) {
             return;
         }
 
-        Session session = sessionRepository.findByAccessToken(optionalSessionId.get())
-                .orElseThrow(() -> new RuntimeException("사용자 정보를 가져오는데 실패했습니다."));
+        String accessToken = CookieUtils.getCookieValue(request.getCookies(), CookieNames.SESSION_ID).get();
+        Optional<Session> optionalSession = sessionRepository.findByAccessToken(accessToken);
 
-        modelAndView.addObject("user",new UserResponse(session.getUser()));
+        if (optionalSession.isEmpty())
+            return;
+
+        User user = optionalSession.get().getUser();
+        modelAndView.addObject("user", new UserResponse(user));
     }
+
+    private boolean userInfoNeeded(HttpServletRequest request, ModelAndView mav){
+        boolean accessTokenExists = CookieUtils.getCookieValue(request.getCookies(), CookieNames.SESSION_ID).isPresent();
+        return !accessTokenExists || mav == null;
+    }
+
+
 }
