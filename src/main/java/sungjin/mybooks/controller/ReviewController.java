@@ -10,7 +10,6 @@ import sungjin.mybooks.domain.Review;
 import sungjin.mybooks.dto.request.ReviewCreate;
 import sungjin.mybooks.dto.request.ReviewEdit;
 import sungjin.mybooks.dto.response.ReviewResponse;
-import sungjin.mybooks.repository.ReviewRepository;
 import sungjin.mybooks.service.ReviewService;
 
 import java.net.URI;

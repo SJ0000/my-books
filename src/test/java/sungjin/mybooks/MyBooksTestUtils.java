@@ -1,24 +1,14 @@
 package sungjin.mybooks;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.test.util.ReflectionTestUtils;
-import sungjin.mybooks.config.PasswordEncoder;
 import sungjin.mybooks.domain.Book;
-import sungjin.mybooks.domain.Review;
 import sungjin.mybooks.domain.User;
-import sungjin.mybooks.domain.UserBook;
+import sungjin.mybooks.domain.Review;
 
-import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -58,19 +48,13 @@ public class MyBooksTestUtils {
         ).collect(Collectors.toList());
     }
 
-    public static UserBook createUserBook(User user, Book book) {
-        return UserBook.builder()
+    public static Review createReview(User user, Book book, String content) {
+        return Review.builder()
                 .user(user)
                 .book(book)
+                .content(content)
                 .build();
 
-    }
-
-    public static Review createReview(UserBook userBook) {
-        return Review.builder()
-                .userBook(userBook)
-                .content("test review content 1")
-                .build();
     }
 
     public static LocalDateTime randomDateTime(){

@@ -1,39 +1,30 @@
 package sungjin.mybooks.repository;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.springframework.transaction.annotation.Transactional;
 import sungjin.mybooks.MyBooksTestUtils;
-import sungjin.mybooks.domain.BaseTimeEntity;
 import sungjin.mybooks.domain.Book;
 import sungjin.mybooks.domain.User;
-import sungjin.mybooks.domain.UserBook;
+import sungjin.mybooks.domain.Review;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.Comparator;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-class UserBookRepositoryTest {
+class ReviewRepositoryTest {
 
     @Autowired
     UserRepository userRepository;
     @Autowired
     BookRepository bookRepository;
     @Autowired
-    UserBookRepository userBookRepository;
+    ReviewRepository reviewRepository;
 
     @Test
     @DisplayName("특정 사용자가 가진 책 리스트를 이름으로 검색하여 조회한다.")
@@ -45,13 +36,13 @@ class UserBookRepositoryTest {
         List<Book> books = MyBooksTestUtils.createBooks(3);
         bookRepository.saveAll(books);
 
-        books.forEach((book)->{
-            UserBook userBook = MyBooksTestUtils.createUserBook(user,book);
-            userBookRepository.save(userBook);
+        books.forEach((book) -> {
+            Review userBook = MyBooksTestUtils.createReview(user, book, "content");
+            reviewRepository.save(userBook);
         });
 
         // when
-        Page<UserBook> result = userBookRepository.findAllByBookTitle(user.getId(), "mybook", PageRequest.of(0,10));
+        Page<Review> result = reviewRepository.findAllByBookTitle(user.getId(), "test book", PageRequest.of(0, 10));
 
         // then
         assertThat(result.getTotalElements()).isEqualTo(3);
@@ -68,17 +59,17 @@ class UserBookRepositoryTest {
         List<Book> books = MyBooksTestUtils.createBooks(20);
         bookRepository.saveAll(books);
 
-        books.forEach(book->{
-            UserBook userBook = MyBooksTestUtils.createUserBook(user,book);
-            ReflectionTestUtils.setField(userBook,"createdAt", MyBooksTestUtils.randomDateTime());
-            userBookRepository.save(userBook);
+        books.forEach(book -> {
+            Review userBook = MyBooksTestUtils.createReview(user, book, "content");
+            ReflectionTestUtils.setField(userBook, "createdAt", MyBooksTestUtils.randomDateTime());
+            reviewRepository.save(userBook);
         });
 
         // when
-        Page<UserBook> result = userBookRepository.findRecentUserBooks(user.getId(),  PageRequest.of(0,10));
+        Page<Review> result = reviewRepository.findRecentReviews(user.getId(), PageRequest.of(0, 10));
 
         // then
-        assertThat(result.getContent()).isSortedAccordingTo((ub1,ub2)->{
+        assertThat(result.getContent()).isSortedAccordingTo((ub1, ub2) -> {
             return ub2.getCreatedAt().compareTo(ub1.getCreatedAt());
         });
     }

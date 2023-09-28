@@ -7,14 +7,13 @@ import lombok.ToString;
 import sungjin.mybooks.domain.Book;
 
 @Getter
-@Setter
 @ToString
 public class BookResponse {
 
-    private String isbn;
-    private String title;
-    private String thumbnail;
-    private String[] authors;
+    private final String isbn;
+    private final String title;
+    private final String thumbnail;
+    private final String[] authors;
 
     @Builder
     public BookResponse(String isbn, String title, String thumbnail, String[] authors) {

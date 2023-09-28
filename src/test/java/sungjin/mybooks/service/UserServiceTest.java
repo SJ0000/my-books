@@ -4,17 +4,14 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.transaction.annotation.Transactional;
 import sungjin.mybooks.MyBooksTestUtils;
 import sungjin.mybooks.domain.User;
 import sungjin.mybooks.dto.request.SignUp;
-import sungjin.mybooks.repository.UserBookRepository;
 import sungjin.mybooks.repository.UserRepository;
 
 import java.util.Optional;

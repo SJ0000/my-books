@@ -15,9 +15,9 @@ import sungjin.mybooks.MyBooksTestUtils;
 import sungjin.mybooks.domain.Book;
 import sungjin.mybooks.domain.Session;
 import sungjin.mybooks.domain.User;
-import sungjin.mybooks.domain.UserBook;
+import sungjin.mybooks.domain.Review;
 import sungjin.mybooks.repository.BookRepository;
-import sungjin.mybooks.repository.UserBookRepository;
+import sungjin.mybooks.repository.ReviewRepository;
 import sungjin.mybooks.repository.UserRepository;
 import sungjin.mybooks.service.AuthService;
 import sungjin.mybooks.util.CookieNames;
@@ -49,7 +49,7 @@ class BookControllerTest {
     BookRepository bookRepository;
 
     @Autowired
-    UserBookRepository userBookRepository;
+    ReviewRepository userBookRepository;
 
     @Test
     @DisplayName("개별 도서 조회")
@@ -100,7 +100,7 @@ class BookControllerTest {
                             .isbn("9782313456451")
                             .build();
                     bookRepository.save(book);
-                    UserBook userBook = MyBooksTestUtils.createUserBook(user,book);
+                    Review userBook = MyBooksTestUtils.createReview(user,book,"content");
                     userBookRepository.save(userBook);
                 }
         );

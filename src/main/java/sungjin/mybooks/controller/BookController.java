@@ -2,18 +2,31 @@ package sungjin.mybooks.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import sungjin.mybooks.annotation.AuthRequired;
 import sungjin.mybooks.config.data.UserSession;
 import sungjin.mybooks.domain.Book;
 import sungjin.mybooks.dto.response.BookResponse;
 import sungjin.mybooks.dto.response.PageResponse;
 import sungjin.mybooks.service.BookService;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
 public class BookController {
 
     private final BookService bookService;
+
+    @AuthRequired
+    @GetMapping("/books")
+    public String userBooksPage(UserSession userSession, @RequestParam(defaultValue = "") String query, @RequestParam(defaultValue = "1") int page, Model model){
+        Long userId = userSession.getUserId();
+        PageResponse<BookResponse> result = bookService.searchUserBooks(userId, query, page);
+        model.addAttribute("books", result.getData());
+        model.addAttribute("page", result.getPageInfo());
+        return "book-list";
+    }
 
     @GetMapping("/books/{id}")
     public ResponseEntity<BookResponse> getBook(@PathVariable Long id){

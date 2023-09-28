@@ -12,15 +12,13 @@ import org.springframework.data.domain.PageRequest;
 import sungjin.mybooks.MyBooksTestUtils;
 import sungjin.mybooks.domain.Book;
 import sungjin.mybooks.domain.User;
-import sungjin.mybooks.domain.UserBook;
+import sungjin.mybooks.domain.Review;
 import sungjin.mybooks.dto.response.BookResponse;
 import sungjin.mybooks.dto.response.PageInfo;
 import sungjin.mybooks.dto.response.PageResponse;
-import sungjin.mybooks.repository.UserBookRepository;
+import sungjin.mybooks.repository.ReviewRepository;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -32,7 +30,7 @@ class BookServiceTest {
     BookService bookService;
 
     @MockBean
-    UserBookRepository userBookRepository;
+    ReviewRepository userBookRepository;
 
     @Test
     void searchRecentUserbooksTest() throws Exception {
@@ -40,12 +38,12 @@ class BookServiceTest {
         User user = MyBooksTestUtils.createUser();
         List<Book> books = MyBooksTestUtils.createBooks(4);
 
-        List<UserBook> userBooks = books.stream().map(book ->
-                MyBooksTestUtils.createUserBook(user, book)
+        List<Review> userBooks = books.stream().map(book ->
+                MyBooksTestUtils.createReview(user, book,"content")
         ).toList();
 
-        Page<UserBook> page = new PageImpl(userBooks, PageRequest.of(0,10),4);
-        BDDMockito.given(userBookRepository.findRecentUserBooks(Mockito.anyLong(), Mockito.any()))
+        Page<Review> page = new PageImpl(userBooks, PageRequest.of(0,10),4);
+        BDDMockito.given(userBookRepository.findRecentReviews(Mockito.anyLong(), Mockito.any()))
                 .willReturn(page);
 
         // when

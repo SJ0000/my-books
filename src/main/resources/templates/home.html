@@ -6,9 +6,12 @@
 <body class="vh-100">
 <nav th:replace="fragments/nav :: nav"></nav>
 <div class="d-flex justify-content-center align-items-center h-100">
-    <main class="small-form-container">
+    <main class="small-form-container" th:if="${user == null}">
         <a href="/login" class="form-control btn btn-primary m-1">로그인</a>
         <a href="/signup" class="form-control btn btn-secondary m-1">회원가입</a>
+    </main>
+    <main class="small-form-container" th:if="${user != null}">
+        <a href="/books" class="form-control btn btn-primary m-1">내 도서</a>
     </main>
 </div>
 <script type="text/javascript" src="../static/bootstrap/bootstrap.min.js"></script>

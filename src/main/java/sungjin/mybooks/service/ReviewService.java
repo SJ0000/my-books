@@ -7,33 +7,33 @@ import org.springframework.transaction.annotation.Transactional;
 import sungjin.mybooks.domain.Book;
 import sungjin.mybooks.domain.Review;
 import sungjin.mybooks.domain.User;
-import sungjin.mybooks.domain.UserBook;
 import sungjin.mybooks.exception.NotFound;
 import sungjin.mybooks.exception.Unauthorized;
-import sungjin.mybooks.repository.ReviewRepository;
 import sungjin.mybooks.dto.request.ReviewCreate;
-import sungjin.mybooks.repository.UserBookRepository;
+import sungjin.mybooks.repository.BookRepository;
+import sungjin.mybooks.repository.ReviewRepository;
+import sungjin.mybooks.repository.UserRepository;
 
 @Service
 @RequiredArgsConstructor
 public class ReviewService {
 
+    private final UserService userService;
+    private final BookService bookService;
+
     private final ReviewRepository reviewRepository;
-    private final UserBookRepository userBookRepository;
 
     @Transactional
     public Long writeReview(Long userId, ReviewCreate reviewCreate){
         // Review 생성
-        Long userBookId = reviewCreate.getUserBookId();
+        Long bookId = reviewCreate.getBookId();
 
-        UserBook userBook = userBookRepository.findById(userBookId)
-               .orElseThrow(() -> new NotFound(UserBook.class, "id", userBookId));
-
-        if(!userBook.isOwner(userId))
-            throw new Unauthorized();
+        User user = userService.findUser(userId);
+        Book book = bookService.findBook(bookId);
 
         Review review = Review.builder()
-                .userBook(userBook)
+                .user(user)
+                .book(book)
                 .content(reviewCreate.getContent())
                 .build();
 

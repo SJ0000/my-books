@@ -6,12 +6,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sungjin.mybooks.domain.Book;
-import sungjin.mybooks.domain.UserBook;
+import sungjin.mybooks.domain.Review;
 import sungjin.mybooks.dto.response.BookResponse;
 import sungjin.mybooks.dto.response.PageResponse;
 import sungjin.mybooks.exception.NotFound;
 import sungjin.mybooks.repository.BookRepository;
-import sungjin.mybooks.repository.UserBookRepository;
+import sungjin.mybooks.repository.ReviewRepository;
 import sungjin.mybooks.search.BookSearchApi;
 import sungjin.mybooks.search.BookSearchResult;
 import sungjin.mybooks.util.IsbnUtils;
@@ -23,7 +23,7 @@ import java.util.List;
 public class BookService {
 
     private final BookRepository bookRepository;
-    private final UserBookRepository userBookRepository;
+    private final ReviewRepository userBookRepository;
     private final BookSearchApi bookSearchApi;
 
     @Transactional(readOnly = true)
@@ -33,9 +33,9 @@ public class BookService {
     }
 
     @Transactional(readOnly = true)
-    public UserBook findUserBook(Long id){
+    public Review findUserBook(Long id){
         return userBookRepository.findById(id)
-                .orElseThrow(()-> new NotFound(UserBook.class, "id", id));
+                .orElseThrow(()-> new NotFound(Review.class, "id", id));
     }
 
     @Transactional
@@ -45,7 +45,7 @@ public class BookService {
 
     @Transactional(readOnly = true)
     public PageResponse<BookResponse> searchRecentUserbooks(Long userId, int page){
-        Page<UserBook> result = userBookRepository.findRecentUserBooks(userId, PageRequest.of(page, 10));
+        Page<Review> result = userBookRepository.findRecentReviews(userId, PageRequest.of(page, 10));
         List<BookResponse> data = result.stream()
                 .map(userBook -> new BookResponse(userBook.getBook()))
                 .toList();
@@ -60,7 +60,7 @@ public class BookService {
 
     @Transactional(readOnly = true)
     public PageResponse<BookResponse> searchUserBooks(Long userId, String query, int page){
-        Page<UserBook> result = userBookRepository.findAllByBookTitle(userId, query, PageRequest.of(page, 10));
+        Page<Review> result = userBookRepository.findAllByBookTitle(userId, query, PageRequest.of(page, 10));
         List<BookResponse> data = result.stream()
                 .map(userBook -> new BookResponse(userBook.getBook()))
                 .toList();
@@ -99,7 +99,7 @@ public class BookService {
 
     @Transactional
     public boolean isUserBookOwner(Long userId, Long userBookId){
-        UserBook userBook = findUserBook(userBookId);
+        Review userBook = findUserBook(userBookId);
         return userBook.isOwner(userId);
     }
 

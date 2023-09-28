@@ -9,23 +9,16 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 import sungjin.mybooks.MyBooksTestUtils;
 import sungjin.mybooks.domain.*;
 import sungjin.mybooks.dto.request.ReviewCreate;
 import sungjin.mybooks.repository.BookRepository;
 import sungjin.mybooks.repository.ReviewRepository;
-import sungjin.mybooks.repository.UserBookRepository;
 import sungjin.mybooks.repository.UserRepository;
 import sungjin.mybooks.service.AuthService;
-import sungjin.mybooks.service.ReviewService;
-import sungjin.mybooks.service.UserService;
 import sungjin.mybooks.util.CookieNames;
-import sungjin.mybooks.util.CookieUtils;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -45,8 +38,6 @@ class ReviewControllerTest {
     @Autowired
     BookRepository bookRepository;
     @Autowired
-    UserBookRepository userBookRepository;
-    @Autowired
     ReviewRepository reviewRepository;
     @Autowired
     AuthService authService;
@@ -61,15 +52,7 @@ class ReviewControllerTest {
         userRepository.save(user);
         Book book = MyBooksTestUtils.createBook();
         bookRepository.save(book);
-
-        UserBook userbook = UserBook.builder()
-                .user(user)
-                .book(book)
-                .build();
-
-        userBookRepository.save(userbook);
-
-        Review review = MyBooksTestUtils.createReview(userbook);
+        Review review = MyBooksTestUtils.createReview(user,book,"content");
         reviewRepository.save(review);
 
         Long reviewId = review.getId();
@@ -90,13 +73,10 @@ class ReviewControllerTest {
         Book book = MyBooksTestUtils.createBook();
         bookRepository.save(book);
 
-        UserBook userbook =MyBooksTestUtils.createUserBook(user,book);
-        userBookRepository.save(userbook);
-
         Session session = authService.createSession(user);
 
         ReviewCreate reviewCreate = ReviewCreate.builder()
-                .userBookId(userbook.getId())
+                .bookId(book.getId())
                 .content("test review")
                 .build();
 

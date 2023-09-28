@@ -2,6 +2,7 @@ package sungjin.mybooks.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.Cookie;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 import sungjin.mybooks.MyBooksTestUtils;
 import sungjin.mybooks.config.PasswordEncoder;
@@ -27,6 +30,8 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.springframework.http.MediaType.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
@@ -56,7 +61,7 @@ class AuthControllerTest {
     ObjectMapper om = new ObjectMapper();
 
     @Test
-    @DisplayName("로그인 성공 후 세션 ID를 저장한 쿠키를 담아 응답")
+    @DisplayName("로그인 성공 후 세션 ID를 저장한 쿠키를 담아 응답. Status = 302, Redirect = /")
     void login() throws Exception {
         // given
         String password = "test-user-password";
@@ -70,16 +75,17 @@ class AuthControllerTest {
                 .password(password)
                 .build();
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/login")
+        mockMvc.perform(post("/login")
                         .accept(APPLICATION_JSON)
                         .contentType(APPLICATION_FORM_URLENCODED)
                         .content(MyBooksTestUtils.toFormData(login)))
-                .andExpect(status().isOk())
+                .andExpect(status().isFound())
+                .andExpect(header().string("location","/"))
                 .andExpect(cookie().exists(CookieNames.SESSION_ID));
     }
 
     @Test
-    @DisplayName("회원가입 성공시 status는 201로 응답한다.")
+    @DisplayName("회원가입 성공시 status는 302로 응답하고, 로그인 화면으로 redirect한다")
     void signup() throws Exception {
         // given
         String email = "1234@naver.com";
@@ -92,10 +98,11 @@ class AuthControllerTest {
                 .build();
 
         // expected
-        mockMvc.perform(MockMvcRequestBuilders.post("/signup")
+        mockMvc.perform(post("/signup")
                         .contentType(APPLICATION_FORM_URLENCODED)
                         .content(MyBooksTestUtils.toFormData(signUp)))
-                .andExpect(status().isCreated());
+                .andExpect(status().isFound())
+                .andExpect(header().string("location", Matchers.startsWith("/login")));
 
         User user = userRepository.findByEmail(email).get();
 
@@ -113,7 +120,7 @@ class AuthControllerTest {
         Session session = authService.createSession(user);
 
         // expected
-        mockMvc.perform(MockMvcRequestBuilders.post("/logout")
+        mockMvc.perform(post("/logout")
                         .accept(APPLICATION_JSON)
                         .cookie(new Cookie(CookieNames.SESSION_ID, session.getAccessToken())))
                 .andExpect(status().isNoContent());
