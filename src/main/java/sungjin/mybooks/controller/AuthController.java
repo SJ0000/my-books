@@ -20,6 +20,7 @@ import sungjin.mybooks.dto.request.Login;
 import sungjin.mybooks.service.AuthService;
 import sungjin.mybooks.service.UserService;
 import sungjin.mybooks.util.CookieNames;
+import sungjin.mybooks.util.CookieUtils;
 
 import java.net.URI;
 import java.time.Duration;
@@ -45,14 +46,7 @@ public class AuthController {
         User user = userService.findUser(login.getEmail());
         Session session = authService.createSession(user);
 
-        ResponseCookie cookie = ResponseCookie.from(CookieNames.SESSION_ID, session.getAccessToken())
-                .domain("localhost") // todo 서버환경에 따른 분리 설정화 필요
-                .path("/")
-                .httpOnly(true)
-                .secure(false)
-                .maxAge(Duration.ofDays(30))
-                .sameSite(Cookie.SameSite.STRICT.toString())
-                .build();
+        ResponseCookie cookie = CookieUtils.createCookie(CookieNames.SESSION_ID, session.getAccessToken());
 
         return ResponseEntity.status(HttpStatus.FOUND)
                 .header(HttpHeaders.SET_COOKIE,cookie.toString())
@@ -78,14 +72,7 @@ public class AuthController {
 
         authService.removeSession(userSession.getAccessToken());
 
-        ResponseCookie cookie = ResponseCookie.from(CookieNames.SESSION_ID, "")
-                .domain("localhost")
-                .path("/")
-                .httpOnly(true)
-                .secure(false)
-                .maxAge(0)
-                .sameSite("Strict")
-                .build();
+        ResponseCookie cookie = CookieUtils.createCookieForExpire(CookieNames.SESSION_ID);
 
         return ResponseEntity.noContent()
                 .header(HttpHeaders.SET_COOKIE,cookie.toString())
