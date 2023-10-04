@@ -32,47 +32,6 @@ public class BookService {
                 .orElseThrow(()-> new NotFound(Book.class, "id", id));
     }
 
-    @Transactional(readOnly = true)
-    public Review findUserBook(Long id){
-        return userBookRepository.findById(id)
-                .orElseThrow(()-> new NotFound(Review.class, "id", id));
-    }
-
-    @Transactional
-    public void deleteUserBook(Long id){
-        userBookRepository.deleteById(id);
-    }
-
-    @Transactional(readOnly = true)
-    public PageResponse<BookResponse> searchRecentUserbooks(Long userId, int page){
-        Page<Review> result = userBookRepository.findRecentReviews(userId, PageRequest.of(page, 10));
-        List<BookResponse> data = result.stream()
-                .map(userBook -> new BookResponse(userBook.getBook()))
-                .toList();
-
-        return PageResponse.<BookResponse>builder()
-                .data(data)
-                .totalPage(result.getTotalPages())
-                .totalElements(result.getTotalElements())
-                .isLast(result.isLast())
-                .build();
-    }
-
-    @Transactional(readOnly = true)
-    public PageResponse<BookResponse> searchUserBooks(Long userId, String query, int page){
-        Page<Review> result = userBookRepository.findAllByBookTitle(userId, query, PageRequest.of(page, 10));
-        List<BookResponse> data = result.stream()
-                .map(userBook -> new BookResponse(userBook.getBook()))
-                .toList();
-
-        return PageResponse.<BookResponse>builder()
-                .data(data)
-                .totalPage(result.getTotalPages())
-                .totalElements(result.getTotalElements())
-                .isLast(result.isLast())
-                .build();
-    }
-
 
     public PageResponse<BookResponse> apiSearch(String query, int page){
         BookSearchResult result = bookSearchApi.search(query, page);
@@ -86,6 +45,7 @@ public class BookService {
                                 .title(document.getTitle())
                                 .thumbnail(document.getThumbnail())
                                 .authors(document.getAuthors())
+                                .publisher(document.getPublisher())
                                 .build())
                 .toList();
 
@@ -95,12 +55,6 @@ public class BookService {
                 .totalPage(meta.getPageableCount())
                 .isLast(meta.getIsEnd())
                 .build();
-    }
-
-    @Transactional
-    public boolean isUserBookOwner(Long userId, Long userBookId){
-        Review userBook = findUserBook(userBookId);
-        return userBook.isOwner(userId);
     }
 
 }

@@ -17,6 +17,8 @@ class BookSearchApiTest {
         BookSearchResult dog = searchApi.search("dog",1);
         BookSearchResult.Meta meta = dog.getMeta();
         System.out.println(meta);
-        System.out.println(dog.getDocuments());
+        for (BookSearchResult.Document document : dog.getDocuments()) {
+            System.out.println(document);
+        }
     }
 }

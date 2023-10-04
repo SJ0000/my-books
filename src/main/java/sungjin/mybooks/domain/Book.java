@@ -26,13 +26,15 @@ public class Book {
     private String title;
     private String thumbnail;
     private String author;
+    private String publisher;
 
     @Builder
-    public Book(String isbn, String title, String thumbnail, String author) {
+    public Book(String isbn, String title, String thumbnail, String author, String publisher) {
         this.isbn = isbn;
         this.title = title;
         this.thumbnail = thumbnail;
         this.author = author;
+        this.publisher = publisher;
     }
 
     public String[] getAuthors(){

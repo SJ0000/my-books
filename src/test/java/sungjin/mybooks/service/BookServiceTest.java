@@ -32,29 +32,4 @@ class BookServiceTest {
     @MockBean
     ReviewRepository userBookRepository;
 
-    @Test
-    void searchRecentUserbooksTest() throws Exception {
-        // given
-        User user = MyBooksTestUtils.createUser();
-        List<Book> books = MyBooksTestUtils.createBooks(4);
-
-        List<Review> userBooks = books.stream().map(book ->
-                MyBooksTestUtils.createReview(user, book,"content")
-        ).toList();
-
-        Page<Review> page = new PageImpl(userBooks, PageRequest.of(0,10),4);
-        BDDMockito.given(userBookRepository.findRecentReviews(Mockito.anyLong(), Mockito.any()))
-                .willReturn(page);
-
-        // when
-        PageResponse<BookResponse> result = bookService.searchRecentUserbooks(1L, 1);
-
-        // then
-        List<BookResponse> data = result.getData();
-        PageInfo pageInfo = result.getPageInfo();
-        assertThat(data.size()).isEqualTo(4);
-        assertThat(pageInfo.getTotalPage()).isEqualTo(1);
-        assertThat(pageInfo.getTotalElements()).isEqualTo(4);
-        assertThat(pageInfo.isLast()).isEqualTo(true);
-    }
 }

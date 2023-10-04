@@ -3,6 +3,8 @@ package sungjin.mybooks.dto.response;
 import lombok.*;
 import sungjin.mybooks.domain.Review;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @ToString
@@ -10,6 +12,9 @@ public class ReviewResponse {
 
     private Long id;
     private String content;
+    private String bookName;
+    private String thumbnail;
+    private LocalDateTime lastModifedAt;
 
     public ReviewResponse(Review review) {
         this.id = review.getId();

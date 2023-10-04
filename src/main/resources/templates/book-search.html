@@ -7,31 +7,19 @@
 <nav th:replace="fragments/nav :: nav"></nav>
 <div class="container mt-5">
     <div class="row">
-        <div class="input-group search-bar">
-            <input type="text" class="form-control" placeholder="책 제목" aria-label="book-name">
-            <button class="input-group-text">검색</button>
-        </div>
+        <form name="/book-search" method="get">
+            <div class="input-group search-bar">
+                <input type="text" name="query" class="form-control" placeholder="책 제목" aria-label="book-name">
+                <button type="submit" class="input-group-text">검색</button>
+            </div>
+        </form>
     </div>
     <div class="row mt-3">
-        <div class="card book-item">
-            <img src="../static/image/book-sample.jpeg" class="card-img-top" alt="book image">
+        <div class="card book-item" th:each="book : ${books}">
+            <img th:src="${book.getThumbnail()}" class="card-img-top" alt="book image" src="#">
             <div class="card-body">
-                <h5 class="card-title">Book Name</h5>
-                <p class="card-text">Review 요약</p>
-            </div>
-        </div>
-        <div class="card book-item">
-            <img src="../static/image/book-sample.jpeg" class="card-img-top" alt="book image">
-            <div class="card-body">
-                <h5 class="card-title">Book Name</h5>
-                <p class="card-text">Review 요약</p>
-            </div>
-        </div>
-        <div class="card book-item">
-            <img src="../static/image/book-sample.jpeg" class="card-img-top" alt="book image">
-            <div class="card-body">
-                <h5 class="card-title">Book Name</h5>
-                <p class="card-text">Review 요약</p>
+                <h5 class="card-title" th:text="${book.getTitle()}">Book Name</h5>
+                <p class="card-text" th:text="${book.concatenateAuthors() + ' | ' + book.getPublisher()}">작가 | 출판사</p>
             </div>
         </div>
     </div>

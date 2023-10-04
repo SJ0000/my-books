@@ -2,17 +2,20 @@ package sungjin.mybooks.service;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sungjin.mybooks.domain.Book;
 import sungjin.mybooks.domain.Review;
 import sungjin.mybooks.domain.User;
+import sungjin.mybooks.dto.response.BookResponse;
+import sungjin.mybooks.dto.response.PageResponse;
 import sungjin.mybooks.exception.NotFound;
-import sungjin.mybooks.exception.Unauthorized;
 import sungjin.mybooks.dto.request.ReviewCreate;
-import sungjin.mybooks.repository.BookRepository;
 import sungjin.mybooks.repository.ReviewRepository;
-import sungjin.mybooks.repository.UserRepository;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +25,38 @@ public class ReviewService {
     private final BookService bookService;
 
     private final ReviewRepository reviewRepository;
+
+    @Transactional(readOnly = true)
+    public PageResponse<BookResponse> findRecentReviews(Long userId, int page){
+        Page<Review> result = reviewRepository.findRecentReviews(userId, PageRequest.of(page, 10));
+
+        List<BookResponse> data = result.stream()
+                .map(userBook -> new BookResponse(userBook.getBook()))
+                .toList();
+
+        return PageResponse.<BookResponse>builder()
+                .data(data)
+                .totalPage(result.getTotalPages())
+                .totalElements(result.getTotalElements())
+                .isLast(result.isLast())
+                .build();
+    }
+
+    @Transactional(readOnly = true)
+    public PageResponse<BookResponse> findReviewsByBookTitle(Long userId, String title, int page){
+        Page<Review> result = reviewRepository.findAllByBookTitle(userId,title, PageRequest.of(page,10));
+
+        List<BookResponse> data = result.stream()
+                .map(userBook -> new BookResponse(userBook.getBook()))
+                .toList();
+
+        return PageResponse.<BookResponse>builder()
+                .data(data)
+                .totalPage(result.getTotalPages())
+                .totalElements(result.getTotalElements())
+                .isLast(result.isLast())
+                .build();
+    }
 
     @Transactional
     public Long writeReview(Long userId, ReviewCreate reviewCreate){
