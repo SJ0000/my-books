@@ -51,9 +51,8 @@ public class BookService {
 
         return PageResponse.<BookResponse>builder()
                 .data(data)
-                .totalElements(meta.getTotalCount())
+                .currentPage(page)
                 .totalPage(meta.getPageableCount())
-                .isLast(meta.getIsEnd())
                 .build();
     }
 

@@ -12,6 +12,7 @@ import sungjin.mybooks.domain.Book;
 import sungjin.mybooks.dto.response.BookResponse;
 import sungjin.mybooks.dto.response.PageResponse;
 import sungjin.mybooks.service.BookService;
+import sungjin.mybooks.util.ThymeleafUtils;
 
 import java.util.List;
 
@@ -43,6 +44,8 @@ public class BookController {
             model.addAttribute("books",result.getData());
             model.addAttribute("page",result.getPageInfo());
         }
+
+        model.addAttribute("util",new ThymeleafUtils());
 
         return "book-search";
     }

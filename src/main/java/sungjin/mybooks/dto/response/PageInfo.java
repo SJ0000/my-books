@@ -5,13 +5,13 @@ import lombok.Data;
 @Data
 public class PageInfo {
 
-    private long totalElements;
+    private int currentPage;
     private int totalPage;
-    private boolean isLast;
 
-    public PageInfo(long totalElements, int totalPage, boolean isLast) {
-        this.totalElements = totalElements;
+    public PageInfo(int currentPage, int totalPage) {
+        this.currentPage = currentPage;
         this.totalPage = totalPage;
-        this.isLast = isLast;
     }
+
+
 }

@@ -36,9 +36,8 @@ public class ReviewService {
 
         return PageResponse.<BookResponse>builder()
                 .data(data)
+                .currentPage(page)
                 .totalPage(result.getTotalPages())
-                .totalElements(result.getTotalElements())
-                .isLast(result.isLast())
                 .build();
     }
 
@@ -53,8 +52,7 @@ public class ReviewService {
         return PageResponse.<BookResponse>builder()
                 .data(data)
                 .totalPage(result.getTotalPages())
-                .totalElements(result.getTotalElements())
-                .isLast(result.isLast())
+                .currentPage(page)
                 .build();
     }
 
