@@ -22,6 +22,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ModelInterceptor implements HandlerInterceptor {
 
+    private static final String REQUEST_URI= "requestUri";
+    private static final String THYMELEAF_UTILITY = "util";
+    private static final String USER_INFO = "user";
+
     private final SessionRepository sessionRepository;
 
     @Override
@@ -29,8 +33,8 @@ public class ModelInterceptor implements HandlerInterceptor {
         if(modelAndView == null)
             return;
 
-        modelAndView.addObject("requestUri",request.getRequestURI());
-        modelAndView.addObject("util",new ThymeleafUtils());
+        modelAndView.addObject(REQUEST_URI,request.getRequestURI());
+        modelAndView.addObject(THYMELEAF_UTILITY, new ThymeleafUtils());
 
         if(CookieUtils.hasCookie(request.getCookies(),CookieNames.SESSION_ID)) {
             String accessToken = CookieUtils.getCookieValue(request.getCookies(), CookieNames.SESSION_ID).get();
@@ -41,11 +45,9 @@ public class ModelInterceptor implements HandlerInterceptor {
     private void addUserInfoIfExists(ModelAndView modelAndView, String accessToken){
         Optional<Session> optionalSession = sessionRepository.findByAccessToken(accessToken);
 
-        if (optionalSession.isEmpty())
-            return;
-
-        User user = optionalSession.get().getUser();
-        modelAndView.addObject("user", new UserResponse(user));
+        optionalSession.ifPresent((session)->{
+            User user = session.getUser();
+            modelAndView.addObject(USER_INFO, new UserResponse(user));
+        });
     }
-
 }
