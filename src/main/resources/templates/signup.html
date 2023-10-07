@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/head :: head">
+<head th:replace="(~{fragments/head :: head})">
     <title>MY BOOKS : 회원가입</title>
 </head>
 <body class="vh-100">
-<nav th:replace="fragments/nav :: nav"></nav>
+<nav th:replace="(~{fragments/nav :: nav})"></nav>
 <div class="d-flex justify-content-center align-items-center h-100">
     <main class="small-form-container">
         <form action="/signup" method="post">

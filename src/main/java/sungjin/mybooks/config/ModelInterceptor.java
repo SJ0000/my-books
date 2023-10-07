@@ -4,6 +4,7 @@ package sungjin.mybooks.config;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import sungjin.mybooks.domain.Session;
@@ -14,6 +15,7 @@ import sungjin.mybooks.util.CookieNames;
 import sungjin.mybooks.util.CookieUtils;
 import sungjin.mybooks.util.ThymeleafUtils;
 
+import java.util.Collections;
 import java.util.Optional;
 
 /*
@@ -22,7 +24,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ModelInterceptor implements HandlerInterceptor {
 
-    private static final String REQUEST_URI= "requestUri";
+    private static final String REQUEST_URI = "requestUri";
     private static final String THYMELEAF_UTILITY = "util";
     private static final String USER_INFO = "user";
 
@@ -30,22 +32,21 @@ public class ModelInterceptor implements HandlerInterceptor {
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        if(modelAndView == null)
+        if (modelAndView == null)
             return;
 
-        modelAndView.addObject(REQUEST_URI,request.getRequestURI());
-        modelAndView.addObject(THYMELEAF_UTILITY, new ThymeleafUtils());
+        modelAndView.addObject(THYMELEAF_UTILITY, new ThymeleafUtils(request));
 
-        if(CookieUtils.hasCookie(request.getCookies(),CookieNames.SESSION_ID)) {
-            String accessToken = CookieUtils.getCookieValue(request.getCookies(), CookieNames.SESSION_ID).get();
-            addUserInfoIfExists(modelAndView,accessToken);
-        }
+        CookieUtils.getCookieValue(request.getCookies(), CookieNames.SESSION_ID)
+                .ifPresent((accessToken) -> {
+                    addUserInfoIfExists(modelAndView, accessToken);
+                });
     }
 
-    private void addUserInfoIfExists(ModelAndView modelAndView, String accessToken){
+    private void addUserInfoIfExists(ModelAndView modelAndView, String accessToken) {
         Optional<Session> optionalSession = sessionRepository.findByAccessToken(accessToken);
 
-        optionalSession.ifPresent((session)->{
+        optionalSession.ifPresent((session) -> {
             User user = session.getUser();
             modelAndView.addObject(USER_INFO, new UserResponse(user));
         });

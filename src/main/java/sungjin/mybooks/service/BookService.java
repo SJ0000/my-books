@@ -1,6 +1,7 @@
 package sungjin.mybooks.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -23,8 +24,10 @@ import java.util.List;
 public class BookService {
 
     private final BookRepository bookRepository;
-    private final ReviewRepository userBookRepository;
     private final BookSearchApi bookSearchApi;
+
+    @Value("${app.page-size}")
+    private int pageSize;
 
     @Transactional(readOnly = true)
     public Book findBook(Long id){
@@ -34,7 +37,7 @@ public class BookService {
 
 
     public PageResponse<BookResponse> apiSearch(String query, int page){
-        BookSearchResult result = bookSearchApi.search(query, page);
+        BookSearchResult result = bookSearchApi.search(query, page, pageSize);
 
         BookSearchResult.Meta meta = result.getMeta();
 
@@ -49,10 +52,12 @@ public class BookService {
                                 .build())
                 .toList();
 
+        int totalPage = (meta.getTotalCount() / pageSize) + (meta.getTotalCount()%pageSize == 0 ? 0 : 1);
+
         return PageResponse.<BookResponse>builder()
                 .data(data)
                 .currentPage(page)
-                .totalPage(meta.getPageableCount())
+                .totalPage(totalPage)
                 .build();
     }
 

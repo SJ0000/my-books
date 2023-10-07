@@ -1,6 +1,7 @@
 package sungjin.mybooks.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,8 +45,6 @@ public class BookController {
             model.addAttribute("books",result.getData());
             model.addAttribute("page",result.getPageInfo());
         }
-
-        model.addAttribute("util",new ThymeleafUtils());
 
         return "book-search";
     }

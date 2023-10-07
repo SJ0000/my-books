@@ -20,11 +20,12 @@ public class BookSearchApi {
                 .build();
     }
 
-    public BookSearchResult search(String query, int page) {
+    public BookSearchResult search(String query, int page,int size) {
         BookSearchResult result = webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .queryParam("query", query)
                         .queryParam("page", page)
+                        .queryParam("size", size)
                         .build())
                 .retrieve()
                 .bodyToMono(BookSearchResult.class)

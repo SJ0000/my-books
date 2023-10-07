@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/head :: head">
+<head th:replace="(~{fragments/head :: head})">
     <title>MY BOOKS</title>
 </head>
 <body class="vh-100">
-<nav th:replace="fragments/nav :: nav"></nav>
+<nav th:replace="(~{fragments/nav :: nav})"></nav>
 <div class="d-flex justify-content-center align-items-center h-100">
     <main class="small-form-container" th:if="${user == null}">
         <a href="/login" class="form-control btn btn-primary m-1">로그인</a>

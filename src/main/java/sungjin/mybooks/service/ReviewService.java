@@ -2,6 +2,7 @@ package sungjin.mybooks.service;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -26,9 +27,12 @@ public class ReviewService {
 
     private final ReviewRepository reviewRepository;
 
+    @Value("${app.page-size}")
+    private int pageSize;
+
     @Transactional(readOnly = true)
     public PageResponse<BookResponse> findRecentReviews(Long userId, int page){
-        Page<Review> result = reviewRepository.findRecentReviews(userId, PageRequest.of(page, 10));
+        Page<Review> result = reviewRepository.findRecentReviews(userId, PageRequest.of(page, pageSize));
 
         List<BookResponse> data = result.stream()
                 .map(userBook -> new BookResponse(userBook.getBook()))
@@ -43,7 +47,7 @@ public class ReviewService {
 
     @Transactional(readOnly = true)
     public PageResponse<BookResponse> findReviewsByBookTitle(Long userId, String title, int page){
-        Page<Review> result = reviewRepository.findAllByBookTitle(userId,title, PageRequest.of(page,10));
+        Page<Review> result = reviewRepository.findAllByBookTitle(userId,title, PageRequest.of(page,pageSize));
 
         List<BookResponse> data = result.stream()
                 .map(userBook -> new BookResponse(userBook.getBook()))

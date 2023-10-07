@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head th:replace="fragments/head :: head">
+<head th:replace="(~{fragments/head :: head})">
     <title>MY BOOKS : 책 추가</title>
 </head>
 <body>
-<nav th:replace="fragments/nav :: nav"></nav>
+<nav th:replace="(~{fragments/nav :: nav})"></nav>
 <div class="container mt-5">
     <div class="row">
         <form name="/book-search" method="get">
@@ -16,23 +16,14 @@
     </div>
     <div class="row mt-3">
         <div class="card book-item" th:each="book : ${books}">
-            <img th:src="${book.getThumbnail()}" class="card-img-top" alt="book image" src="#">
+            <img th:src="${book.thumbnail}" class="card-img-top" alt="book image" src="#">
             <div class="card-body">
-                <h5 class="card-title" th:text="${book.getTitle()}">Book Name</h5>
-                <p class="card-text" th:text="${book.concatenateAuthors() + ' | ' + book.getPublisher()}">작가 | 출판사</p>
+                <h5 class="card-title" th:text="${book.title}">Book Name</h5>
+                <p class="card-text" th:text="${book.concatenateAuthors() + ' | ' + book.publisher}">작가 | 출판사</p>
             </div>
         </div>
     </div>
-    <div class="row" id="not-exist" style="display: none">
-        <h2>검색 결과가 없습니다.</h2>
-    </div>
 </div>
-<nav class="d-flex justify-content-center">
-    <ul class="pagination">
-        <li class="page-item"><a class="page-link" th:href="${util.changeRequestParam('a','b','c')}">1</a></li>
-        <li class="page-item active"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-    </ul>
-</nav>
+<nav th:replace="(~{fragments/pagination :: pagination})"></nav>
 </body>
 </html>

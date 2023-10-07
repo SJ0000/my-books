@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/head :: head">
+<head th:replace="(~{fragments/head :: head})">
     <title>MY BOOKS : 로그인</title>
 </head>
 <body class="vh-100">
-<nav th:replace="fragments/nav :: nav"></nav>
+<nav th:replace="(~{fragments/nav :: nav})"></nav>
 <div class="d-flex flex-column justify-content-center align-items-center h-100">
     <div class="alert alert-success" role="alert" th:if="${#bools.isTrue(param.after_signup)}">
         회원가입에 성공하였습니다. 로그인 해주세요.

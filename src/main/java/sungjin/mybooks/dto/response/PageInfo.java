@@ -2,6 +2,8 @@ package sungjin.mybooks.dto.response;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class PageInfo {
 
@@ -12,6 +14,5 @@ public class PageInfo {
         this.currentPage = currentPage;
         this.totalPage = totalPage;
     }
-
 
 }
