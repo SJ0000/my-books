@@ -4,7 +4,7 @@
     <title></title>
 </head>
 <body>
-<nav th:fragment="pagination" class="d-flex justify-content-center" th:if="${page != null}">
+<nav th:fragment="pagination" class="d-flex justify-content-center" th:if="${page != null && page.totalPage >= 1}">
     <ul class="pagination">
         <!--
         num에 1이 없으면 << 버튼이 있어야 함
@@ -20,7 +20,7 @@
             </a>
         </li>
 
-        <li class="page-item" th:if="${page.totalPage > 5}" th:classappend="${num == page.currentPage}? active"
+        <li class="page-item" th:classappend="${num == page.currentPage}? active"
             th:each="num : ${#numbers.sequence( util.max(1, page.currentPage-2), util.min(page.totalPage, page.currentPage+2))}">
             <a class="page-link" th:href="${util.getQueryStringChangedUri('page',num)}" th:text="${num}">a</a>
         </li>

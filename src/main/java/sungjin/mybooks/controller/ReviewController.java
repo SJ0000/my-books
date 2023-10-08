@@ -52,6 +52,12 @@ public class ReviewController {
     }
 
     @AuthRequired
+    @GetMapping
+    public String createReviewForm(Model model){
+        return "review-create";
+    }
+
+    @AuthRequired
     @PostMapping("/review")
     public ResponseEntity<Void> createReview(@RequestBody @Valid ReviewCreate reviewCreate, UserSession userSession){
         Long userId = userSession.getUserId();

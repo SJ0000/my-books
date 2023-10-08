@@ -20,8 +20,12 @@
             <div class="card-body">
                 <h5 class="card-title" th:text="${book.title}">Book Name</h5>
                 <p class="card-text" th:text="${book.concatenateAuthors() + ' | ' + book.publisher}">작가 | 출판사</p>
+                <a href="https://www.naver.com" class="stretched-link"></a>
             </div>
         </div>
+    </div>
+    <div class="alert alert-primary" role="alert" th:if="${books == null || books.size() == 0}">
+        검색 결과가 없습니다. 검색어를 다시 입력해주세요.
     </div>
 </div>
 <nav th:replace="(~{fragments/pagination :: pagination})"></nav>
