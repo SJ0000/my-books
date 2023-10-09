@@ -12,34 +12,29 @@ import sungjin.mybooks.domain.Book;
 @ToString
 public class BookResponse {
 
+    private Long id;
     private final String isbn;
     private final String title;
     private final String thumbnail;
-    private final String[] authors;
+    private final String author;
     private final String publisher;
 
     @Builder
-    public BookResponse(String isbn, String title, String thumbnail, String[] authors, String publisher) {
+    public BookResponse(Long id, String isbn, String title, String thumbnail, String author, String publisher) {
+        this.id = id;
         this.isbn = isbn;
         this.title = title;
         this.thumbnail = thumbnail;
-        this.authors = authors;
+        this.author = author;
         this.publisher = publisher;
     }
 
     public BookResponse(Book book){
+        this.id = book.getId();
         this.isbn = book.getIsbn();
         this.title = book.getTitle();
         this.thumbnail = book.getThumbnail();
-        this.authors = book.getAuthors();
+        this.author = book.getAuthor();
         this.publisher = book.getPublisher();
     }
-
-    public String concatenateAuthors(){
-        if(authors == null || authors.length == 0)
-            return "";
-        return String.join(",",authors);
-    }
-
-
 }

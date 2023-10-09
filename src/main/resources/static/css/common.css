@@ -11,4 +11,7 @@
     min-width: 20rem;
 }
 
-.book-
+.btn-review-form {
+    max-width: 7rem;
+    margin: 0.3rem;
+}

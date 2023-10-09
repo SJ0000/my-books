@@ -1,21 +1,15 @@
 package sungjin.mybooks.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import sungjin.mybooks.annotation.AuthRequired;
-import sungjin.mybooks.config.data.UserSession;
 import sungjin.mybooks.domain.Book;
 import sungjin.mybooks.dto.response.BookResponse;
 import sungjin.mybooks.dto.response.PageResponse;
 import sungjin.mybooks.service.BookService;
-import sungjin.mybooks.util.ThymeleafUtils;
-
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -25,7 +19,7 @@ public class BookController {
 
     @GetMapping("/books/{id}")
     public ResponseEntity<BookResponse> getBook(@PathVariable Long id){
-        Book book = bookService.findBook(id);
+        Book book = bookService.findBookById(id);
         BookResponse bookInfo = new BookResponse(book);
 
         return ResponseEntity.ok()

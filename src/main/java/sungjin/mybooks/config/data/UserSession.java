@@ -6,12 +6,11 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Getter
-@Setter
 @ToString
 public class UserSession {
 
-    private Long userId;
-    private String accessToken;
+    private final Long userId;
+    private final String accessToken;
 
     @Builder
     public UserSession(Long userId, String accessToken) {

@@ -1,42 +1,68 @@
 package sungjin.mybooks.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sungjin.mybooks.domain.Book;
-import sungjin.mybooks.domain.Review;
 import sungjin.mybooks.dto.response.BookResponse;
 import sungjin.mybooks.dto.response.PageResponse;
 import sungjin.mybooks.exception.NotFound;
 import sungjin.mybooks.repository.BookRepository;
-import sungjin.mybooks.repository.ReviewRepository;
 import sungjin.mybooks.search.BookSearchApi;
 import sungjin.mybooks.search.BookSearchResult;
 import sungjin.mybooks.util.IsbnUtils;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class BookService {
 
     private final BookRepository bookRepository;
-    private final BookSearchApi bookSearchApi;
+    private BookSearchApi bookSearchApi;
+
+    @Autowired
+    public BookService(BookRepository bookRepository, BookSearchApi bookSearchApi) {
+        this.bookRepository = bookRepository;
+        this.bookSearchApi = bookSearchApi;
+    }
+
+    public void setBookSearchApi(BookSearchApi bookSearchApi) {
+        this.bookSearchApi = bookSearchApi;
+    }
 
     @Value("${app.page-size}")
     private int pageSize;
 
     @Transactional(readOnly = true)
-    public Book findBook(Long id){
+    public Book findBookById(Long id) {
         return bookRepository.findById(id)
-                .orElseThrow(()-> new NotFound(Book.class, "id", id));
+                .orElseThrow(() -> new NotFound(Book.class, "id", id));
+    }
+
+    @Transactional
+    public Book findBookByIsbn(String isbn) {
+        Optional<Book> optionalBook = bookRepository.findByIsbn(isbn);
+        if(optionalBook.isPresent())
+            return optionalBook.get();
+
+        Long createdBookId = createBook(isbn);
+        return bookRepository.findById(createdBookId)
+                .orElseThrow(()-> new NotFound(Book.class,"isbn", isbn));
+    }
+
+    @Transactional
+    public Long createBook(String isbn){
+        Book book = apiSearchByIsbn(isbn);
+        bookRepository.save(book);
+        return book.getId();
     }
 
 
-    public PageResponse<BookResponse> apiSearch(String query, int page){
+    public PageResponse<BookResponse> apiSearch(String query, int page) {
         BookSearchResult result = bookSearchApi.search(query, page, pageSize);
 
         BookSearchResult.Meta meta = result.getMeta();
@@ -47,12 +73,12 @@ public class BookService {
                                 .isbn(IsbnUtils.convertToISBN(document.getIsbn()))
                                 .title(document.getTitle())
                                 .thumbnail(document.getThumbnail())
-                                .authors(document.getAuthors())
+                                .author(String.join(",",document.getAuthors()))
                                 .publisher(document.getPublisher())
                                 .build())
                 .toList();
 
-        int totalPage = (meta.getTotalCount() / pageSize) + (meta.getTotalCount()%pageSize == 0 ? 0 : 1);
+        int totalPage = (meta.getTotalCount() / pageSize) + (meta.getTotalCount() % pageSize == 0 ? 0 : 1);
 
         return PageResponse.<BookResponse>builder()
                 .data(data)
@@ -61,4 +87,19 @@ public class BookService {
                 .build();
     }
 
+    private Book apiSearchByIsbn(String isbn) {
+        BookSearchResult result = bookSearchApi.searchByIsbn(isbn);
+
+        return result.getDocuments().stream()
+                .map(document ->
+                        Book.builder()
+                                .isbn(IsbnUtils.convertToISBN(document.getIsbn()))
+                                .title(document.getTitle())
+                                .thumbnail(document.getThumbnail())
+                                .author(String.join(",",document.getAuthors()))
+                                .publisher(document.getPublisher())
+                                .build())
+                .findAny()
+                .orElseThrow(() -> new NotFound(BookResponse.class, "isbn", isbn));
+    }
 }

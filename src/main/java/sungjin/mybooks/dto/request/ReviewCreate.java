@@ -13,15 +13,11 @@ import lombok.ToString;
 @ToString
 public class ReviewCreate {
 
-    @NotNull
-    private Long bookId;
-
     @NotBlank
     private String content;
 
     @Builder
-    public ReviewCreate(Long bookId, String content) {
-        this.bookId = bookId;
+    public ReviewCreate(String content) {
         this.content = content;
     }
 }

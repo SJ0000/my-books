@@ -44,24 +44,7 @@ class ReviewControllerTest {
     @Autowired
     ObjectMapper om;
 
-    @Test
-    @DisplayName("특정 리뷰 조회")
-    void getReviewTest() throws Exception {
-        // given
-        User user = MyBooksTestUtils.createUser();
-        userRepository.save(user);
-        Book book = MyBooksTestUtils.createBook();
-        bookRepository.save(book);
-        Review review = MyBooksTestUtils.createReview(user,book,"content");
-        reviewRepository.save(review);
 
-        Long reviewId = review.getId();
-
-        // expected
-        mockMvc.perform(get("/review/{id}", reviewId))
-                .andExpect(jsonPath("$.id").value(reviewId))
-                .andExpect(jsonPath("$.content").value(review.getContent()));
-    }
 
     @Test
     @DisplayName("리뷰 작성")

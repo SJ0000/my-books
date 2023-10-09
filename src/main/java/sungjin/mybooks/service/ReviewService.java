@@ -61,17 +61,15 @@ public class ReviewService {
     }
 
     @Transactional
-    public Long writeReview(Long userId, ReviewCreate reviewCreate){
+    public Long writeReview(Long userId, Long bookId, String content){
         // Review 생성
-        Long bookId = reviewCreate.getBookId();
-
         User user = userService.findUser(userId);
-        Book book = bookService.findBook(bookId);
+        Book book = bookService.findBookById(bookId);
 
         Review review = Review.builder()
                 .user(user)
                 .book(book)
-                .content(reviewCreate.getContent())
+                .content(content)
                 .build();
 
         reviewRepository.save(review);

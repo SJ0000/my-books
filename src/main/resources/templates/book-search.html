@@ -19,8 +19,8 @@
             <img th:src="${book.thumbnail}" class="card-img-top" alt="book image" src="#">
             <div class="card-body">
                 <h5 class="card-title" th:text="${book.title}">Book Name</h5>
-                <p class="card-text" th:text="${book.concatenateAuthors() + ' | ' + book.publisher}">작가 | 출판사</p>
-                <a href="https://www.naver.com" class="stretched-link"></a>
+                <p class="card-text" th:text="${book.author + ' | ' + book.publisher}">작가 | 출판사</p>
+                <a th:href="@{/review-create(isbn=${book.isbn})}" class="stretched-link"></a>
             </div>
         </div>
     </div>
@@ -29,5 +29,6 @@
     </div>
 </div>
 <nav th:replace="(~{fragments/pagination :: pagination})"></nav>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap.min.js}"></script>
 </body>
 </html>

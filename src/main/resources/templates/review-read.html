@@ -10,17 +10,14 @@
         <div class="col-lg-8">
             <article>
                 <header class="mb-4">
-                    <h1 class="fw-bolder mb-1">BOOK NAME</h1>
-                    <div class="text-muted fst-italic mb-2">Posted on January 1, 2023</div>
+                    <h1 class="fw-bolder mb-1" th:text="${review.bookTitle}"></h1>
+                    <div class="text-muted fst-italic mb-2" th:text="${'Posted on ' + review.modifedAt}">Posted on January 1, 2023</div>
                 </header>
-                <textarea class="form-control" readonly rows="20" cols="50" aria-label="content">1234</textarea>
+                <textarea class="form-control" readonly rows="20" cols="50" aria-label="content" th:text="${review.content}"></textarea>
             </article>
         </div>
     </div>
 </div>
-<footer>
-
-</footer>
-<script type="text/javascript" src="../static/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap.min.js}"></script>
 </body>
 </html>

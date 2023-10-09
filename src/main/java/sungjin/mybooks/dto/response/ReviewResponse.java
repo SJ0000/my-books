@@ -11,13 +11,16 @@ import java.time.LocalDateTime;
 public class ReviewResponse {
 
     private Long id;
+    private String bookTitle;
     private String content;
-    private String bookName;
     private String thumbnail;
-    private LocalDateTime lastModifedAt;
+    private LocalDateTime modifedAt;
 
     public ReviewResponse(Review review) {
         this.id = review.getId();
+        this.bookTitle = review.getBook().getTitle();
         this.content = review.getContent();
+        this.thumbnail = review.getBook().getThumbnail();
+        this.modifedAt = review.getModifiedAt();
     }
 }

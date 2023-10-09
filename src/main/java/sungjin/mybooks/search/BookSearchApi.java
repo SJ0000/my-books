@@ -21,7 +21,8 @@ public class BookSearchApi {
     }
 
     public BookSearchResult search(String query, int page,int size) {
-        BookSearchResult result = webClient.get()
+
+        return webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .queryParam("query", query)
                         .queryParam("page", page)
@@ -30,8 +31,18 @@ public class BookSearchApi {
                 .retrieve()
                 .bodyToMono(BookSearchResult.class)
                 .block();
+    }
 
-        return result;
+    public BookSearchResult searchByIsbn(String isbn) {
+
+        return webClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .queryParam("query", isbn)
+                        .queryParam("target", "isbn")
+                        .build())
+                .retrieve()
+                .bodyToMono(BookSearchResult.class)
+                .block();
     }
 
 
