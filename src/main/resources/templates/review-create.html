@@ -5,7 +5,7 @@
 </head>
 <body>
 <nav th:replace="(~{fragments/nav :: nav})"></nav>
-<div class="container mt-5" style="width: 100vh">
+<div class="container mt-5 w-75">
     <div class="row">
         <div class="col-md-12">
             <form id="review-form" th:action="@{/review(bookId=${book.id})}" method="post">

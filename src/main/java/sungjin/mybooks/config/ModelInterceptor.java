@@ -11,6 +11,7 @@ import sungjin.mybooks.domain.Session;
 import sungjin.mybooks.domain.User;
 import sungjin.mybooks.dto.response.UserResponse;
 import sungjin.mybooks.repository.SessionRepository;
+import sungjin.mybooks.service.AuthService;
 import sungjin.mybooks.util.CookieNames;
 import sungjin.mybooks.util.CookieUtils;
 import sungjin.mybooks.util.ThymeleafUtils;
@@ -28,7 +29,7 @@ public class ModelInterceptor implements HandlerInterceptor {
     private static final String THYMELEAF_UTILITY = "util";
     private static final String USER_INFO = "user";
 
-    private final SessionRepository sessionRepository;
+    private final AuthService authService;
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
@@ -44,8 +45,7 @@ public class ModelInterceptor implements HandlerInterceptor {
     }
 
     private void addUserInfoIfExists(ModelAndView modelAndView, String accessToken) {
-        Optional<Session> optionalSession = sessionRepository.findByAccessToken(accessToken);
-
+        Optional<Session> optionalSession = authService.findSession(accessToken);
         optionalSession.ifPresent((session) -> {
             User user = session.getUser();
             modelAndView.addObject(USER_INFO, new UserResponse(user));

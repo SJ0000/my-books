@@ -39,14 +39,12 @@ public class ReviewController {
             PageResponse<ReviewResponse> result = reviewService.findReviewsByBookTitle(userId, query, page-1);
             model.addAttribute("reviews", result.getData());
             model.addAttribute("page", result.getPageInfo());
-            System.out.println("review size = " + result.getData().size());
         }
 
         if(!StringUtils.hasText(query)){
             PageResponse<ReviewResponse> result = reviewService.findRecentReviews(userId, page-1);
             model.addAttribute("reviews", result.getData());
             model.addAttribute("page", result.getPageInfo());
-            System.out.println("review size = " + result.getData().size());
         }
 
         return "review-list";

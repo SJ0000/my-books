@@ -10,6 +10,8 @@ import sungjin.mybooks.domain.User;
 import sungjin.mybooks.exception.InvalidLoginInformation;
 import sungjin.mybooks.exception.NotFound;
 import sungjin.mybooks.repository.SessionRepository;
+
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -45,5 +47,17 @@ public class AuthService {
                 .orElseThrow(() -> new NotFound(Session.class, "access token", accessToken));
         sessionRepository.delete(session);
     }
+
+    @Transactional(readOnly = true)
+    public boolean isValidAccessToken(String accessToken){
+        return sessionRepository.findByAccessToken(accessToken)
+                .isPresent();
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<Session> findSession(String accessToken){
+        return sessionRepository.findByAccessToken(accessToken);
+    }
+
 
 }

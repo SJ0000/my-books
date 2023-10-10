@@ -11,6 +11,7 @@ import sungjin.mybooks.config.data.UserSession;
 import sungjin.mybooks.domain.Session;
 import sungjin.mybooks.exception.Unauthorized;
 import sungjin.mybooks.repository.SessionRepository;
+import sungjin.mybooks.service.AuthService;
 import sungjin.mybooks.util.CookieNames;
 import sungjin.mybooks.util.CookieUtils;
 
@@ -22,7 +23,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserSessionResolver implements HandlerMethodArgumentResolver {
 
-    private final SessionRepository sessionRepository;
+    private final AuthService authService;
 
 
     @Override
@@ -38,7 +39,7 @@ public class UserSessionResolver implements HandlerMethodArgumentResolver {
         String accessToken  = CookieUtils.getCookieValue(request.getCookies(), CookieNames.SESSION_ID)
                         .orElseThrow(()-> new RuntimeException("Session Id cookie가 존재하지 않습니다."));
 
-        Session session = sessionRepository.findByAccessToken(accessToken)
+        Session session = authService.findSession(accessToken)
                 .orElseThrow(Unauthorized::new);
 
         return UserSession.builder()
