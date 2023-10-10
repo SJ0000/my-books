@@ -36,21 +36,23 @@ public class ReviewController {
         Long userId = userSession.getUserId();
 
         if(StringUtils.hasText(query)){
-            PageResponse<BookResponse> result = reviewService.findReviewsByBookTitle(userId, query, page);
-            model.addAttribute("books", result.getData());
+            PageResponse<ReviewResponse> result = reviewService.findReviewsByBookTitle(userId, query, page-1);
+            model.addAttribute("reviews", result.getData());
             model.addAttribute("page", result.getPageInfo());
+            System.out.println("review size = " + result.getData().size());
         }
 
         if(!StringUtils.hasText(query)){
-            PageResponse<BookResponse> result = reviewService.findRecentReviews(userId, page);
-            model.addAttribute("books", result.getData());
+            PageResponse<ReviewResponse> result = reviewService.findRecentReviews(userId, page-1);
+            model.addAttribute("reviews", result.getData());
             model.addAttribute("page", result.getPageInfo());
+            System.out.println("review size = " + result.getData().size());
         }
 
         return "review-list";
     }
 
-    @GetMapping("/review/{id}")
+    @GetMapping("/reviews/{id}")
     public String getReview(@PathVariable Long id, Model model){
         Review review = reviewService.findReview(id);
 
@@ -74,7 +76,7 @@ public class ReviewController {
         Long userId = userSession.getUserId();
         Long id = reviewService.writeReview(userId, bookId,reviewCreate.getContent());
 
-        return "redirect:/review/"+id;
+        return "redirect:/reviews/"+id;
     }
 
     @AuthRequired

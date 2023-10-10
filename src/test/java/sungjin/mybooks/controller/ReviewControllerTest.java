@@ -59,7 +59,6 @@ class ReviewControllerTest {
         Session session = authService.createSession(user);
 
         ReviewCreate reviewCreate = ReviewCreate.builder()
-                .bookId(book.getId())
                 .content("test review")
                 .build();
 

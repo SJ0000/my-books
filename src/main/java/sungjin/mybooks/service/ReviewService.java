@@ -12,11 +12,14 @@ import sungjin.mybooks.domain.Review;
 import sungjin.mybooks.domain.User;
 import sungjin.mybooks.dto.response.BookResponse;
 import sungjin.mybooks.dto.response.PageResponse;
+import sungjin.mybooks.dto.response.ReviewResponse;
 import sungjin.mybooks.exception.NotFound;
 import sungjin.mybooks.dto.request.ReviewCreate;
 import sungjin.mybooks.repository.ReviewRepository;
 
 import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 @RequiredArgsConstructor
@@ -31,14 +34,14 @@ public class ReviewService {
     private int pageSize;
 
     @Transactional(readOnly = true)
-    public PageResponse<BookResponse> findRecentReviews(Long userId, int page){
+    public PageResponse<ReviewResponse> findRecentReviews(Long userId, int page){
         Page<Review> result = reviewRepository.findRecentReviews(userId, PageRequest.of(page, pageSize));
 
-        List<BookResponse> data = result.stream()
-                .map(userBook -> new BookResponse(userBook.getBook()))
+        List<ReviewResponse> data = result.stream()
+                .map(ReviewResponse::new)
                 .toList();
 
-        return PageResponse.<BookResponse>builder()
+        return PageResponse.<ReviewResponse>builder()
                 .data(data)
                 .currentPage(page)
                 .totalPage(result.getTotalPages())
@@ -46,14 +49,14 @@ public class ReviewService {
     }
 
     @Transactional(readOnly = true)
-    public PageResponse<BookResponse> findReviewsByBookTitle(Long userId, String title, int page){
+    public PageResponse<ReviewResponse> findReviewsByBookTitle(Long userId, String title, int page){
         Page<Review> result = reviewRepository.findAllByBookTitle(userId,title, PageRequest.of(page,pageSize));
 
-        List<BookResponse> data = result.stream()
-                .map(userBook -> new BookResponse(userBook.getBook()))
+        List<ReviewResponse> data = result.stream()
+                .map(ReviewResponse::new)
                 .toList();
 
-        return PageResponse.<BookResponse>builder()
+        return PageResponse.<ReviewResponse>builder()
                 .data(data)
                 .totalPage(result.getTotalPages())
                 .currentPage(page)

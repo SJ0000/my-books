@@ -1,6 +1,7 @@
 package sungjin.mybooks.util;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.util.StringUtils;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.web.util.UriUtils;
 
@@ -36,6 +37,14 @@ public class ThymeleafUtils {
         return Integer.min(a,b);
     }
 
+    public String getPreviewOfContent(String content){
+        if(!StringUtils.hasText(content))
+            return "내용 없음";
 
+        if(content.length() <= 10)
+            return content;
+
+        return content.substring(0,10) + " ...";
+    }
 
 }

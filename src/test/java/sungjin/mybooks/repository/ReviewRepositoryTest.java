@@ -51,7 +51,7 @@ class ReviewRepositoryTest {
 
     @Test
     @DisplayName("특정 사용자가 가진 책 리스트를 최신순으로 조회한다.")
-    void findRecentUserBooksTest() throws Exception {
+    void findRecentReviewsTest() throws Exception {
         // given
         User user = MyBooksTestUtils.createUser();
         userRepository.save(user);
@@ -60,15 +60,16 @@ class ReviewRepositoryTest {
         bookRepository.saveAll(books);
 
         books.forEach(book -> {
-            Review userBook = MyBooksTestUtils.createReview(user, book, "content");
-            ReflectionTestUtils.setField(userBook, "createdAt", MyBooksTestUtils.randomDateTime());
-            reviewRepository.save(userBook);
+            Review review = MyBooksTestUtils.createReview(user, book, "content");
+            ReflectionTestUtils.setField(review, "createdAt", MyBooksTestUtils.randomDateTime());
+            reviewRepository.save(review);
         });
 
         // when
         Page<Review> result = reviewRepository.findRecentReviews(user.getId(), PageRequest.of(0, 10));
 
         // then
+        assertThat(result.getContent().size()).isEqualTo(10);
         assertThat(result.getContent()).isSortedAccordingTo((ub1, ub2) -> {
             return ub2.getCreatedAt().compareTo(ub1.getCreatedAt());
         });

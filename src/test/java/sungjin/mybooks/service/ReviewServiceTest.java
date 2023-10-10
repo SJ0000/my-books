@@ -8,12 +8,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.util.ReflectionTestUtils;
 import sungjin.mybooks.MyBooksTestUtils;
+import sungjin.mybooks.domain.Book;
 import sungjin.mybooks.domain.User;
 import sungjin.mybooks.domain.Review;
 import sungjin.mybooks.dto.request.ReviewCreate;
+import sungjin.mybooks.dto.response.BookResponse;
+import sungjin.mybooks.dto.response.PageResponse;
 import sungjin.mybooks.exception.NotFound;
 import sungjin.mybooks.exception.Unauthorized;
+import sungjin.mybooks.repository.BookRepository;
 import sungjin.mybooks.repository.ReviewRepository;
+import sungjin.mybooks.repository.UserRepository;
 
 import java.util.Optional;
 
@@ -42,4 +47,7 @@ class ReviewServiceTest {
         assertThatThrownBy(() -> reviewService.findReview(1L))
                 .isInstanceOf(NotFound.class);
     }
+
+
+
 }
