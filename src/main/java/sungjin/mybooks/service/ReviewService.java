@@ -15,9 +15,11 @@ import sungjin.mybooks.dto.response.PageResponse;
 import sungjin.mybooks.dto.response.ReviewResponse;
 import sungjin.mybooks.exception.NotFound;
 import sungjin.mybooks.dto.request.ReviewCreate;
+import sungjin.mybooks.exception.Unauthorized;
 import sungjin.mybooks.repository.ReviewRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
@@ -90,5 +92,14 @@ public class ReviewService {
         Review review = findReview(id);
         review.editContent(content);
     }
+
+    @Transactional(readOnly = true)
+    public void verifyOwner(Long reviewId, Long userId){
+        Review review = findReview(reviewId);
+        if(!review.isOwner(userId))
+            throw new Unauthorized();
+    }
+
+
 
 }

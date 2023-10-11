@@ -14,4 +14,7 @@ public class ReviewEdit {
     @NotBlank
     private String content;
 
+    public ReviewEdit(String content) {
+        this.content = content;
+    }
 }

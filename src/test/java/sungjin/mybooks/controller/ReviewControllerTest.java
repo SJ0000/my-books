@@ -59,7 +59,7 @@ class ReviewControllerTest {
         Session session = authService.createSession(user);
 
         ReviewCreate reviewCreate = ReviewCreate.builder()
-                .content("test review")
+                .content("test review.html")
                 .build();
 
         // expected

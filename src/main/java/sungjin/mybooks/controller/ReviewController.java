@@ -32,17 +32,17 @@ public class ReviewController {
 
     @AuthRequired
     @GetMapping("/reviews")
-    public String userReviews(UserSession userSession, @RequestParam(defaultValue = "") String query, @RequestParam(defaultValue = "1") int page, Model model){
+    public String userReviews(UserSession userSession, @RequestParam(defaultValue = "") String query, @RequestParam(defaultValue = "1") int page, Model model) {
         Long userId = userSession.getUserId();
 
-        if(StringUtils.hasText(query)){
-            PageResponse<ReviewResponse> result = reviewService.findReviewsByBookTitle(userId, query, page-1);
+        if (StringUtils.hasText(query)) {
+            PageResponse<ReviewResponse> result = reviewService.findReviewsByBookTitle(userId, query, page - 1);
             model.addAttribute("reviews", result.getData());
             model.addAttribute("page", result.getPageInfo());
         }
 
-        if(!StringUtils.hasText(query)){
-            PageResponse<ReviewResponse> result = reviewService.findRecentReviews(userId, page-1);
+        if (!StringUtils.hasText(query)) {
+            PageResponse<ReviewResponse> result = reviewService.findRecentReviews(userId, page - 1);
             model.addAttribute("reviews", result.getData());
             model.addAttribute("page", result.getPageInfo());
         }
@@ -51,7 +51,7 @@ public class ReviewController {
     }
 
     @GetMapping("/reviews/{id}")
-    public String getReview(@PathVariable Long id, Model model){
+    public String getReview(@PathVariable Long id, Model model) {
         Review review = reviewService.findReview(id);
 
         model.addAttribute("review", new ReviewResponse(review));
@@ -61,7 +61,7 @@ public class ReviewController {
 
     @AuthRequired
     @GetMapping("/review-create")
-    public String createReviewForm(Model model, @RequestParam String isbn){
+    public String createReviewForm(Model model, @RequestParam String isbn) {
         Book book = bookService.findBookByIsbn(isbn);
         model.addAttribute("book", new BookResponse(book));
         return "review-create";
@@ -69,20 +69,30 @@ public class ReviewController {
 
     @AuthRequired
     @PostMapping("/review")
-    public String createReview(@Valid ReviewCreate reviewCreate, @RequestParam Long bookId, UserSession userSession){
+    public String createReview(@Valid ReviewCreate reviewCreate, @RequestParam Long bookId, UserSession userSession) {
 
         Long userId = userSession.getUserId();
-        Long id = reviewService.writeReview(userId, bookId,reviewCreate.getContent());
+        Long id = reviewService.writeReview(userId, bookId, reviewCreate.getContent());
 
-        return "redirect:/reviews/"+id;
+        return "redirect:/reviews/" + id;
     }
 
     @AuthRequired
-    @PatchMapping("/review/{id}")
-    public ResponseEntity<Void> editReview(@PathVariable Long id, @RequestBody @Valid ReviewEdit reviewEdit){
+    @GetMapping("/review/edit")
+    public String editReviewForm(@RequestParam Long id, UserSession userSession, Model model) {
+        reviewService.verifyOwner(id, userSession.getUserId());
+        Review review = reviewService.findReview(id);
+        model.addAttribute("review", new ReviewResponse(review));
+        return "review-edit";
+    }
+
+
+    @AuthRequired
+    @PostMapping("/review/edit")
+    public String editReview(@RequestParam Long id, @Valid ReviewEdit reviewEdit, UserSession userSession) {
+        reviewService.verifyOwner(id,userSession.getUserId());
         reviewService.editReview(id, reviewEdit.getContent());
-        return ResponseEntity.created(URI.create("/review/"+id))
-                .build();
+        return "redirect:/reviews/" + id;
     }
 
 }

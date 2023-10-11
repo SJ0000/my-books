@@ -7,19 +7,19 @@
 <nav th:replace="(~{fragments/nav :: nav})"></nav>
 <div class="container mt-5 w-75">
     <div class="row">
-        <form id="review-form" th:action="@{/review(bookId=${book.id})}" method="post">
+        <form id="review-form" th:action="@{/review/edit(id=${review.id})}" method="post">
             <header class="mb-4">
-                <h1 class="fw-bolder mb-1" th:text="${book.title}">BOOK TITLE</h1>
+                <h1 class="fw-bolder mb-1" th:text="${review.bookTitle}">BOOK TITLE</h1>
             </header>
-            <textarea class="form-control" rows="20" aria-label="content" name="content"></textarea>
+            <textarea class="form-control" rows="20" aria-label="content" name="content" th:text="${review.content}"></textarea>
         </form>
     </div>
     <div class="row justify-content-end m-0 mt-2">
         <button id="backwardButton" class="btn btn-secondary btn-review-form">취소</button>
-        <button id="submitButton" class="btn btn-primary btn-review-form">작성 완료</button>
+        <button id="submitButton" class="btn btn-primary btn-review-form">수정 완료</button>
     </div>
 </div>
 <script type="text/javascript" th:src="@{/bootstrap/bootstrap.min.js}"></script>
-<script type="text/javascript" th:src="@{/js/review-create.js}"></script>
+<script type="text/javascript" th:src="@{/js/review-edit.js}"></script>
 </body>
 </html>

@@ -15,3 +15,12 @@
     max-width: 7rem;
     margin: 0.3rem;
 }
+
+.anchor-review-edit{
+    color: darkgray;
+    margin-right: 0.5rem;
+}
+
+.anchor-review-edit:hover{
+    color: black;
+}
