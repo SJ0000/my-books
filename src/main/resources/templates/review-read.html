@@ -2,20 +2,20 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="(~{fragments/head :: head})">
     <title>#{book name}</title>
+    <meta charset="UTF-8">
 </head>
 <body>
 <nav th:replace="(~{fragments/nav :: nav})"></nav>
+<div id="dataContainer" th:value="${review.id}"></div>
 <div class="container mt-5 w-75">
     <div class="row">
         <article>
             <header class="mb-4">
                 <h1 class="fw-bolder mb-1" th:text="${review.bookTitle}"></h1>
-                <div class="text-muted fst-italic mb-2" th:text="${'Posted on ' + review.modifedAt}">Posted on January
-                    1, 2023
-                </div>
+                <div class="text-muted fst-italic mb-2" th:text="${'Posted on ' + review.modifedAt}"></div>
                 <div class="d-flex justify-content-end">
-                    <a class="anchor-review-edit" th:href="@{/review/edit(id=${review.id})}">수정</a>
-                    <a class="anchor-review-edit" th:href="@{/review/remove(id=${review.id})}">삭제</a>
+                    <button id="editButton" class="btn-review-edit">수정</button>
+                    <button class="btn-review-edit" data-bs-toggle="modal" data-bs-target="#removeConfirmModal">삭제</button>
                 </div>
             </header>
             <textarea class="form-control" readonly rows="20" cols="50" aria-label="content"
@@ -23,6 +23,25 @@
         </article>
     </div>
 </div>
+<!-- modal -->
+<div class="modal fade" id="removeConfirmModal" tabindex="-1" aria-labelledby="removeConfirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">리뷰 삭제</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                정말로 삭제하시겠습니까?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                <button type="button" id="removeConfirmButton" class="btn btn-primary">확인</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script type="text/javascript" th:src="@{/bootstrap/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/review-read.js}"></script>
 </body>
 </html>

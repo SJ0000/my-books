@@ -100,6 +100,8 @@ public class ReviewService {
             throw new Unauthorized();
     }
 
-
-
+    @Transactional
+    public void removeReview(Long id){
+        reviewRepository.deleteById(id);
+    }
 }

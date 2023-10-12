@@ -95,4 +95,12 @@ public class ReviewController {
         return "redirect:/reviews/" + id;
     }
 
+    @AuthRequired
+    @DeleteMapping("/reviews/{id}")
+    public ResponseEntity<Void> deleteReview(@PathVariable Long id, UserSession userSession){
+        reviewService.verifyOwner(id, userSession.getUserId());
+        reviewService.removeReview(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }

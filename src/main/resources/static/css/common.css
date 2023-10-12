@@ -16,11 +16,14 @@
     margin: 0.3rem;
 }
 
-.anchor-review-edit{
-    color: darkgray;
-    margin-right: 0.5rem;
+.btn-review-edit{
+    color:darkgray;
+    background: transparent;
+    border: transparent;
 }
 
-.anchor-review-edit:hover{
+.btn-review-edit:hover{
     color: black;
 }
+
+
