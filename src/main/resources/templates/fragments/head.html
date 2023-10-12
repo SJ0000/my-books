@@ -1,10 +1,11 @@
 <!doctype html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head th:fragment="head">
+<head th:fragment="head (title)">
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title th:text="${title}"></title>
     <link rel="stylesheet" th:href="@{/bootstrap/bootstrap.min.css}"/>
     <link rel="stylesheet" th:href="@{/bootstrap/custom.css}"/>
     <link rel="stylesheet" th:href="@{/css/common.css}"/>

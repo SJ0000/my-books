@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import sungjin.mybooks.config.PasswordEncoder;
+import sungjin.mybooks.domain.User;
 import sungjin.mybooks.dto.request.SignUp;
 import sungjin.mybooks.service.BookService;
 import sungjin.mybooks.service.ReviewService;
@@ -28,8 +29,9 @@ public class InitializerForViewTest {
                 .password("123")
                 .build();
 
-        Long userId = userService.signUpUser(signup);
+        userService.signUpUser(signup);
+        User user = userService.findUserByEmail(signup.getEmail());
 
-        reviewService.writeReview(userId, bookId,"123123123123123");
+        reviewService.writeReview(user.getId(), bookId,"123123123123123");
     }
 }

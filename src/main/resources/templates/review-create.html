@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="(~{fragments/head :: head})">
+<head th:replace="(~{fragments/head :: head (${book.title})})">
     <title>#{book name}</title>
 </head>
 <body>

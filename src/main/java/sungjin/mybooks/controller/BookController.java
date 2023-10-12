@@ -17,15 +17,6 @@ public class BookController {
 
     private final BookService bookService;
 
-    @GetMapping("/books/{id}")
-    public ResponseEntity<BookResponse> getBook(@PathVariable Long id){
-        Book book = bookService.findBookById(id);
-        BookResponse bookInfo = new BookResponse(book);
-
-        return ResponseEntity.ok()
-                .body(bookInfo);
-    }
-
     /**
      * @param page
      * Spring Data JPA와는 다르게

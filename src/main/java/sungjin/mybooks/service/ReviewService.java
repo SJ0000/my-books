@@ -62,7 +62,7 @@ public class ReviewService {
 
     @Transactional
     public Long writeReview(Long userId, Long bookId, String content){
-        User user = userService.findUserByEmail(userId);
+        User user = userService.findUserById(userId);
         Book book = bookService.findBookById(bookId);
 
         Review review = Review.builder()

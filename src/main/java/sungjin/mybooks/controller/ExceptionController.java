@@ -2,25 +2,25 @@ package sungjin.mybooks.controller;
 
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import sungjin.mybooks.exception.MyBooksException;
 import sungjin.mybooks.dto.response.ErrorResponse;
+import sungjin.mybooks.exception.NotFound;
 
 @ControllerAdvice
 public class ExceptionController {
 
     @ExceptionHandler(MyBooksException.class)
-    public ResponseEntity<ErrorResponse> error(MyBooksException e) {
-        int statusCode = e.getStatusCode();
+    public String error(MyBooksException e, Model model) {
+        model.addAttribute("status", e.getStatusCode());
+        if(e instanceof NotFound){
+            model.addAttribute("message", "페이지를 찾을 수 없습니다.");
+        }else{
+            model.addAttribute("message", e.getMessage());
+        }
 
-        ErrorResponse response = ErrorResponse.builder()
-                .code(String.valueOf(statusCode))
-                .message(e.getMessage())
-                .build();
-
-        return ResponseEntity.status(statusCode)
-                .body(response);
+        return "error";
     }
-
 }

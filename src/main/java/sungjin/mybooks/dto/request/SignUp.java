@@ -1,5 +1,6 @@
 package sungjin.mybooks.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,8 +11,11 @@ import lombok.ToString;
 @ToString
 public class SignUp {
 
+    @NotBlank
     private String email;
+    @NotBlank
     private String name;
+    @NotBlank
     private String password;
 
     @Builder
