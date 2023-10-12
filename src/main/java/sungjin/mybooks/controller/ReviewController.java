@@ -20,6 +20,7 @@ import sungjin.mybooks.dto.response.PageResponse;
 import sungjin.mybooks.dto.response.ReviewResponse;
 import sungjin.mybooks.service.BookService;
 import sungjin.mybooks.service.ReviewService;
+import sungjin.mybooks.service.UserService;
 
 import java.net.URI;
 
@@ -53,9 +54,7 @@ public class ReviewController {
     @GetMapping("/reviews/{id}")
     public String getReview(@PathVariable Long id, Model model) {
         Review review = reviewService.findReview(id);
-
         model.addAttribute("review", new ReviewResponse(review));
-
         return "review-read";
     }
 
@@ -70,36 +69,30 @@ public class ReviewController {
     @AuthRequired
     @PostMapping("/review")
     public String createReview(@Valid ReviewCreate reviewCreate, @RequestParam Long bookId, UserSession userSession) {
-
         Long userId = userSession.getUserId();
         Long id = reviewService.writeReview(userId, bookId, reviewCreate.getContent());
-
         return "redirect:/reviews/" + id;
     }
 
     @AuthRequired
     @GetMapping("/review/edit")
     public String editReviewForm(@RequestParam Long id, UserSession userSession, Model model) {
-        reviewService.verifyOwner(id, userSession.getUserId());
         Review review = reviewService.findReview(id);
         model.addAttribute("review", new ReviewResponse(review));
         return "review-edit";
     }
 
-
     @AuthRequired
     @PostMapping("/review/edit")
     public String editReview(@RequestParam Long id, @Valid ReviewEdit reviewEdit, UserSession userSession) {
-        reviewService.verifyOwner(id,userSession.getUserId());
-        reviewService.editReview(id, reviewEdit.getContent());
+        reviewService.editReview(id, userSession.getUserId(), reviewEdit.getContent());
         return "redirect:/reviews/" + id;
     }
 
     @AuthRequired
     @DeleteMapping("/reviews/{id}")
     public ResponseEntity<Void> deleteReview(@PathVariable Long id, UserSession userSession){
-        reviewService.verifyOwner(id, userSession.getUserId());
-        reviewService.removeReview(id);
+        reviewService.removeReview(id, userSession.getUserId());
         return ResponseEntity.noContent().build();
     }
 

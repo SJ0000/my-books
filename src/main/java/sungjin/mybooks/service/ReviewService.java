@@ -2,6 +2,9 @@ package sungjin.mybooks.service;
 
 
 import lombok.RequiredArgsConstructor;
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.Signature;
+import org.aspectj.lang.reflect.SourceLocation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -87,20 +90,21 @@ public class ReviewService {
     }
 
     @Transactional
-    public void editReview(Long id, String content){
-        Review review = findReview(id);
+    public void editReview(Long reviewId, Long userId, String content){
+        verifyOwner(reviewId,userId);
+        Review review = findReview(reviewId);
         review.editContent(content);
     }
 
-    @Transactional(readOnly = true)
-    public void verifyOwner(Long reviewId, Long userId){
+    @Transactional
+    public void removeReview(Long reviewId, Long userId){
+        verifyOwner(reviewId,userId);
+        reviewRepository.deleteById(reviewId);
+    }
+
+    private void verifyOwner(Long reviewId, Long userId){
         Review review = findReview(reviewId);
         if(!review.isOwner(userId))
             throw new Unauthorized();
-    }
-
-    @Transactional
-    public void removeReview(Long id){
-        reviewRepository.deleteById(id);
     }
 }
