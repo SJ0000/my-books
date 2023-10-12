@@ -1,5 +1,6 @@
 package sungjin.mybooks.config;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
@@ -9,6 +10,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import sungjin.mybooks.config.data.UserSession;
 import sungjin.mybooks.domain.Session;
+import sungjin.mybooks.exception.NotFound;
 import sungjin.mybooks.exception.Unauthorized;
 import sungjin.mybooks.repository.SessionRepository;
 import sungjin.mybooks.service.AuthService;
@@ -37,7 +39,7 @@ public class UserSessionResolver implements HandlerMethodArgumentResolver {
                 .orElseThrow(Unauthorized::new);
 
         String accessToken  = CookieUtils.getCookieValue(request.getCookies(), CookieNames.SESSION_ID)
-                        .orElseThrow(()-> new RuntimeException("Session Id cookie가 존재하지 않습니다."));
+                        .orElseThrow(()-> new NotFound(Cookie.class,"name",CookieNames.SESSION_ID));
 
         Session session = authService.findSession(accessToken)
                 .orElseThrow(Unauthorized::new);

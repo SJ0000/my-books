@@ -4,7 +4,6 @@ package sungjin.mybooks.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.web.server.Cookie;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -22,9 +21,6 @@ import sungjin.mybooks.service.UserService;
 import sungjin.mybooks.util.CookieNames;
 import sungjin.mybooks.util.CookieUtils;
 
-import java.net.URI;
-import java.time.Duration;
-
 
 @Slf4j
 @Controller
@@ -41,9 +37,9 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<Void> login(@Valid Login login){
+        authService.login(login);
 
-        authService.validateUser(login.getEmail(),login.getPassword());
-        User user = userService.findUser(login.getEmail());
+        User user = userService.findUserByEmail(login.getEmail());
         Session session = authService.createSession(user);
 
         ResponseCookie cookie = CookieUtils.createCookie(CookieNames.SESSION_ID, session.getAccessToken());
@@ -56,13 +52,12 @@ public class AuthController {
 
     @GetMapping("/signup")
     public String signUpForm(){
-        System.out.println("signup called");
         return "signup";
     }
 
     @PostMapping("/signup")
     public String signUp(@Valid SignUp singUp){
-        Long userId = userService.signUpUser(singUp);
+        userService.signUpUser(singUp);
         return "redirect:/login?after_signup=true";
     }
 
@@ -72,10 +67,10 @@ public class AuthController {
 
         authService.removeSession(userSession.getAccessToken());
 
-        ResponseCookie cookie = CookieUtils.createCookieForExpire(CookieNames.SESSION_ID);
+        ResponseCookie cookieForExpire = CookieUtils.createCookieForExpire(CookieNames.SESSION_ID);
 
         return ResponseEntity.noContent()
-                .header(HttpHeaders.SET_COOKIE,cookie.toString())
+                .header(HttpHeaders.SET_COOKIE,cookieForExpire.toString())
                 .build();
     }
 

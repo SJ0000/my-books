@@ -23,7 +23,7 @@ public class PasswordEncoder {
     }
 
     public String encode(String text){
-        String saltedText = addSalt(text);
+        String saltedText = text+salt;
         byte[] bytes = encrypt(saltedText.getBytes(CHARSET));
         return bytesToHexString(bytes);
     }
@@ -32,12 +32,8 @@ public class PasswordEncoder {
         try{
             return MessageDigest.getInstance(ALGORITHM);
         }catch(NoSuchAlgorithmException e){
-            throw new RuntimeException("PasswordEncoder 생성 중 오류가 발생하였습니다.");
+            throw new RuntimeException("PasswordEncoder 생성에 필요한 암호화 알고리즘을 찾을 수 없습니다. ALGORITHM = " + ALGORITHM);
         }
-    }
-
-    private String addSalt(String text){
-        return text+salt;
     }
 
     private byte[] encrypt(byte[] bytes){

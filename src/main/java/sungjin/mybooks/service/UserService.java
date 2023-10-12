@@ -17,7 +17,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public Long signUpUser(SignUp join){
+    public void signUpUser(SignUp join){
         if(existsUser(join.getEmail())){
             throw new RuntimeException("이미 존재하는 사용자입니다. email = " + join.getEmail());
         }
@@ -29,17 +29,16 @@ public class UserService {
                 .password(password)
                 .build();
         userRepository.save(user);
-        return user.getId();
     }
 
     @Transactional(readOnly = true)
-    public User findUser(String email){
+    public User findUserByEmail(String email){
         return userRepository.findByEmail(email)
                 .orElseThrow(()-> new NotFound(User.class, "email", email));
     }
 
     @Transactional(readOnly = true)
-    public User findUser(Long id){
+    public User findUserById(Long id){
         return userRepository.findById(id)
                 .orElseThrow(()-> new NotFound(User.class, "id", id));
     }

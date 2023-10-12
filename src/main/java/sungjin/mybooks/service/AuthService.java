@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import sungjin.mybooks.config.PasswordEncoder;
 import sungjin.mybooks.domain.Session;
 import sungjin.mybooks.domain.User;
+import sungjin.mybooks.dto.request.Login;
 import sungjin.mybooks.exception.InvalidLoginInformation;
 import sungjin.mybooks.exception.NotFound;
 import sungjin.mybooks.repository.SessionRepository;
@@ -23,9 +24,9 @@ public class AuthService {
     private final SessionRepository sessionRepository;
 
     @Transactional(readOnly = true)
-    public void validateUser(String email, String rawPassword){
-        User user = userService.findUser(email);
-        String encodedPassword = passwordEncoder.encode(rawPassword);
+    public void login(Login login){
+        User user = userService.findUserByEmail(login.getEmail());
+        String encodedPassword = passwordEncoder.encode(login.getPassword());
 
         if(!user.isCorrectPassword(encodedPassword)){
             throw new InvalidLoginInformation();

@@ -17,8 +17,6 @@ import sungjin.mybooks.repository.SessionRepository;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 class AuthServiceTest {
 
@@ -35,17 +33,17 @@ class AuthServiceTest {
     AuthService authService;
 
     @Test
-    @DisplayName("비밀번호가 일치하지 않을 경우 InvalidLoginInformation Exception 발생")
-    void validateUserTest() throws Exception {
+    @DisplayName("로그인 시 비밀번호가 일치하지 않을 경우 InvalidLoginInformation Exception 발생")
+    void loginTest() throws Exception {
         // given
         String password = "raw password";
         User user = MyBooksTestUtils.createUser(password);
 
-        BDDMockito.given(userService.findUser(Mockito.anyString()))
+        BDDMockito.given(userService.findUserByEmail(Mockito.anyString()))
                 .willReturn(user);
 
         // expected
-        Assertions.assertThatThrownBy(()-> authService.validateUser(user.getEmail(),"wrong password"))
+        Assertions.assertThatThrownBy(()-> authService.login(user.getEmail(),"wrong password"))
                 .isInstanceOf(InvalidLoginInformation.class);
     }
 
