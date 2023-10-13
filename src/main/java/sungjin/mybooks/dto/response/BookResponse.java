@@ -12,7 +12,7 @@ import sungjin.mybooks.domain.Book;
 @ToString
 public class BookResponse {
 
-    private Long id;
+    private final Long id;
     private final String isbn;
     private final String title;
     private final String thumbnail;

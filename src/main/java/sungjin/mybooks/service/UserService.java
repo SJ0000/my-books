@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sungjin.mybooks.config.PasswordEncoder;
 import sungjin.mybooks.domain.User;
+import sungjin.mybooks.exception.AlreadyExistsException;
 import sungjin.mybooks.exception.NotFound;
 import sungjin.mybooks.repository.UserRepository;
 import sungjin.mybooks.dto.request.SignUp;
@@ -19,7 +20,7 @@ public class UserService {
     @Transactional
     public void signUpUser(SignUp join){
         if(existsUser(join.getEmail())){
-            throw new RuntimeException("이미 존재하는 사용자입니다. email = " + join.getEmail());
+            throw new AlreadyExistsException(User.class,"email",join.getEmail());
         }
 
         String password = passwordEncoder.encode(join.getPassword());
@@ -43,8 +44,7 @@ public class UserService {
                 .orElseThrow(()-> new NotFound(User.class, "id", id));
     }
 
-    @Transactional(readOnly = true)
-    public boolean existsUser(String email){
+    private boolean existsUser(String email){
         return userRepository.findByEmail(email).isPresent();
     }
 

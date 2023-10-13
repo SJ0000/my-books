@@ -12,15 +12,12 @@ import sungjin.mybooks.exception.NotFound;
 @ControllerAdvice
 public class ExceptionController {
 
+    private static final String ERROR_MESSAGE = "잘못된 요청입니다.";
+
     @ExceptionHandler(MyBooksException.class)
     public String error(MyBooksException e, Model model) {
-        model.addAttribute("status", e.getStatusCode());
-        if(e instanceof NotFound){
-            model.addAttribute("message", "페이지를 찾을 수 없습니다.");
-        }else{
-            model.addAttribute("message", e.getMessage());
-        }
-
+        ErrorResponse error = new ErrorResponse(String.valueOf(e.getStatusCode()), ERROR_MESSAGE);
+        model.addAttribute("error", error);
         return "error";
     }
 }

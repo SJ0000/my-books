@@ -20,6 +20,7 @@ import java.util.UUID;
 public class AuthService {
 
     private final UserService userService;
+
     private final PasswordEncoder passwordEncoder;
     private final SessionRepository sessionRepository;
 

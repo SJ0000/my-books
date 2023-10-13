@@ -1,7 +1,6 @@
 package sungjin.mybooks.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,17 +21,7 @@ import java.util.Optional;
 public class BookService {
 
     private final BookRepository bookRepository;
-    private BookSearchApi bookSearchApi;
-
-    @Autowired
-    public BookService(BookRepository bookRepository, BookSearchApi bookSearchApi) {
-        this.bookRepository = bookRepository;
-        this.bookSearchApi = bookSearchApi;
-    }
-
-    public void setBookSearchApi(BookSearchApi bookSearchApi) {
-        this.bookSearchApi = bookSearchApi;
-    }
+    private final BookSearchApi bookSearchApi;
 
     @Value("${app.page-size}")
     private int pageSize;
@@ -70,7 +59,7 @@ public class BookService {
         List<BookResponse> data = result.getDocuments().stream()
                 .map(document ->
                         BookResponse.builder()
-                                .isbn(IsbnUtils.convertToISBN(document.getIsbn()))
+                                .isbn(IsbnUtils.convertToSingleIsbn(document.getIsbn()))
                                 .title(document.getTitle())
                                 .thumbnail(document.getThumbnail())
                                 .author(String.join(",",document.getAuthors()))
@@ -78,7 +67,7 @@ public class BookService {
                                 .build())
                 .toList();
 
-        int totalPage = (meta.getTotalCount() / pageSize) + (meta.getTotalCount() % pageSize == 0 ? 0 : 1);
+        int totalPage = (int) Math.ceil((double) meta.getTotalCount()/pageSize);
 
         return PageResponse.<BookResponse>builder()
                 .data(data)
@@ -93,7 +82,7 @@ public class BookService {
         return result.getDocuments().stream()
                 .map(document ->
                         Book.builder()
-                                .isbn(IsbnUtils.convertToISBN(document.getIsbn()))
+                                .isbn(IsbnUtils.convertToSingleIsbn(document.getIsbn()))
                                 .title(document.getTitle())
                                 .thumbnail(document.getThumbnail())
                                 .author(String.join(",",document.getAuthors()))

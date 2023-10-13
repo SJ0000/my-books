@@ -11,6 +11,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import sungjin.mybooks.MyBooksTestUtils;
 import sungjin.mybooks.config.PasswordEncoder;
 import sungjin.mybooks.domain.User;
+import sungjin.mybooks.dto.request.Login;
 import sungjin.mybooks.exception.InvalidLoginInformation;
 import sungjin.mybooks.exception.NotFound;
 import sungjin.mybooks.repository.SessionRepository;
@@ -43,7 +44,7 @@ class AuthServiceTest {
                 .willReturn(user);
 
         // expected
-        Assertions.assertThatThrownBy(()-> authService.login(user.getEmail(),"wrong password"))
+        Assertions.assertThatThrownBy(()-> authService.login(new Login(user.getEmail(),"wrong password")))
                 .isInstanceOf(InvalidLoginInformation.class);
     }
 

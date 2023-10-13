@@ -36,10 +36,4 @@ public class Book {
         this.author = author;
         this.publisher = publisher;
     }
-
-    public String[] getAuthors(){
-        return Optional.ofNullable(author)
-                .orElse("")
-                .split(" ");
-    }
 }

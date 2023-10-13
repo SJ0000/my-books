@@ -6,15 +6,14 @@ import sungjin.mybooks.domain.Review;
 import java.time.LocalDateTime;
 
 @Getter
-@Setter
 @ToString
 public class ReviewResponse {
 
-    private Long id;
-    private String bookTitle;
-    private String content;
-    private String thumbnail;
-    private LocalDateTime modifedAt;
+    private final Long id;
+    private final String bookTitle;
+    private final String content;
+    private final String thumbnail;
+    private final LocalDateTime modifedAt;
 
     public ReviewResponse(Review review) {
         this.id = review.getId();

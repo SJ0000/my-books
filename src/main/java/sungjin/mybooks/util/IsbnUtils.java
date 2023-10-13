@@ -3,11 +3,10 @@ package sungjin.mybooks.util;
 import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
-import java.util.Optional;
 
 public class IsbnUtils {
 
-    public static String convertToISBN(String isbn){
+    public static String convertToSingleIsbn(String isbn){
         if(!StringUtils.hasText(isbn))
             throw new RuntimeException("isbn is empty.");
 

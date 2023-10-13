@@ -22,8 +22,6 @@ public class User extends BaseTimeEntity{
     private String name;
     private String password;
 
-    private LocalDateTime createdAt;
-
     @Builder
     public User(String email, String name, String password) {
         this.email = email;
