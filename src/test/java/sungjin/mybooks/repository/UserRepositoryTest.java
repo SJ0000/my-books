@@ -23,7 +23,7 @@ class UserRepositoryTest {
     UserRepository userRepository;
 
     @Test
-    @DisplayName("findByEmail 호출 쿼리 테스트")
+    @DisplayName("이메일로 특정 사용자 조회")
     void findByEmailTest() throws Exception {
         // given
         User user = MyBooksTestUtils.createUser();

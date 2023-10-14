@@ -27,7 +27,7 @@ class ReviewRepositoryTest {
     ReviewRepository reviewRepository;
 
     @Test
-    @DisplayName("특정 사용자가 가진 책 리스트를 이름으로 검색하여 조회한다.")
+    @DisplayName("특정 사용자의 리뷰를 책 제목으로 검색하여 조회한다.")
     void findAllByBookTitleTest() throws Exception {
         // given
         User user = MyBooksTestUtils.createUser();
@@ -50,7 +50,7 @@ class ReviewRepositoryTest {
     }
 
     @Test
-    @DisplayName("특정 사용자가 가진 책 리스트를 최신순으로 조회한다.")
+    @DisplayName("특정 사용자의 리뷰를 최신순으로 조회한다.")
     void findRecentReviewsTest() throws Exception {
         // given
         User user = MyBooksTestUtils.createUser();
