@@ -33,7 +33,7 @@ public class BookService {
     }
 
     @Transactional
-    public Book findBookByIsbn(String isbn) {
+    public Book findOrCreateBook(String isbn) {
         Optional<Book> optionalBook = bookRepository.findByIsbn(isbn);
         if(optionalBook.isPresent())
             return optionalBook.get();

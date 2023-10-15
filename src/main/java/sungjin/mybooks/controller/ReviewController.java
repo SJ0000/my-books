@@ -54,7 +54,7 @@ public class ReviewController {
     @AuthRequired
     @GetMapping("/review-create")
     public String createReviewForm(Model model, @RequestParam String isbn) {
-        Book book = bookService.findBookByIsbn(isbn);
+        Book book = bookService.findOrCreateBook(isbn);
         model.addAttribute("book", new BookResponse(book));
         return "review-create";
     }
