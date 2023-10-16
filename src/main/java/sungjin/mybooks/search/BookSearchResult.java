@@ -42,6 +42,12 @@ public class BookSearchResult {
         private String thumbnail;
         private String status;
 
+        public String getConcatenatedAuthors(){
+            if(authors==null || authors.length == 0)
+                return "";
+            return String.join(",",authors);
+        }
+
     }
 
 

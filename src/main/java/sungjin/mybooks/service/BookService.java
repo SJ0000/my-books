@@ -62,7 +62,7 @@ public class BookService {
                                 .isbn(IsbnUtils.convertToSingleIsbn(document.getIsbn()))
                                 .title(document.getTitle())
                                 .thumbnail(document.getThumbnail())
-                                .author(String.join(",",document.getAuthors()))
+                                .author(document.getConcatenatedAuthors())
                                 .publisher(document.getPublisher())
                                 .build())
                 .toList();
@@ -85,10 +85,10 @@ public class BookService {
                                 .isbn(IsbnUtils.convertToSingleIsbn(document.getIsbn()))
                                 .title(document.getTitle())
                                 .thumbnail(document.getThumbnail())
-                                .author(String.join(",",document.getAuthors()))
+                                .author(document.getConcatenatedAuthors())
                                 .publisher(document.getPublisher())
                                 .build())
                 .findAny()
-                .orElseThrow(() -> new NotFound(BookResponse.class, "isbn", isbn));
+                .orElseThrow(() -> new NotFound(Book.class, "isbn", isbn));
     }
 }
