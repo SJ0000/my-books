@@ -54,7 +54,6 @@ public class MyBooksTestUtils {
                 .book(book)
                 .content(content)
                 .build();
-
     }
 
     public static LocalDateTime randomDateTime(){
