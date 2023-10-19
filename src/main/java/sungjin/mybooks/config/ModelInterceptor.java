@@ -25,7 +25,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ModelInterceptor implements HandlerInterceptor {
 
-    private static final String REQUEST_URI = "requestUri";
     private static final String THYMELEAF_UTILITY = "util";
     private static final String USER_INFO = "user";
 
