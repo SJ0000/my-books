@@ -5,14 +5,22 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import sungjin.mybooks.config.data.BookSearchApiProperties;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
+
 class BookSearchApiTest {
 
-    @Autowired
-    BookSearchApi searchApi;
+    private final BookSearchApi searchApi;
+
+    public BookSearchApiTest() {
+        BookSearchApiProperties properties = new BookSearchApiProperties();
+        properties.setHost("dapi.kakao.com");
+        properties.setUri("/v3/search/book");
+        properties.setAuthorization("KakaoAK e6655a4deee04490bcdbbe7faab5a3fb");
+        this.searchApi = new BookSearchApi(properties);
+    }
 
     @Test
     void test(){
