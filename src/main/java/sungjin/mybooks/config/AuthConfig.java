@@ -4,6 +4,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import sungjin.mybooks.config.data.PasswordEncoderProperties;
+import sungjin.mybooks.security.CustomPasswordEncoder;
+import sungjin.mybooks.security.PasswordEncoder;
 
 @Configuration
 @EnableConfigurationProperties(PasswordEncoderProperties.class)
@@ -17,6 +19,6 @@ public class AuthConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder(){
-        return new PasswordEncoder(properties);
+        return new CustomPasswordEncoder(properties);
     }
 }

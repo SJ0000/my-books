@@ -8,21 +8,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 import sungjin.mybooks.MyBooksTestUtils;
-import sungjin.mybooks.config.PasswordEncoder;
 import sungjin.mybooks.domain.Session;
 import sungjin.mybooks.domain.User;
 import sungjin.mybooks.repository.SessionRepository;
 import sungjin.mybooks.repository.UserRepository;
 import sungjin.mybooks.dto.request.SignUp;
 import sungjin.mybooks.dto.request.Login;
+import sungjin.mybooks.security.PasswordEncoder;
 import sungjin.mybooks.service.AuthService;
 import sungjin.mybooks.util.CookieNames;
 
@@ -31,7 +26,6 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.*;
 import static org.springframework.http.MediaType.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**

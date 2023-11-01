@@ -3,12 +3,12 @@ package sungjin.mybooks.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sungjin.mybooks.config.PasswordEncoder;
 import sungjin.mybooks.domain.User;
 import sungjin.mybooks.exception.AlreadyExistsException;
 import sungjin.mybooks.exception.NotFound;
 import sungjin.mybooks.repository.UserRepository;
 import sungjin.mybooks.dto.request.SignUp;
+import sungjin.mybooks.security.PasswordEncoder;
 
 @Service
 @RequiredArgsConstructor

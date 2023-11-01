@@ -4,13 +4,13 @@ package sungjin.mybooks.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sungjin.mybooks.config.PasswordEncoder;
 import sungjin.mybooks.domain.Session;
 import sungjin.mybooks.domain.User;
 import sungjin.mybooks.dto.request.Login;
 import sungjin.mybooks.exception.InvalidLoginInformation;
 import sungjin.mybooks.exception.NotFound;
 import sungjin.mybooks.repository.SessionRepository;
+import sungjin.mybooks.security.PasswordEncoder;
 
 import java.util.Optional;
 import java.util.UUID;

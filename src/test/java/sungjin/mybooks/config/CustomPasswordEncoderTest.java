@@ -1,29 +1,17 @@
 package sungjin.mybooks.config;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.properties.PropertyMapping;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import sungjin.mybooks.config.data.PasswordEncoderProperties;
+import sungjin.mybooks.security.CustomPasswordEncoder;
 
 import static org.assertj.core.api.Assertions.*;
 
 
-class PasswordEncoderTest {
+class CustomPasswordEncoderTest {
 
-    static PasswordEncoder passwordEncoder;
+    static CustomPasswordEncoder passwordEncoder;
 
     @BeforeAll
     static void init(){
@@ -31,7 +19,7 @@ class PasswordEncoderTest {
         PasswordEncoderProperties properties = new PasswordEncoderProperties();
         properties.setSalt("test");
         properties.setKeyStretchCount(3);
-        passwordEncoder = new PasswordEncoder(properties);
+        passwordEncoder = new CustomPasswordEncoder(properties);
     }
 
 

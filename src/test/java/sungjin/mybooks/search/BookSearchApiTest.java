@@ -23,16 +23,6 @@ class BookSearchApiTest {
     }
 
     @Test
-    void test(){
-        BookSearchResult dog = searchApi.search("dog",1,10);
-        BookSearchResult.Meta meta = dog.getMeta();
-        System.out.println(meta);
-        for (BookSearchResult.Document document : dog.getDocuments()) {
-            System.out.println(document);
-        }
-    }
-
-    @Test
     @DisplayName("ISBN으로 도서를 검색한다")
     void searchByIsbnTest(){
         String isbn = "9788960777330";

@@ -1,4 +1,4 @@
-package sungjin.mybooks.config;
+package sungjin.mybooks.security;
 
 
 import sungjin.mybooks.config.data.PasswordEncoderProperties;
@@ -9,7 +9,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 
-public class PasswordEncoder {
+public class CustomPasswordEncoder implements PasswordEncoder{
 
     private static final String ALGORITHM = "SHA-256";
     private static final Charset CHARSET = StandardCharsets.UTF_8;
@@ -17,11 +17,12 @@ public class PasswordEncoder {
     private final String salt;
     private final int keyStretchingCount;
 
-    public PasswordEncoder(PasswordEncoderProperties properties) {
+    public CustomPasswordEncoder(PasswordEncoderProperties properties) {
         this.salt = properties.getSalt();
         this.keyStretchingCount = properties.getKeyStretchCount();
     }
 
+    @Override
     public String encode(String text){
         String saltedText = text+salt;
         byte[] bytes = encrypt(saltedText.getBytes(CHARSET));

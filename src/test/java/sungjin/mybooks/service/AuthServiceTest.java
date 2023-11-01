@@ -10,13 +10,13 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import sungjin.mybooks.MyBooksTestUtils;
-import sungjin.mybooks.config.PasswordEncoder;
 import sungjin.mybooks.domain.Session;
 import sungjin.mybooks.domain.User;
 import sungjin.mybooks.dto.request.Login;
 import sungjin.mybooks.exception.InvalidLoginInformation;
 import sungjin.mybooks.exception.NotFound;
 import sungjin.mybooks.repository.SessionRepository;
+import sungjin.mybooks.security.PasswordEncoder;
 
 import java.util.Optional;
 

@@ -4,7 +4,6 @@ import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
-import sungjin.mybooks.config.PasswordEncoder;
 import sungjin.mybooks.domain.User;
 import sungjin.mybooks.dto.request.SignUp;
 import sungjin.mybooks.service.BookService;
