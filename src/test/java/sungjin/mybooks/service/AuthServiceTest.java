@@ -4,10 +4,7 @@ package sungjin.mybooks.service;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import sungjin.mybooks.MyBooksTestUtils;
 import sungjin.mybooks.domain.Session;
@@ -17,6 +14,7 @@ import sungjin.mybooks.exception.InvalidLoginInformation;
 import sungjin.mybooks.exception.NotFound;
 import sungjin.mybooks.repository.SessionRepository;
 import sungjin.mybooks.security.PasswordEncoder;
+import sungjin.mybooks.util.BypassPasswordEncoder;
 
 import java.util.Optional;
 
@@ -29,8 +27,8 @@ class AuthServiceTest {
     UserService userService;
     @Mock
     SessionRepository sessionRepository;
-    @Mock
-    PasswordEncoder passwordEncoder;
+    @Spy
+    PasswordEncoder passwordEncoder = new BypassPasswordEncoder();
 
     @InjectMocks
     AuthService authService;
@@ -44,9 +42,6 @@ class AuthServiceTest {
 
         BDDMockito.given(userService.findUserByEmail(Mockito.anyString()))
                 .willReturn(user);
-
-        BDDMockito.given(passwordEncoder.encode(Mockito.anyString()))
-                .willAnswer((answer)->  answer.getArgument(0));
 
         // expected
         assertThatThrownBy(()-> authService.login(new Login(user.getEmail(),"wrong password")))
@@ -79,5 +74,4 @@ class AuthServiceTest {
         assertThatThrownBy(()-> authService.removeSession("not exist session id"))
                 .isInstanceOf(NotFound.class);
     }
-
 }

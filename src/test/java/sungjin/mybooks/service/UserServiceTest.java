@@ -4,10 +4,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import sungjin.mybooks.MyBooksTestUtils;
 import sungjin.mybooks.security.CustomPasswordEncoder;
@@ -15,6 +12,7 @@ import sungjin.mybooks.domain.User;
 import sungjin.mybooks.dto.request.SignUp;
 import sungjin.mybooks.repository.UserRepository;
 import sungjin.mybooks.security.PasswordEncoder;
+import sungjin.mybooks.util.BypassPasswordEncoder;
 
 import java.util.Optional;
 
@@ -23,8 +21,8 @@ import java.util.Optional;
 class UserServiceTest {
     @Mock
     UserRepository userRepository;
-    @Mock
-    PasswordEncoder passwordEncoder;
+    @Spy
+    PasswordEncoder passwordEncoder = new BypassPasswordEncoder();
 
     @InjectMocks
     UserService userService;

@@ -28,7 +28,6 @@ public class AuthService {
     public void login(Login login){
         User user = userService.findUserByEmail(login.getEmail());
         String encodedPassword = passwordEncoder.encode(login.getPassword());
-
         if(!user.isCorrectPassword(encodedPassword)){
             throw new InvalidLoginInformation();
         }
