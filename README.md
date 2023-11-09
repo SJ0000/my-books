@@ -9,7 +9,9 @@ DTO의 사용 범위
 
 PasswordEncoder 직접 구현하기 + 암호화 정리 -- ok
 
-세션에 대한 공부, 정리 
+인터페이스를 사용해서 불필요한 mock 제거 -- ok
+
+세션에 대한 공부, 정리 -- ok
 
 로그인 한 사용자만 특정 경로에 접근할 수 있게 Interceptor 구현하기 + Interceptor 개념 정리
 
