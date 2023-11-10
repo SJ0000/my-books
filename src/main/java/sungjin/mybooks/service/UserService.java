@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sungjin.mybooks.domain.User;
+import sungjin.mybooks.dto.request.Login;
 import sungjin.mybooks.exception.AlreadyExistsException;
+import sungjin.mybooks.exception.InvalidLoginInformation;
 import sungjin.mybooks.exception.NotFound;
 import sungjin.mybooks.repository.UserRepository;
 import sungjin.mybooks.dto.request.SignUp;
@@ -30,6 +32,15 @@ public class UserService {
                 .password(password)
                 .build();
         userRepository.save(user);
+    }
+
+    @Transactional(readOnly = true)
+    public void validateForLogin(Login login) {
+        User user = findUserByEmail(login.getEmail());
+        String encodedPassword = passwordEncoder.encode(login.getPassword());
+        if (!user.isCorrectPassword(encodedPassword)) {
+            throw new InvalidLoginInformation();
+        }
     }
 
     @Transactional(readOnly = true)

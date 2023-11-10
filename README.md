@@ -13,6 +13,8 @@ PasswordEncoder 직접 구현하기 + 암호화 정리 -- ok
 
 세션에 대한 공부, 정리 -- ok
 
+redis를 이용한 세션 인증 기능 개발
+
 로그인 한 사용자만 특정 경로에 접근할 수 있게 Interceptor 구현하기 + Interceptor 개념 정리
 
 단위테스트 정리 +  Mock 관련 Annotation 정리

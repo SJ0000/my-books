@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import sungjin.mybooks.annotation.AuthRequired;
+import sungjin.mybooks.domain.Session;
 import sungjin.mybooks.exception.Unauthorized;
 import sungjin.mybooks.service.AuthService;
 import sungjin.mybooks.util.CookieNames;

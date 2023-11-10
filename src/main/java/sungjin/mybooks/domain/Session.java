@@ -5,25 +5,31 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.redis.core.TimeToLive;
 
 import java.time.LocalDateTime;
 
-@Entity
+@RedisHash
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Session extends BaseTimeEntity{
+public class Session {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String accessToken;
+    private String id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
+    private Long userId;
 
-    @Builder
-    public Session(String accessToken, User user) {
-        this.accessToken = accessToken;
-        this.user = user;
+    @TimeToLive
+    private Long timeToLiveSeconds;
+
+    private LocalDateTime expireDate;
+
+    public Session(String id, Long userId, Long timeToLiveSeconds) {
+        this.id = id;
+        this.userId = userId;
+        this.timeToLiveSeconds = timeToLiveSeconds;
+        this.expireDate = LocalDateTime.now().plusSeconds(timeToLiveSeconds);
     }
 }

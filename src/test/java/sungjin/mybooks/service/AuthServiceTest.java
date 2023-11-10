@@ -24,50 +24,16 @@ import static org.assertj.core.api.Assertions.*;
 class AuthServiceTest {
 
     @Mock
-    UserService userService;
-    @Mock
     SessionRepository sessionRepository;
-    @Spy
-    PasswordEncoder passwordEncoder = new BypassPasswordEncoder();
 
     @InjectMocks
     AuthService authService;
 
     @Test
-    @DisplayName("로그인 시 비밀번호가 일치하지 않을 경우 InvalidLoginInformation Exception 발생")
-    void loginTest() throws Exception {
-        // given
-        String password = "password";
-        User user = MyBooksTestUtils.createUser(password);
-
-        BDDMockito.given(userService.findUserByEmail(Mockito.anyString()))
-                .willReturn(user);
-
-        // expected
-        assertThatThrownBy(()-> authService.login(new Login(user.getEmail(),"wrong password")))
-                .isInstanceOf(InvalidLoginInformation.class);
-    }
-
-    @Test
-    @DisplayName("생성한 세션에는 argument로 전달된 User 값을 가지고 있어야 한다.")
-    void createSessionTest(){
-        //given
-        BDDMockito.given(sessionRepository.save(BDDMockito.any(Session.class)))
-                .willAnswer((answer)-> answer.getArgument(0));
-        User user = MyBooksTestUtils.createUser();
-
-        // when
-        Session session = authService.createSession(user);
-
-        // then
-        assertThat(session.getUser()).isEqualTo(user);
-    }
-
-    @Test
     @DisplayName("삭제할 세션이 존재하지 않는 경우 NotFound Exception 발생")
     void removeSessionTest() throws Exception {
         // given
-        BDDMockito.given(sessionRepository.findByAccessToken(Mockito.anyString()))
+        BDDMockito.given(sessionRepository.findById(Mockito.anyString()))
                 .willReturn(Optional.empty());
 
         // expected

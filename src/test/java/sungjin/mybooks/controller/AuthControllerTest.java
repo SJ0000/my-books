@@ -111,15 +111,15 @@ class AuthControllerTest {
         // given
         User user = MyBooksTestUtils.createUser();
         userRepository.save(user);
-        Session session = authService.createSession(user);
+        Session session = authService.createSession(user.getId());
 
         // expected
         mockMvc.perform(post("/logout")
                         .accept(APPLICATION_JSON)
-                        .cookie(new Cookie(CookieNames.SESSION_ID, session.getAccessToken())))
+                        .cookie(new Cookie(CookieNames.SESSION_ID, session.getId())))
                 .andExpect(status().isNoContent());
 
-        Optional<Session> optionalSession = sessionRepository.findByAccessToken(session.getAccessToken());
+        Optional<Session> optionalSession = sessionRepository.findById(session.getId());
 
         assertThat(optionalSession.isEmpty()).isTrue();
 

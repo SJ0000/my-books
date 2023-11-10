@@ -38,15 +38,15 @@ public class UserSessionResolver implements HandlerMethodArgumentResolver {
         HttpServletRequest request = Optional.ofNullable(webRequest.getNativeRequest(HttpServletRequest.class))
                 .orElseThrow(Unauthorized::new);
 
-        String accessToken  = CookieUtils.getCookieValue(request.getCookies(), CookieNames.SESSION_ID)
+        String sessionId  = CookieUtils.getCookieValue(request.getCookies(), CookieNames.SESSION_ID)
                         .orElseThrow(()-> new NotFound(Cookie.class,"name",CookieNames.SESSION_ID));
 
-        Session session = authService.findSession(accessToken)
+        Session session = authService.findSession(sessionId)
                 .orElseThrow(Unauthorized::new);
 
         return UserSession.builder()
-                .userId(session.getUser().getId())
-                .accessToken(accessToken)
+                .sessionId(sessionId)
+                .userId(session.getUserId())
                 .build();
     }
 }

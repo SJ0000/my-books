@@ -7,6 +7,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import sungjin.mybooks.MyBooksTestUtils;
+import sungjin.mybooks.dto.request.Login;
+import sungjin.mybooks.exception.InvalidLoginInformation;
 import sungjin.mybooks.security.CustomPasswordEncoder;
 import sungjin.mybooks.domain.User;
 import sungjin.mybooks.dto.request.SignUp;
@@ -15,6 +17,8 @@ import sungjin.mybooks.security.PasswordEncoder;
 import sungjin.mybooks.util.BypassPasswordEncoder;
 
 import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -43,5 +47,20 @@ class UserServiceTest {
         Assertions.assertThatThrownBy(() ->
                         userService.signUpUser(newUser))
                 .isInstanceOf(RuntimeException.class);
+    }
+
+    @Test
+    @DisplayName("로그인 시 비밀번호가 일치하지 않을 경우 InvalidLoginInformation Exception 발생")
+    void validateForLoginTest() throws Exception {
+        // given
+        String password = "password";
+        User user = MyBooksTestUtils.createUser(password);
+
+        BDDMockito.given(userRepository.findByEmail(Mockito.anyString()))
+                .willReturn(Optional.of(user));
+
+        // expected
+        assertThatThrownBy(()-> userService.validateForLogin(new Login(user.getEmail(),"wrong password")))
+                .isInstanceOf(InvalidLoginInformation.class);
     }
 }

@@ -37,12 +37,12 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<Void> login(@Valid Login login){
-        authService.login(login);
+        userService.validateForLogin(login);
 
         User user = userService.findUserByEmail(login.getEmail());
-        Session session = authService.createSession(user);
+        Session session = authService.createSession(user.getId());
 
-        ResponseCookie cookie = CookieUtils.createCookie(CookieNames.SESSION_ID, session.getAccessToken());
+        ResponseCookie cookie = CookieUtils.createCookie(CookieNames.SESSION_ID, session.getId());
 
         return ResponseEntity.status(HttpStatus.FOUND)
                 .header(HttpHeaders.SET_COOKIE,cookie.toString())
@@ -65,7 +65,7 @@ public class AuthController {
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(UserSession userSession){
 
-        authService.removeSession(userSession.getAccessToken());
+        authService.removeSession(userSession.getSessionId());
 
         ResponseCookie cookieForExpire = CookieUtils.createCookieForExpire(CookieNames.SESSION_ID);
 
