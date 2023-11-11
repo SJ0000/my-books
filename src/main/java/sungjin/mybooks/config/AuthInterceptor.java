@@ -27,18 +27,18 @@ public class AuthInterceptor implements HandlerInterceptor {
         if(!isAuthenticateRequired(handlerMethod))
             return true;
 
-        if(!isAuthenticated(request))
-            throw new Unauthorized();
+        authenticate(request);
 
         return true;
     }
 
-    private boolean isAuthenticated(HttpServletRequest request){
+    private void authenticate(HttpServletRequest request){
         Optional<String> optionalAccessToken = CookieUtils.getCookieValue(request.getCookies(), CookieNames.SESSION_ID);
         if(optionalAccessToken.isEmpty())
-            return false;
+            throw new Unauthorized();
 
-        return authService.isValidAccessToken(optionalAccessToken.get());
+        if(!authService.isValidAccessToken(optionalAccessToken.get()))
+            throw new Unauthorized();
     }
 
     private boolean isAuthenticateRequired(HandlerMethod handlerMethod){
