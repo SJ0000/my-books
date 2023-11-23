@@ -41,6 +41,7 @@ public class BookSearchApi {
     }
 
 
+    @Counted("api.search-book")
     private BookSearchResult apiSearch(MultiValueMap<String,String> queryParams){
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder
@@ -50,6 +51,4 @@ public class BookSearchApi {
                 .bodyToMono(BookSearchResult.class)
                 .block();
     }
-
-
 }
