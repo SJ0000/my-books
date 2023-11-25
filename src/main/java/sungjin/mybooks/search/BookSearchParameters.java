@@ -3,7 +3,6 @@ package sungjin.mybooks.search;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -44,7 +43,7 @@ public class BookSearchParameters {
                 .build();
     }
 
-    public MultiValueMap<String,String> getMultiValueMap(){
+    public MultiValueMap<String,String> createMultiValueMap(){
         MultiValueMap<String,String> map = new LinkedMultiValueMap<>();
 
         Optional.ofNullable(query)

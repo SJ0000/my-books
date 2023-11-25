@@ -10,6 +10,7 @@ import sungjin.mybooks.dto.response.PageResponse;
 import sungjin.mybooks.exception.NotFound;
 import sungjin.mybooks.repository.BookRepository;
 import sungjin.mybooks.search.BookSearchApi;
+import sungjin.mybooks.search.BookSearchParameters;
 import sungjin.mybooks.search.BookSearchResult;
 import sungjin.mybooks.util.IsbnUtils;
 
@@ -51,8 +52,9 @@ public class BookService {
     }
 
 
-    public PageResponse<BookResponse> apiSearch(String query, int page) {
-        BookSearchResult result = bookSearchApi.search(query, page, pageSize);
+    public PageResponse<BookResponse> apiSearch(String bookName, int page) {
+        BookSearchParameters parameters = BookSearchParameters.bookName(bookName, page, pageSize);
+        BookSearchResult result = bookSearchApi.request(parameters);
 
         BookSearchResult.Meta meta = result.getMeta();
 
@@ -77,7 +79,8 @@ public class BookService {
     }
 
     private Book apiSearchByIsbn(String isbn) {
-        BookSearchResult result = bookSearchApi.searchByIsbn(isbn);
+        BookSearchParameters parameters = BookSearchParameters.isbn(isbn);
+        BookSearchResult result = bookSearchApi.request(parameters);
 
         return result.getDocuments().stream()
                 .map(document ->
