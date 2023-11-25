@@ -24,9 +24,9 @@ class BookSearchApiTest {
 
     @Test
     @DisplayName("ISBN으로 도서를 검색한다")
-    void searchByIsbnTest(){
-        String isbn = "9788960777330";
-        BookSearchResult result = searchApi.searchByIsbn(isbn);
+    void requestTest(){
+        BookSearchParameters param = BookSearchParameters.isbn("9788960777330");
+        BookSearchResult result = searchApi.request(param);
         Assertions.assertThat(result.getDocuments().size()).isEqualTo(1);
         Assertions.assertThat(result.getDocuments().get(0).getTitle()).isEqualTo("자바 ORM 표준 JPA 프로그래밍");
     }

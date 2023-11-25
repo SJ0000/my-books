@@ -56,7 +56,7 @@ class BookServiceTest {
 
         given(bookRepository.findByIsbn(isbn))
                 .willReturn(Optional.empty());
-        given(bookSearchApi.searchByIsbn(isbn))
+        given(bookSearchApi.request(Mockito.any()))
                 .willReturn(documentEmptyResult);
         assertThatThrownBy(()->bookService.findOrCreateBook(isbn))
                 .isInstanceOf(NotFound.class);
