@@ -32,6 +32,10 @@ dependencies {
 	runtimeOnly 'com.h2database:h2'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation ('it.ozimov:embedded-redis:0.7.3') {
+		//slf4j Multiple bindings Error
+		exclude group: "org.slf4j", module: "slf4j-simple"
+	}
 }
 
 tasks.named('test') {
