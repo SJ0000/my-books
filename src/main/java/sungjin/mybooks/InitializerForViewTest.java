@@ -12,7 +12,7 @@ import sungjin.mybooks.service.UserService;
 
 @Component
 @RequiredArgsConstructor
-@Profile("debug")
+@Profile("local")
 public class InitializerForViewTest {
 
     private final BookService bookService;

@@ -33,11 +33,11 @@ public class AuthInterceptor implements HandlerInterceptor {
     }
 
     private void authenticate(HttpServletRequest request){
-        Optional<String> optionalAccessToken = CookieUtils.getCookieValue(request.getCookies(), CookieNames.SESSION_ID);
-        if(optionalAccessToken.isEmpty())
+        Optional<String> optionalSessionId = CookieUtils.getCookieValue(request.getCookies(), CookieNames.SESSION_ID);
+        if(optionalSessionId.isEmpty())
             throw new Unauthorized();
 
-        if(!authService.isValidAccessToken(optionalAccessToken.get()))
+        if(!authService.isValidAccessToken(optionalSessionId.get()))
             throw new Unauthorized();
     }
 

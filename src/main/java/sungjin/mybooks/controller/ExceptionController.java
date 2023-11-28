@@ -18,6 +18,7 @@ public class ExceptionController {
 
     @ExceptionHandler(MyBooksException.class)
     public String error(MyBooksException e, Model model) {
+        log.error("MyBooksException", e);
         ErrorResponse error = new ErrorResponse(String.valueOf(e.getStatusCode()), ERROR_MESSAGE);
         model.addAttribute("error", error);
         return "error";
