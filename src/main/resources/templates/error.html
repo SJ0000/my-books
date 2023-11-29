@@ -6,8 +6,10 @@
 <body>
 <div class="d-flex align-items-center justify-content-center vh-100">
     <div class="text-center">
-        <h1 class="display-1 fw-bold" th:text="${error.code}">404</h1>
-        <p class="fs-3" th:text="${error.message}">Page not found.</p>
+<!--        <h1 class="display-1 fw-bold" th:text="${error.code}">404</h1>-->
+<!--        <p class="fs-3" th:text="${error.message}">Page not found.</p>-->
+        <h1 class="display-1 fw-bold" th:text="${status}">404</h1>
+        <p class="fs-3" th:text="${error}">Page not found.</p>
         <a href="/" class="btn btn-primary">Go Home</a>
     </div>
 </div>

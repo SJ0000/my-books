@@ -1,13 +1,17 @@
 package sungjin.mybooks.controller;
 
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import sungjin.mybooks.exception.MyBooksException;
-import sungjin.mybooks.dto.response.ErrorResponse;
 import sungjin.mybooks.exception.NotFound;
 
 @Slf4j
@@ -17,18 +21,14 @@ public class ExceptionController {
     private static final String ERROR_MESSAGE = "잘못된 요청입니다.";
 
     @ExceptionHandler(MyBooksException.class)
-    public String error(MyBooksException e, Model model) {
+    public String error(MyBooksException e, Model model, HttpServletResponse response) {
         log.error("MyBooksException", e);
-        ErrorResponse error = new ErrorResponse(String.valueOf(e.getStatusCode()), ERROR_MESSAGE);
-        model.addAttribute("error", error);
-        return "error";
-    }
 
-    @ExceptionHandler(Exception.class)
-    public String unknownError(Exception e, Model model) {
-        log.error("unknown error", e);
-        ErrorResponse error = new ErrorResponse("500", "Unknown Error");
-        model.addAttribute("error", error);
+        HttpStatus status = HttpStatus.valueOf(e.getStatusCode());
+        model.addAttribute("status",status.value());
+        model.addAttribute("error",status.getReasonPhrase());
+
+        response.setStatus(e.getStatusCode());
         return "error";
     }
 }
