@@ -18,8 +18,6 @@ import sungjin.mybooks.exception.NotFound;
 @ControllerAdvice
 public class ExceptionController {
 
-    private static final String ERROR_MESSAGE = "잘못된 요청입니다.";
-
     @ExceptionHandler(MyBooksException.class)
     public String error(MyBooksException e, Model model, HttpServletResponse response) {
         log.error("MyBooksException", e);
