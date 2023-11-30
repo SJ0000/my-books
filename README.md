@@ -1,8 +1,8 @@
-# my-books
+# MY Books
 
 ---
 ## 프로젝트 구조
-그림
+<img width="1090" alt="image" src="https://github.com/SJ0000/my-books/assets/41468526/3aef5874-7e94-4a00-8b05-6c40ee3fc88c">
 
 ---
 ## 프로젝트 소개 및 목적
@@ -45,22 +45,14 @@
 
 ---
 
-### ERD
-
-그림
-
-
----
 ## TODO
+
+- CI/CD
+  - Github Action 
 
 - 기능 추가
   - 도서 관리 기능 고도화
     - 책 분류
-  - 도서 리뷰 SNS사이트로 변경
+  - 다른 사람 리뷰도 조회 가능하게? SNS 처럼?
+    - 댓글 기능 추가
     - 게시글 추천 기능 추가
-
- 
-
-
-
-
