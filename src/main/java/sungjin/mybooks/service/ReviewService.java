@@ -8,12 +8,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sungjin.mybooks.domain.Book;
+import sungjin.mybooks.domain.Like;
 import sungjin.mybooks.domain.Review;
 import sungjin.mybooks.domain.User;
 import sungjin.mybooks.dto.response.PageResponse;
 import sungjin.mybooks.dto.response.ReviewResponse;
 import sungjin.mybooks.exception.NotFound;
 import sungjin.mybooks.exception.Unauthorized;
+import sungjin.mybooks.repository.LikeRepository;
 import sungjin.mybooks.repository.ReviewRepository;
 
 import java.util.List;
@@ -26,12 +28,13 @@ public class ReviewService {
     private final BookService bookService;
 
     private final ReviewRepository reviewRepository;
+    private final LikeRepository likeRepository;
 
     @Value("${app.page-size}")
     private int pageSize;
 
     @Transactional(readOnly = true)
-    public PageResponse<ReviewResponse> findRecentReviews(Long userId, int page){
+    public PageResponse<ReviewResponse> findRecentReviews(Long userId, int page) {
         Page<Review> result = reviewRepository.findRecentReviews(userId, PageRequest.of(page, pageSize));
 
         List<ReviewResponse> data = result.stream()
@@ -46,8 +49,8 @@ public class ReviewService {
     }
 
     @Transactional(readOnly = true)
-    public PageResponse<ReviewResponse> findReviewsByBookTitle(Long userId, String title, int page){
-        Page<Review> result = reviewRepository.findAllByBookTitle(userId,title, PageRequest.of(page,pageSize));
+    public PageResponse<ReviewResponse> findReviewsByBookTitle(Long userId, String title, int page) {
+        Page<Review> result = reviewRepository.findAllByBookTitle(userId, title, PageRequest.of(page, pageSize));
 
         List<ReviewResponse> data = result.stream()
                 .map(ReviewResponse::new)
@@ -61,7 +64,7 @@ public class ReviewService {
     }
 
     @Transactional
-    public Long writeReview(Long userId, Long bookId, String content){
+    public Long writeReview(Long userId, Long bookId, String content) {
         User user = userService.findUserById(userId);
         Book book = bookService.findBookById(bookId);
 
@@ -76,27 +79,40 @@ public class ReviewService {
     }
 
     @Transactional(readOnly = true)
-    public Review findReview(Long id){
+    public Review findReview(Long id) {
         return reviewRepository.findById(id)
-                .orElseThrow( ()-> new NotFound(Review.class, "id", id));
+                .orElseThrow(() -> new NotFound(Review.class, "id", id));
     }
 
     @Transactional
-    public void editReview(Long reviewId, Long userId, String content){
-        verifyOwner(reviewId,userId);
+    public void editReview(Long reviewId, Long userId, String content) {
+        verifyOwner(reviewId, userId);
         Review review = findReview(reviewId);
         review.editContent(content);
     }
 
     @Transactional
-    public void removeReview(Long reviewId, Long userId){
-        verifyOwner(reviewId,userId);
+    public void removeReview(Long reviewId, Long userId) {
+        verifyOwner(reviewId, userId);
         reviewRepository.deleteById(reviewId);
     }
 
-    private void verifyOwner(Long reviewId, Long userId){
+    @Transactional
+    public void addLikeIfNotExists(Long reviewId, Long userId) {
+        if (!likeRepository.exists(userId, reviewId)) {
+            User user = userService.findUserById(userId);
+            Review review = findReview(reviewId);
+            likeRepository.save(Like.builder()
+                    .user(user)
+                    .review(review)
+                    .build());
+        }
+    }
+
+
+    private void verifyOwner(Long reviewId, Long userId) {
         Review review = findReview(reviewId);
-        if(!review.isOwner(userId))
+        if (!review.isOwner(userId))
             throw new Unauthorized();
     }
 }

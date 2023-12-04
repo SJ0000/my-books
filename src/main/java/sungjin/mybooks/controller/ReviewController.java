@@ -89,4 +89,10 @@ public class ReviewController {
         return ResponseEntity.noContent().build();
     }
 
+    @AuthRequired
+    @PostMapping("/reviews/{id}/like")
+    public ResponseEntity<Void> likeReview(@PathVariable Long id, UserSession userSession){
+        reviewService.addLikeIfNotExists(id, userSession.getUserId());
+        return ResponseEntity.ok().build();
+    }
 }
