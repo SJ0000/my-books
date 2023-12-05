@@ -1,10 +1,14 @@
 package sungjin.mybooks.exception;
 
-public class NotFound extends MyBooksException{
+public class NotFound extends MyBooksException {
 
+
+    public NotFound(Class<?> clazz, String findBy, String value) {
+        super(String.format("%s not found. %s = %s", clazz.getSimpleName(), findBy, value));
+    }
 
     public NotFound(Class<?> clazz, String findBy, Object value) {
-        super(String.format("%s not found. %s = %s", clazz.getSimpleName(), findBy, value.toString()));
+        this(clazz, findBy, value.toString());
     }
 
     @Override
