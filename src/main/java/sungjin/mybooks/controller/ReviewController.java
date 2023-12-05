@@ -15,6 +15,7 @@ import sungjin.mybooks.dto.response.BookResponse;
 import sungjin.mybooks.dto.response.PageResponse;
 import sungjin.mybooks.dto.response.ReviewResponse;
 import sungjin.mybooks.service.BookService;
+import sungjin.mybooks.service.LikeService;
 import sungjin.mybooks.service.ReviewService;
 
 @Controller
@@ -23,6 +24,7 @@ public class ReviewController {
 
     private final ReviewService reviewService;
     private final BookService bookService;
+    private final LikeService likeService;
 
     @AuthRequired
     @GetMapping("/reviews")
@@ -92,7 +94,14 @@ public class ReviewController {
     @AuthRequired
     @PostMapping("/reviews/{id}/like")
     public ResponseEntity<Void> likeReview(@PathVariable Long id, UserSession userSession){
-        reviewService.addLikeIfNotExists(id, userSession.getUserId());
+        likeService.likeReview(userSession.getUserId(), id);
         return ResponseEntity.ok().build();
+    }
+
+    @AuthRequired
+    @DeleteMapping("/reviews/{id}/like")
+    public ResponseEntity<Void> deleteLikeReview(@PathVariable Long id, UserSession userSession){
+        likeService.likeReview(userSession.getUserId(), id);
+        return ResponseEntity.noContent().build();
     }
 }

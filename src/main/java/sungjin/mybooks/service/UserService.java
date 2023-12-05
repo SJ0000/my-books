@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sungjin.mybooks.domain.User;
 import sungjin.mybooks.dto.request.Login;
-import sungjin.mybooks.exception.AlreadyExistsException;
+import sungjin.mybooks.exception.AlreadyExists;
 import sungjin.mybooks.exception.InvalidLoginInformation;
 import sungjin.mybooks.exception.NotFound;
 import sungjin.mybooks.repository.UserRepository;
@@ -22,7 +22,7 @@ public class UserService {
     @Transactional
     public void signUpUser(SignUp join){
         if(existsUser(join.getEmail())){
-            throw new AlreadyExistsException(User.class,"email",join.getEmail());
+            throw new AlreadyExists(User.class,"email",join.getEmail());
         }
 
         String password = passwordEncoder.encode(join.getPassword());

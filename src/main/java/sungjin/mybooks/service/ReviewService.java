@@ -28,7 +28,6 @@ public class ReviewService {
     private final BookService bookService;
 
     private final ReviewRepository reviewRepository;
-    private final LikeRepository likeRepository;
 
     @Value("${app.page-size}")
     private int pageSize;
@@ -96,19 +95,6 @@ public class ReviewService {
         verifyOwner(reviewId, userId);
         reviewRepository.deleteById(reviewId);
     }
-
-    @Transactional
-    public void addLikeIfNotExists(Long reviewId, Long userId) {
-        if (!likeRepository.exists(userId, reviewId)) {
-            User user = userService.findUserById(userId);
-            Review review = findReview(reviewId);
-            likeRepository.save(Like.builder()
-                    .user(user)
-                    .review(review)
-                    .build());
-        }
-    }
-
 
     private void verifyOwner(Long reviewId, Long userId) {
         Review review = findReview(reviewId);

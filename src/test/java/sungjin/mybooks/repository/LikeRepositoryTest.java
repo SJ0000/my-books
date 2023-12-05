@@ -34,9 +34,6 @@ class LikeRepositoryTest {
     @Autowired
     LikeRepository likeRepository;
 
-    @Autowired
-    TestEntityManager em;
-
     @BeforeEach
     void beforeEach(){
         User user = MyBooksTestUtils.createUser();
@@ -45,8 +42,6 @@ class LikeRepositoryTest {
         bookRepository.save(book);
         Review review = MyBooksTestUtils.createReview(user, book, "content");
         reviewRepository.save(review);
-        em.flush();
-        em.clear();
     }
 
 
@@ -67,5 +62,25 @@ class LikeRepositoryTest {
 
         boolean exists = likeRepository.exists(user.getId(), review.getId());
         assertThat(exists).isTrue();
+    }
+
+    @Test
+    @DisplayName("named query 메서드 findByUserIdAndReviewIdTest 테스트")
+    void findByUserIdAndReviewIdTest() {
+        // given
+        User user = userRepository.findAll().get(0);
+        Review review = reviewRepository.findAll().get(0);
+        likeRepository.save(Like.builder()
+                .user(user)
+                .review(review)
+                .build());
+
+        // when
+        Optional<Like> optionalLike = likeRepository.findByUserIdAndReviewId(user.getId(), review.getId());
+
+        // then
+        assertThat(optionalLike.isPresent()).isTrue();
+        assertThat(optionalLike.get().getUser()).isEqualTo(user);
+        assertThat(optionalLike.get().getReview()).isEqualTo(review);
     }
 }
