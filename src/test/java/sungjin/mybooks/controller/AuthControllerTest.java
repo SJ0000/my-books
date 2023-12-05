@@ -122,7 +122,21 @@ class AuthControllerTest {
         Optional<Session> optionalSession = sessionRepository.findById(session.getId());
 
         assertThat(optionalSession.isEmpty()).isTrue();
-
     }
+
+    @Test
+    @DisplayName("GET /login 호출시 login 페이지를 전달한다.")
+    void loginForm() throws Exception {
+        mockMvc.perform(get("/login"))
+                .andExpect(view().name("login"));
+    }
+
+    @Test
+    @DisplayName("GET /singup 호출시 signup 페이지를 전달한다.")
+    void signUpForm() throws Exception {
+        mockMvc.perform(get("/signup"))
+                .andExpect(view().name("signup"));
+    }
+
 
 }
