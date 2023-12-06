@@ -25,7 +25,7 @@ public class LikeService {
     @Transactional
     public void likeReview(Long userId, Long reviewId) {
         if (likeRepository.exists(userId, reviewId))
-            throw new AlreadyExists(Like.class, "reviewId, userId", reviewId + " " + userId);
+            throw new AlreadyExists(Like.class, "reviewId, userId", reviewId + ", " + userId);
 
         Review review = reviewRepository.getReferenceById(reviewId);
         User user = userRepository.getReferenceById(userId);

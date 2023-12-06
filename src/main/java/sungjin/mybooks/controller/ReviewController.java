@@ -18,6 +18,8 @@ import sungjin.mybooks.service.BookService;
 import sungjin.mybooks.service.LikeService;
 import sungjin.mybooks.service.ReviewService;
 
+import java.net.URI;
+
 @Controller
 @RequiredArgsConstructor
 public class ReviewController {
@@ -55,7 +57,7 @@ public class ReviewController {
 
     @AuthRequired
     @GetMapping("/review-create")
-    public String createReviewForm(Model model, @RequestParam String isbn) {
+    public String reviewCreateForm(Model model, @RequestParam String isbn) {
         Book book = bookService.findOrCreateBook(isbn);
         model.addAttribute("book", new BookResponse(book));
         return "review-create";
@@ -86,22 +88,23 @@ public class ReviewController {
 
     @AuthRequired
     @DeleteMapping("/reviews/{id}")
-    public ResponseEntity<Void> deleteReview(@PathVariable Long id, UserSession userSession){
+    public ResponseEntity<Void> deleteReview(@PathVariable Long id, UserSession userSession) {
         reviewService.removeReview(id, userSession.getUserId());
         return ResponseEntity.noContent().build();
     }
 
     @AuthRequired
     @PostMapping("/reviews/{id}/like")
-    public ResponseEntity<Void> likeReview(@PathVariable Long id, UserSession userSession){
+    public ResponseEntity<Void> likeReview(@PathVariable Long id, UserSession userSession) {
         likeService.likeReview(userSession.getUserId(), id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.created(URI.create("/reviews/" + id))
+                .build();
     }
 
     @AuthRequired
     @DeleteMapping("/reviews/{id}/like")
-    public ResponseEntity<Void> deleteLikeReview(@PathVariable Long id, UserSession userSession){
-        likeService.likeReview(userSession.getUserId(), id);
+    public ResponseEntity<Void> deleteLikeReview(@PathVariable Long id, UserSession userSession) {
+        likeService.cancelLikeReview(userSession.getUserId(), id);
         return ResponseEntity.noContent().build();
     }
 }

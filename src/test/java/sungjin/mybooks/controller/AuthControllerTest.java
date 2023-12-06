@@ -115,7 +115,6 @@ class AuthControllerTest {
 
         // expected
         mockMvc.perform(post("/logout")
-                        .accept(APPLICATION_JSON)
                         .cookie(new Cookie(CookieNames.SESSION_ID, session.getId())))
                 .andExpect(status().isNoContent());
 
