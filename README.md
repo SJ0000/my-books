@@ -42,7 +42,7 @@
 * [세션 인증 방식 구현을 위한 공부](https://dot-heath-6d7.notion.site/5b5ab2ed5bbf45f2a7f031508b899198)
 * [PasswordEncoder 구현 + 암호화 공부](https://dot-heath-6d7.notion.site/PasswordEncoder-dcaa3fe0698d47a28e3711cbbac93859)
 * [Spring Actuator - Private Method Counting 하기](https://dot-heath-6d7.notion.site/Spring-Actuator-Private-Method-Counting-348d01b2d27745e4ae1d02c59293027e)
-
+* [JPA 연관관계가 매핑된 객체 저장시 불필요한 select 호출 없애기 (getReferenceById)](https://dot-heath-6d7.notion.site/JPA-select-getReferenceById-04bc47b2ab91429ca7ab1183f9e3b81e?pvs=4)
 ---
 
 ## TODO
