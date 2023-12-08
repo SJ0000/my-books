@@ -1,13 +1,13 @@
 package sungjin.mybooks.domain;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 import sungjin.mybooks.MyBooksTestUtils;
+import sungjin.mybooks.domain.review.domain.Review;
+import sungjin.mybooks.domain.user.domain.User;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class ReviewTest {
 

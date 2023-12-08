@@ -1,29 +1,23 @@
 package sungjin.mybooks.service;
 
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.util.ReflectionTestUtils;
-import sungjin.mybooks.MyBooksTestUtils;
-import sungjin.mybooks.domain.Book;
-import sungjin.mybooks.exception.NotFound;
-import sungjin.mybooks.repository.BookRepository;
-import sungjin.mybooks.search.BookSearchApi;
-import sungjin.mybooks.search.BookSearchResult;
+import sungjin.mybooks.domain.book.service.BookService;
+import sungjin.mybooks.global.exception.NotFound;
+import sungjin.mybooks.domain.book.repository.BookRepository;
+import sungjin.mybooks.infra.search.BookSearchApi;
+import sungjin.mybooks.infra.search.BookSearchResult;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
-import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)

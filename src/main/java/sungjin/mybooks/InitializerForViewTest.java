@@ -4,11 +4,11 @@ import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
-import sungjin.mybooks.domain.User;
-import sungjin.mybooks.dto.request.SignUp;
-import sungjin.mybooks.service.BookService;
-import sungjin.mybooks.service.ReviewService;
-import sungjin.mybooks.service.UserService;
+import sungjin.mybooks.domain.user.domain.User;
+import sungjin.mybooks.domain.user.dto.SignUp;
+import sungjin.mybooks.domain.book.service.BookService;
+import sungjin.mybooks.domain.review.service.ReviewService;
+import sungjin.mybooks.domain.user.service.UserService;
 
 @Component
 @RequiredArgsConstructor

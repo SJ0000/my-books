@@ -1,9 +1,9 @@
 package sungjin.mybooks;
 
 import org.springframework.test.util.ReflectionTestUtils;
-import sungjin.mybooks.domain.Book;
-import sungjin.mybooks.domain.User;
-import sungjin.mybooks.domain.Review;
+import sungjin.mybooks.domain.book.domain.Book;
+import sungjin.mybooks.domain.user.domain.User;
+import sungjin.mybooks.domain.review.domain.Review;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;

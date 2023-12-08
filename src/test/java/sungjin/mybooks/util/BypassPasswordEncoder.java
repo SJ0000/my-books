@@ -1,6 +1,6 @@
 package sungjin.mybooks.util;
 
-import sungjin.mybooks.security.PasswordEncoder;
+import sungjin.mybooks.domain.user.encrypt.PasswordEncoder;
 
 public class BypassPasswordEncoder implements PasswordEncoder {
     @Override

@@ -11,15 +11,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import sungjin.mybooks.MyBooksTestUtils;
-import sungjin.mybooks.domain.Session;
-import sungjin.mybooks.domain.User;
-import sungjin.mybooks.repository.SessionRepository;
-import sungjin.mybooks.repository.UserRepository;
-import sungjin.mybooks.dto.request.SignUp;
-import sungjin.mybooks.dto.request.Login;
-import sungjin.mybooks.security.PasswordEncoder;
-import sungjin.mybooks.service.AuthService;
-import sungjin.mybooks.util.CookieNames;
+import sungjin.mybooks.domain.user.domain.Session;
+import sungjin.mybooks.domain.user.domain.User;
+import sungjin.mybooks.domain.user.repository.SessionRepository;
+import sungjin.mybooks.domain.user.repository.UserRepository;
+import sungjin.mybooks.domain.user.dto.SignUp;
+import sungjin.mybooks.domain.user.dto.Login;
+import sungjin.mybooks.domain.user.encrypt.PasswordEncoder;
+import sungjin.mybooks.domain.user.service.AuthService;
+import sungjin.mybooks.global.util.CookieNames;
 
 import java.util.Optional;
 

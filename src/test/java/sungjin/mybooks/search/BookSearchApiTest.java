@@ -3,11 +3,10 @@ package sungjin.mybooks.search;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import sungjin.mybooks.config.data.BookSearchApiProperties;
-
-import static org.junit.jupiter.api.Assertions.*;
+import sungjin.mybooks.infra.search.BookSearchApiProperties;
+import sungjin.mybooks.infra.search.BookSearchApi;
+import sungjin.mybooks.infra.search.BookSearchParameters;
+import sungjin.mybooks.infra.search.BookSearchResult;
 
 
 class BookSearchApiTest {

@@ -3,34 +3,30 @@ package sungjin.mybooks.service;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.util.ReflectionTestUtils;
 import sungjin.mybooks.MyBooksTestUtils;
-import sungjin.mybooks.domain.Review;
-import sungjin.mybooks.domain.User;
-import sungjin.mybooks.dto.response.PageResponse;
-import sungjin.mybooks.dto.response.ReviewResponse;
-import sungjin.mybooks.exception.NotFound;
-import sungjin.mybooks.exception.Unauthorized;
-import sungjin.mybooks.repository.ReviewRepository;
+import sungjin.mybooks.domain.book.service.BookService;
+import sungjin.mybooks.domain.review.domain.Review;
+import sungjin.mybooks.domain.review.service.ReviewService;
+import sungjin.mybooks.domain.user.domain.User;
+import sungjin.mybooks.domain.user.service.UserService;
+import sungjin.mybooks.domain.common.model.PageModel;
+import sungjin.mybooks.domain.review.model.ReviewModel;
+import sungjin.mybooks.global.exception.Unauthorized;
+import sungjin.mybooks.domain.review.repository.ReviewRepository;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
-import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
-import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -65,7 +61,7 @@ class ReviewServiceTest {
                 });
 
         // when
-        PageResponse<ReviewResponse> result = reviewService.findRecentReviews(1L, 0);
+        PageModel<ReviewModel> result = reviewService.findRecentReviews(1L, 0);
 
         // then
         assertThat(result.getPageInfo().getTotalPage()).isEqualTo(2);
@@ -93,7 +89,7 @@ class ReviewServiceTest {
                 });
 
         // when
-        PageResponse<ReviewResponse> result = reviewService.findRecentReviews(1L, 0);
+        PageModel<ReviewModel> result = reviewService.findRecentReviews(1L, 0);
 
         // then
         assertThat(result.getPageInfo().getTotalPage()).isEqualTo(2);

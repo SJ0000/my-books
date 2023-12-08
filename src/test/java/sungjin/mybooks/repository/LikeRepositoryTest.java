@@ -1,26 +1,23 @@
 package sungjin.mybooks.repository;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.transaction.annotation.Transactional;
 import sungjin.mybooks.MyBooksTestUtils;
-import sungjin.mybooks.domain.Book;
-import sungjin.mybooks.domain.Like;
-import sungjin.mybooks.domain.Review;
-import sungjin.mybooks.domain.User;
+import sungjin.mybooks.domain.book.domain.Book;
+import sungjin.mybooks.domain.review.domain.Like;
+import sungjin.mybooks.domain.book.repository.BookRepository;
+import sungjin.mybooks.domain.review.domain.Review;
+import sungjin.mybooks.domain.review.repository.LikeRepository;
+import sungjin.mybooks.domain.review.repository.ReviewRepository;
+import sungjin.mybooks.domain.user.domain.User;
+import sungjin.mybooks.domain.user.repository.UserRepository;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 class LikeRepositoryTest {

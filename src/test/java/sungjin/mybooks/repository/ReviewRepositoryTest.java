@@ -8,9 +8,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.util.ReflectionTestUtils;
 import sungjin.mybooks.MyBooksTestUtils;
-import sungjin.mybooks.domain.Book;
-import sungjin.mybooks.domain.User;
-import sungjin.mybooks.domain.Review;
+import sungjin.mybooks.domain.book.domain.Book;
+import sungjin.mybooks.domain.book.repository.BookRepository;
+import sungjin.mybooks.domain.review.repository.ReviewRepository;
+import sungjin.mybooks.domain.user.domain.User;
+import sungjin.mybooks.domain.review.domain.Review;
+import sungjin.mybooks.domain.user.repository.UserRepository;
 
 import java.util.List;
 

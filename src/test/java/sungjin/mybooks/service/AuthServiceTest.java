@@ -6,15 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
-import sungjin.mybooks.MyBooksTestUtils;
-import sungjin.mybooks.domain.Session;
-import sungjin.mybooks.domain.User;
-import sungjin.mybooks.dto.request.Login;
-import sungjin.mybooks.exception.InvalidLoginInformation;
-import sungjin.mybooks.exception.NotFound;
-import sungjin.mybooks.repository.SessionRepository;
-import sungjin.mybooks.security.PasswordEncoder;
-import sungjin.mybooks.util.BypassPasswordEncoder;
+import sungjin.mybooks.domain.user.service.AuthService;
+import sungjin.mybooks.global.exception.NotFound;
+import sungjin.mybooks.domain.user.repository.SessionRepository;
 
 import java.util.Optional;
 

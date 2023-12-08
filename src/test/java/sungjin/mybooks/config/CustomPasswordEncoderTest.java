@@ -3,8 +3,8 @@ package sungjin.mybooks.config;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import sungjin.mybooks.config.data.PasswordEncoderProperties;
-import sungjin.mybooks.security.CustomPasswordEncoder;
+import sungjin.mybooks.domain.user.encrypt.PasswordEncoderProperties;
+import sungjin.mybooks.domain.user.encrypt.CustomPasswordEncoder;
 
 import static org.assertj.core.api.Assertions.*;
 
