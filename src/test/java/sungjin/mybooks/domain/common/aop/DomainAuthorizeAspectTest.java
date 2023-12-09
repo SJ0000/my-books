@@ -68,6 +68,5 @@ class DomainAuthorizeAspectTest {
         // expected
         assertThatThrownBy(()-> reviewService.editReview(review.getId(),user.getId()+1,"1"))
                 .isInstanceOf(RuntimeException.class);
-
     }
 }

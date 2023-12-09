@@ -97,10 +97,4 @@ public class ReviewService {
     public void removeReview(Long reviewId, Long userId) {
         reviewRepository.deleteById(reviewId);
     }
-
-    private void verifyOwner(Long reviewId, Long userId) {
-        Review review = findReview(reviewId);
-        if (!review.isOwner(userId))
-            throw new Unauthorized();
-    }
 }
