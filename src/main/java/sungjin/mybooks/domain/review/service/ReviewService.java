@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sungjin.mybooks.domain.book.domain.Book;
+import sungjin.mybooks.domain.common.annotation.DomainAuthorize;
 import sungjin.mybooks.domain.review.domain.Review;
 import sungjin.mybooks.domain.user.domain.User;
 import sungjin.mybooks.domain.user.service.UserService;
@@ -84,15 +85,16 @@ public class ReviewService {
     }
 
     @Transactional
+    @DomainAuthorize(Review.class)
     public void editReview(Long reviewId, Long userId, String content) {
-        verifyOwner(reviewId, userId);
         Review review = findReview(reviewId);
         review.editContent(content);
+        System.out.println("content = " + review.getContent());
     }
 
     @Transactional
+    @DomainAuthorize(Review.class)
     public void removeReview(Long reviewId, Long userId) {
-        verifyOwner(reviewId, userId);
         reviewRepository.deleteById(reviewId);
     }
 

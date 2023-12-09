@@ -32,8 +32,9 @@ public class DomainAuthorizeAspect {
     }
 
     private Long getDomainId(JoinPoint joinPoint, Class<?> domainType) {
+        String parameterName = domainType.getSimpleName()+"id";
         return ParameterExtractor.extractByAnnotation(joinPoint, domainType)
-                .orElseGet(() -> ParameterExtractor.extractByName(joinPoint, USER_ID_VARIABLE_NAME)
+                .orElseGet(() -> ParameterExtractor.extractByName(joinPoint, parameterName)
                         .orElseThrow(() -> new RuntimeException("parameter not found")));
     }
 }
