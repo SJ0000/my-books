@@ -4,25 +4,17 @@ import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
-import org.aspectj.lang.reflect.MethodSignature;
 import sungjin.mybooks.domain.common.annotation.DomainAuthorize;
-import sungjin.mybooks.domain.common.annotation.DomainId;
 import sungjin.mybooks.domain.common.annotation.UserId;
-import sungjin.mybooks.domain.common.domain.security.DomainAuthorizationManager;
-import sungjin.mybooks.global.exception.NotFound;
-
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Parameter;
-import java.util.Optional;
+import sungjin.mybooks.domain.common.domain.security.DomainAuthorizeManager;
 
 @Aspect
 @RequiredArgsConstructor
-public class DomainAuthorizationAspect {
+public class DomainAuthorizeAspect {
 
     private static final String USER_ID_VARIABLE_NAME = "userId";
 
-    private final DomainAuthorizationManager authorizationManager;
+    private final DomainAuthorizeManager authorizationManager;
 
     @Before("@annotation(domainAuthorize)")
     public void authorizeDomain(JoinPoint joinPoint, DomainAuthorize domainAuthorize) {

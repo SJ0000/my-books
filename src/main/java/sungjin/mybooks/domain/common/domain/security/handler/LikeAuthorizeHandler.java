@@ -8,7 +8,7 @@ import sungjin.mybooks.global.exception.NotFound;
 import sungjin.mybooks.global.exception.Unauthorized;
 
 @RequiredArgsConstructor
-public class LikeAuthorization implements DomainAuthorizationHandler {
+public class LikeAuthorizeHandler implements DomainAuthorizeHandler {
 
     private final LikeRepository likeRepository;
 

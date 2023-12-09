@@ -8,7 +8,7 @@ import sungjin.mybooks.global.exception.NotFound;
 import sungjin.mybooks.global.exception.Unauthorized;
 
 @RequiredArgsConstructor
-public class CommentAuthorization implements DomainAuthorizationHandler {
+public class CommentAuthorizeHandler implements DomainAuthorizeHandler {
 
     private final CommentRepository commentRepository;
 
