@@ -31,8 +31,4 @@ public class Comment extends BaseTimeEntity {
         this.review = review;
         this.content = content;
     }
-
-    public boolean isOwner(Long userId){
-        return user.getId().equals(userId);
-    }
 }
