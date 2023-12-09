@@ -10,7 +10,7 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import sungjin.mybooks.domain.common.annotation.AuthRequired;
+import sungjin.mybooks.domain.common.annotation.AuthenticationRequired;
 import sungjin.mybooks.global.data.UserSession;
 import sungjin.mybooks.domain.user.domain.Session;
 import sungjin.mybooks.domain.user.domain.User;
@@ -61,7 +61,7 @@ public class AuthController {
         return "redirect:/login?after_signup=true";
     }
 
-    @AuthRequired
+    @AuthenticationRequired
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(UserSession userSession){
 

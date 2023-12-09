@@ -7,7 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import sungjin.mybooks.domain.common.annotation.AuthRequired;
+import sungjin.mybooks.domain.common.annotation.AuthenticationRequired;
 import sungjin.mybooks.global.data.UserSession;
 import sungjin.mybooks.domain.book.domain.Book;
 import sungjin.mybooks.domain.review.domain.Review;
@@ -28,7 +28,7 @@ public class ReviewController {
     private final BookService bookService;
     private final LikeService likeService;
 
-    @AuthRequired
+    @AuthenticationRequired
     @GetMapping("/reviews")
     public String userReviews(UserSession userSession, @RequestParam(defaultValue = "") String query, @RequestParam(defaultValue = "1") int page, Model model) {
         Long userId = userSession.getUserId();
@@ -55,7 +55,7 @@ public class ReviewController {
         return "review-read";
     }
 
-    @AuthRequired
+    @AuthenticationRequired
     @GetMapping("/review-create")
     public String reviewCreateForm(Model model, @RequestParam String isbn) {
         Book book = bookService.findOrCreateBook(isbn);
@@ -63,7 +63,7 @@ public class ReviewController {
         return "review-create";
     }
 
-    @AuthRequired
+    @AuthenticationRequired
     @PostMapping("/review")
     public String createReview(@RequestParam Long bookId, String content, UserSession userSession) {
         Long userId = userSession.getUserId();
@@ -71,7 +71,7 @@ public class ReviewController {
         return "redirect:/reviews/" + id;
     }
 
-    @AuthRequired
+    @AuthenticationRequired
     @GetMapping("/review/edit")
     public String editReviewForm(@RequestParam Long id, Model model) {
         Review review = reviewService.findReview(id);
@@ -79,21 +79,21 @@ public class ReviewController {
         return "review-edit";
     }
 
-    @AuthRequired
+    @AuthenticationRequired
     @PostMapping("/review/edit")
     public String editReview(@RequestParam Long id, String content, UserSession userSession) {
         reviewService.editReview(id, userSession.getUserId(), content);
         return "redirect:/reviews/" + id;
     }
 
-    @AuthRequired
+    @AuthenticationRequired
     @DeleteMapping("/reviews/{id}")
     public ResponseEntity<Void> deleteReview(@PathVariable Long id, UserSession userSession) {
         reviewService.removeReview(id, userSession.getUserId());
         return ResponseEntity.noContent().build();
     }
 
-    @AuthRequired
+    @AuthenticationRequired
     @PostMapping("/reviews/{id}/like")
     public ResponseEntity<Void> likeReview(@PathVariable Long id, UserSession userSession) {
         likeService.likeReview(userSession.getUserId(), id);
@@ -101,7 +101,7 @@ public class ReviewController {
                 .build();
     }
 
-    @AuthRequired
+    @AuthenticationRequired
     @DeleteMapping("/reviews/{id}/like")
     public ResponseEntity<Void> deleteLikeReview(@PathVariable Long id, UserSession userSession) {
         likeService.cancelLikeReview(userSession.getUserId(), id);
