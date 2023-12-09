@@ -10,7 +10,7 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import sungjin.mybooks.global.common.AuthRequired;
+import sungjin.mybooks.domain.common.annotation.AuthRequired;
 import sungjin.mybooks.global.data.UserSession;
 import sungjin.mybooks.domain.user.domain.Session;
 import sungjin.mybooks.domain.user.domain.User;

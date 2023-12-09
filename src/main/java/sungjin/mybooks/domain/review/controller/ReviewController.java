@@ -7,7 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import sungjin.mybooks.global.common.AuthRequired;
+import sungjin.mybooks.domain.common.annotation.AuthRequired;
 import sungjin.mybooks.global.data.UserSession;
 import sungjin.mybooks.domain.book.domain.Book;
 import sungjin.mybooks.domain.review.domain.Review;

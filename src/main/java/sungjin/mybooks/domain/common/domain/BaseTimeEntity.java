@@ -1,4 +1,4 @@
-package sungjin.mybooks.global.common;
+package sungjin.mybooks.domain.common.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

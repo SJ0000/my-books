@@ -1,4 +1,4 @@
-package sungjin.mybooks.global.common;
+package sungjin.mybooks.domain.common.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

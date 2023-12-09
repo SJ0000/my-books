@@ -5,7 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import sungjin.mybooks.global.common.BaseTimeEntity;
+import sungjin.mybooks.domain.common.domain.BaseTimeEntity;
 
 @Entity
 @Getter
