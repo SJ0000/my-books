@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RequiredArgsConstructor
-public class DomainAuthorizeManager {
+public class DomainAuthorizationManager {
 
     private final Map<Class<?>, DomainAuthorizeHandler> handlers = new HashMap<>();
     private final UserRepository userRepository;

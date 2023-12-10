@@ -6,7 +6,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import sungjin.mybooks.domain.common.annotation.DomainAuthorize;
 import sungjin.mybooks.domain.common.annotation.UserId;
-import sungjin.mybooks.domain.common.domain.security.DomainAuthorizeManager;
+import sungjin.mybooks.domain.common.domain.security.DomainAuthorizationManager;
 
 @Aspect
 @RequiredArgsConstructor
@@ -14,7 +14,7 @@ public class DomainAuthorizeAspect {
 
     private static final String USER_ID_VARIABLE_NAME = "userId";
 
-    private final DomainAuthorizeManager authorizationManager;
+    private final DomainAuthorizationManager authorizationManager;
 
     @Before("@annotation(domainAuthorize)")
     public void authorizeDomain(JoinPoint joinPoint, DomainAuthorize domainAuthorize) {
