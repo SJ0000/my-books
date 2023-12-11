@@ -2,6 +2,7 @@ package sungjin.mybooks.environment;
 
 import org.springframework.test.util.ReflectionTestUtils;
 import sungjin.mybooks.domain.book.domain.Book;
+import sungjin.mybooks.domain.review.domain.Comment;
 import sungjin.mybooks.domain.user.domain.User;
 import sungjin.mybooks.domain.review.domain.Review;
 
@@ -56,15 +57,23 @@ public class MyBooksTestUtils {
                 .build();
     }
 
-    public static LocalDateTime randomDateTime(){
+    public static Comment createComment(User user, Review review, String content) {
+        return Comment.builder()
+                .user(user)
+                .review(review)
+                .content(content)
+                .build();
+    }
+
+    public static LocalDateTime randomDateTime() {
         long bound = System.currentTimeMillis();
         long epochSecond = ThreadLocalRandom.current().nextLong(bound);
         return LocalDateTime.ofEpochSecond(epochSecond, 0, ZoneOffset.UTC);
     }
 
-    public static String toFormData(Object object){
+    public static String toFormData(Object object) {
         return Arrays.stream(object.getClass().getDeclaredFields())
-                .map(field -> field.getName() + "=" + ReflectionTestUtils.getField(object,field.getName()))
+                .map(field -> field.getName() + "=" + ReflectionTestUtils.getField(object, field.getName()))
                 .reduce((a, b) -> a + "&" + b)
                 .orElseGet(() -> "");
     }

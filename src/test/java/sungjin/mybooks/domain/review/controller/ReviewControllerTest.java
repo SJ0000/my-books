@@ -10,6 +10,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
+import sungjin.mybooks.domain.review.domain.Comment;
+import sungjin.mybooks.domain.review.repository.CommentRepository;
 import sungjin.mybooks.environment.MyBooksTestUtils;
 import sungjin.mybooks.domain.book.domain.Book;
 import sungjin.mybooks.domain.review.domain.Like;
@@ -53,6 +55,8 @@ class ReviewControllerTest {
     ReviewRepository reviewRepository;
     @Autowired
     LikeRepository likeRepository;
+    @Autowired
+    CommentRepository commentRepository;
     @Autowired
     AuthService authService;
     @Autowired
@@ -248,7 +252,7 @@ class ReviewControllerTest {
 
         // expected
         mockMvc.perform(post("/reviews/{id}/like", review.getId())
-                .cookie(new Cookie(CookieNames.SESSION_ID, session.getId())))
+                        .cookie(new Cookie(CookieNames.SESSION_ID, session.getId())))
                 .andExpect(status().isCreated());
 
         Like like = likeRepository.findAll().get(0);
@@ -267,7 +271,7 @@ class ReviewControllerTest {
         Review review = MyBooksTestUtils.createReview(user, book, "review content 1");
         reviewRepository.save(review);
 
-        likeRepository.save(new Like(review,user));
+        likeRepository.save(new Like(review, user));
         Session session = authService.createSession(user.getId());
 
         // expected
@@ -277,6 +281,60 @@ class ReviewControllerTest {
 
         Optional<Like> optionalLike = likeRepository.findByUserIdAndReviewId(user.getId(), review.getId());
         assertThat(optionalLike.isEmpty()).isTrue();
+    }
+
+    @Test
+    @DisplayName("POST /reviews/{id}/comment 호출시 리뷰에 comment 추가 후 /reviews/{id} redirect")
+    void addComment() throws Exception {
+        // given
+        User reviewWriter = MyBooksTestUtils.createUser();
+        userRepository.save(reviewWriter);
+        Book book = MyBooksTestUtils.createBook();
+        bookRepository.save(book);
+        Review review = MyBooksTestUtils.createReview(reviewWriter, book, "review content 1");
+        reviewRepository.save(review);
+
+        User commentWriter = MyBooksTestUtils.createUser();
+        userRepository.save(commentWriter);
+        String comment = "good review";
+        Session session = authService.createSession(commentWriter.getId());
+
+        // expected
+        mockMvc.perform(post("/reviews/{id}/comment", review.getId())
+                        .cookie(new Cookie(CookieNames.SESSION_ID, session.getId()))
+                        .contentType(APPLICATION_FORM_URLENCODED)
+                        .content("comment=" + comment))
+                .andExpect(redirectedUrl("/reviews/" + review.getId()));
+
+        Comment findComment = commentRepository.findAll().get(0);
+        System.out.println(findComment.getUser().getId() + " " + findComment.getReview().getId() + " " + findComment.getContent());
+        assertThat(findComment.getUser()).isEqualTo(commentWriter);
+        assertThat(findComment.getContent()).isEqualTo(comment);
+    }
+
+    @Test
+    @DisplayName("DELETE /comments/{id} 호출시 리뷰 삭제 후 204 NO CONTENT 응답")
+    void removeComment() throws Exception {
+        // given
+        User reviewWriter = MyBooksTestUtils.createUser();
+        userRepository.save(reviewWriter);
+        Book book = MyBooksTestUtils.createBook();
+        bookRepository.save(book);
+        Review review = MyBooksTestUtils.createReview(reviewWriter, book, "review content 1");
+        reviewRepository.save(review);
+        User commentWriter = MyBooksTestUtils.createUser();
+        userRepository.save(commentWriter);
+        Comment comment = MyBooksTestUtils.createComment(commentWriter, review, "111");
+        commentRepository.save(comment);
+
+
+        Session session = authService.createSession(commentWriter.getId());
+        // expected
+        mockMvc.perform(delete("/comments/{id}", comment.getId())
+                        .cookie(new Cookie(CookieNames.SESSION_ID, session.getId())))
+                .andExpect(status().isNoContent());
+
+        assertThat(commentRepository.findAll()).isEmpty();
     }
 }
 

@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import sungjin.mybooks.domain.common.annotation.AuthenticationRequired;
+import sungjin.mybooks.domain.review.service.CommentService;
 import sungjin.mybooks.global.data.UserSession;
 import sungjin.mybooks.domain.book.domain.Book;
 import sungjin.mybooks.domain.review.domain.Review;
@@ -27,6 +28,7 @@ public class ReviewController {
     private final ReviewService reviewService;
     private final BookService bookService;
     private final LikeService likeService;
+    private final CommentService commentService;
 
     @AuthenticationRequired
     @GetMapping("/reviews")
@@ -90,6 +92,21 @@ public class ReviewController {
     @DeleteMapping("/reviews/{id}")
     public ResponseEntity<Void> deleteReview(@PathVariable Long id, UserSession userSession) {
         reviewService.removeReview(id, userSession.getUserId());
+        return ResponseEntity.noContent().build();
+    }
+
+    @AuthenticationRequired
+    @PostMapping("/reviews/{id}/comment")
+    public String createComment(@PathVariable Long id, String comment, UserSession userSession){
+        System.out.println("comment = " + comment);
+        commentService.addComment(userSession.getUserId(),id, comment);
+        return "redirect:/reviews/" + id;
+    }
+
+    @AuthenticationRequired
+    @DeleteMapping("/comments/{id}")
+    public ResponseEntity<Void> removeComment(@PathVariable Long id, UserSession userSession){
+        commentService.removeComment(userSession.getUserId(),id);
         return ResponseEntity.noContent().build();
     }
 
