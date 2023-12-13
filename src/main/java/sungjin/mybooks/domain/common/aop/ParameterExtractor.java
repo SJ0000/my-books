@@ -2,9 +2,7 @@ package sungjin.mybooks.domain.common.aop;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
-import sungjin.mybooks.domain.common.annotation.UserId;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Parameter;
 import java.util.Arrays;
 import java.util.Optional;

@@ -3,8 +3,8 @@ package sungjin.mybooks.environment;
 import org.springframework.test.util.ReflectionTestUtils;
 import sungjin.mybooks.domain.book.domain.Book;
 import sungjin.mybooks.domain.review.domain.Comment;
-import sungjin.mybooks.domain.user.domain.User;
 import sungjin.mybooks.domain.review.domain.Review;
+import sungjin.mybooks.domain.user.domain.User;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;

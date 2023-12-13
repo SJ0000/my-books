@@ -3,10 +3,6 @@ package sungjin.mybooks.infra.search;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import sungjin.mybooks.infra.search.BookSearchApiProperties;
-import sungjin.mybooks.infra.search.BookSearchApi;
-import sungjin.mybooks.infra.search.BookSearchParameters;
-import sungjin.mybooks.infra.search.BookSearchResult;
 
 
 class BookSearchApiTest {

@@ -10,22 +10,24 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-import sungjin.mybooks.environment.MyBooksTestUtils;
 import sungjin.mybooks.domain.user.domain.Session;
 import sungjin.mybooks.domain.user.domain.User;
+import sungjin.mybooks.domain.user.dto.Login;
+import sungjin.mybooks.domain.user.dto.SignUp;
+import sungjin.mybooks.domain.user.encrypt.PasswordEncoder;
 import sungjin.mybooks.domain.user.repository.SessionRepository;
 import sungjin.mybooks.domain.user.repository.UserRepository;
-import sungjin.mybooks.domain.user.dto.SignUp;
-import sungjin.mybooks.domain.user.dto.Login;
-import sungjin.mybooks.domain.user.encrypt.PasswordEncoder;
 import sungjin.mybooks.domain.user.service.AuthService;
+import sungjin.mybooks.environment.MyBooksTestUtils;
 import sungjin.mybooks.global.util.CookieNames;
 
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.springframework.http.MediaType.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**

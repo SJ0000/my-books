@@ -5,9 +5,9 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import sungjin.mybooks.domain.user.domain.User;
 import sungjin.mybooks.domain.book.domain.Book;
 import sungjin.mybooks.domain.common.domain.BaseTimeEntity;
+import sungjin.mybooks.domain.user.domain.User;
 
 @Entity
 @Getter
@@ -32,10 +32,6 @@ public class Review extends BaseTimeEntity {
         this.user = user;
         this.book = book;
         this.content = content;
-    }
-
-    public boolean isOwner(Long userId){
-        return user.getId().equals(userId);
     }
 
     public void editContent(String content){

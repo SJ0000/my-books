@@ -5,11 +5,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import sungjin.mybooks.domain.user.service.AuthService;
+import sungjin.mybooks.domain.user.service.UserService;
 import sungjin.mybooks.global.interceptor.AuthInterceptor;
 import sungjin.mybooks.global.interceptor.ModelInterceptor;
 import sungjin.mybooks.global.resolver.UserSessionResolver;
-import sungjin.mybooks.domain.user.service.AuthService;
-import sungjin.mybooks.domain.user.service.UserService;
 
 import java.util.List;
 

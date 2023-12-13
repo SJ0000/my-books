@@ -7,16 +7,16 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.util.ReflectionTestUtils;
-import sungjin.mybooks.environment.MyBooksTestUtils;
 import sungjin.mybooks.domain.book.domain.Book;
 import sungjin.mybooks.domain.book.repository.BookRepository;
-import sungjin.mybooks.domain.user.domain.User;
 import sungjin.mybooks.domain.review.domain.Review;
+import sungjin.mybooks.domain.user.domain.User;
 import sungjin.mybooks.domain.user.repository.UserRepository;
+import sungjin.mybooks.environment.MyBooksTestUtils;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 class ReviewRepositoryTest {

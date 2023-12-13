@@ -10,19 +10,19 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
-import sungjin.mybooks.domain.review.domain.Comment;
-import sungjin.mybooks.domain.review.repository.CommentRepository;
-import sungjin.mybooks.environment.MyBooksTestUtils;
 import sungjin.mybooks.domain.book.domain.Book;
+import sungjin.mybooks.domain.book.repository.BookRepository;
+import sungjin.mybooks.domain.review.domain.Comment;
 import sungjin.mybooks.domain.review.domain.Like;
 import sungjin.mybooks.domain.review.domain.Review;
-import sungjin.mybooks.domain.user.domain.Session;
-import sungjin.mybooks.domain.user.domain.User;
-import sungjin.mybooks.domain.book.repository.BookRepository;
+import sungjin.mybooks.domain.review.repository.CommentRepository;
 import sungjin.mybooks.domain.review.repository.LikeRepository;
 import sungjin.mybooks.domain.review.repository.ReviewRepository;
+import sungjin.mybooks.domain.user.domain.Session;
+import sungjin.mybooks.domain.user.domain.User;
 import sungjin.mybooks.domain.user.repository.UserRepository;
 import sungjin.mybooks.domain.user.service.AuthService;
+import sungjin.mybooks.environment.MyBooksTestUtils;
 import sungjin.mybooks.global.util.CookieNames;
 
 import java.util.List;
@@ -32,9 +32,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Controller Test는 통합테스트로 작성
@@ -326,7 +324,6 @@ class ReviewControllerTest {
         userRepository.save(commentWriter);
         Comment comment = MyBooksTestUtils.createComment(commentWriter, review, "111");
         commentRepository.save(comment);
-
 
         Session session = authService.createSession(commentWriter.getId());
         // expected

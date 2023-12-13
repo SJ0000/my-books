@@ -9,7 +9,7 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.Optional;
 
-import static org.springframework.boot.web.server.Cookie.SameSite.*;
+import static org.springframework.boot.web.server.Cookie.SameSite.STRICT;
 
 @Component
 public class CookieUtils {

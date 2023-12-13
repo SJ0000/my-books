@@ -8,11 +8,11 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
-import sungjin.mybooks.global.data.UserSession;
 import sungjin.mybooks.domain.user.domain.Session;
+import sungjin.mybooks.domain.user.service.AuthService;
+import sungjin.mybooks.global.data.UserSession;
 import sungjin.mybooks.global.exception.NotFound;
 import sungjin.mybooks.global.exception.Unauthorized;
-import sungjin.mybooks.domain.user.service.AuthService;
 import sungjin.mybooks.global.util.CookieNames;
 import sungjin.mybooks.global.util.CookieUtils;
 

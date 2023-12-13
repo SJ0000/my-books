@@ -3,7 +3,7 @@ package sungjin.mybooks.domain.user.domain;
 import org.junit.jupiter.api.Test;
 import sungjin.mybooks.environment.MyBooksTestUtils;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class UserTest {
 

@@ -5,7 +5,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import sungjin.mybooks.domain.review.domain.Review;
 import sungjin.mybooks.domain.user.domain.User;
 
 @Entity

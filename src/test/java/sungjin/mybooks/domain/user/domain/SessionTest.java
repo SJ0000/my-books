@@ -3,7 +3,6 @@ package sungjin.mybooks.domain.user.domain;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import sungjin.mybooks.domain.user.domain.Session;
 
 import java.time.LocalDate;
 

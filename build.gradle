@@ -39,6 +39,8 @@ dependencies {
 		//slf4j Multiple bindings Error
 		exclude group: "org.slf4j", module: "slf4j-simple"
 	}
+	testImplementation 'com.navercorp.fixturemonkey:fixture-monkey-starter:1.0.0'
+	testImplementation 'com.navercorp.fixturemonkey:fixture-monkey-jakarta-validation:1.0.0'
 }
 
 tasks.named('test') {

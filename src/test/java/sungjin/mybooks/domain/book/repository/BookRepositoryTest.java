@@ -4,10 +4,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import sungjin.mybooks.environment.MyBooksTestUtils;
 import sungjin.mybooks.domain.book.domain.Book;
+import sungjin.mybooks.environment.MyBooksTestUtils;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 class BookRepositoryTest {

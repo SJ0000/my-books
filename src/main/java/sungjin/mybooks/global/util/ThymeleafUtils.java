@@ -3,10 +3,6 @@ package sungjin.mybooks.global.util;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.util.StringUtils;
 import org.springframework.web.util.UriComponentsBuilder;
-import org.springframework.web.util.UriUtils;
-
-import java.net.URI;
-import java.util.HashMap;
 
 public class ThymeleafUtils {
 

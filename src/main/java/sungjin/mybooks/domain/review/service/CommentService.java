@@ -6,11 +6,10 @@ import org.springframework.transaction.annotation.Transactional;
 import sungjin.mybooks.domain.common.annotation.DomainAuthorize;
 import sungjin.mybooks.domain.review.domain.Comment;
 import sungjin.mybooks.domain.review.domain.Review;
-import sungjin.mybooks.global.exception.NotFound;
-import sungjin.mybooks.global.exception.Unauthorized;
 import sungjin.mybooks.domain.review.repository.CommentRepository;
 import sungjin.mybooks.domain.review.repository.ReviewRepository;
 import sungjin.mybooks.domain.user.repository.UserRepository;
+import sungjin.mybooks.global.exception.NotFound;
 
 @Service
 @RequiredArgsConstructor

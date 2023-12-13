@@ -3,10 +3,8 @@ package sungjin.mybooks.domain.user.encrypt;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import sungjin.mybooks.domain.user.encrypt.PasswordEncoderProperties;
-import sungjin.mybooks.domain.user.encrypt.CustomPasswordEncoder;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 class CustomPasswordEncoderTest {

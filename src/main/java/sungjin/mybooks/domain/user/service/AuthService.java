@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import sungjin.mybooks.domain.user.domain.Session;
-import sungjin.mybooks.global.exception.NotFound;
 import sungjin.mybooks.domain.user.repository.SessionRepository;
+import sungjin.mybooks.global.exception.NotFound;
 
 import java.util.Optional;
 import java.util.UUID;

@@ -7,17 +7,17 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import sungjin.mybooks.domain.book.service.BookService;
-import sungjin.mybooks.global.exception.NotFound;
 import sungjin.mybooks.domain.book.repository.BookRepository;
+import sungjin.mybooks.global.exception.NotFound;
 import sungjin.mybooks.infra.search.BookSearchApi;
 import sungjin.mybooks.infra.search.BookSearchResult;
 
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.BDDMockito.*;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.BDDMockito.anyLong;
+import static org.mockito.BDDMockito.given;
 
 
 @ExtendWith(MockitoExtension.class)

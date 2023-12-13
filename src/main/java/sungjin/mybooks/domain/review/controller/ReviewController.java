@@ -7,17 +7,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import sungjin.mybooks.domain.common.annotation.AuthenticationRequired;
-import sungjin.mybooks.domain.review.service.CommentService;
-import sungjin.mybooks.global.data.UserSession;
 import sungjin.mybooks.domain.book.domain.Book;
-import sungjin.mybooks.domain.review.domain.Review;
 import sungjin.mybooks.domain.book.model.BookResponse;
-import sungjin.mybooks.domain.common.model.PageModel;
-import sungjin.mybooks.domain.review.model.ReviewModel;
 import sungjin.mybooks.domain.book.service.BookService;
+import sungjin.mybooks.domain.common.annotation.AuthenticationRequired;
+import sungjin.mybooks.domain.common.model.PageModel;
+import sungjin.mybooks.domain.review.domain.Review;
+import sungjin.mybooks.domain.review.model.ReviewModel;
+import sungjin.mybooks.domain.review.service.CommentService;
 import sungjin.mybooks.domain.review.service.LikeService;
 import sungjin.mybooks.domain.review.service.ReviewService;
+import sungjin.mybooks.global.data.UserSession;
 
 import java.net.URI;
 

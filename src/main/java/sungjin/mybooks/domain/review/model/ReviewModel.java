@@ -1,6 +1,7 @@
 package sungjin.mybooks.domain.review.model;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.ToString;
 import sungjin.mybooks.domain.review.domain.Review;
 
 import java.time.LocalDateTime;
