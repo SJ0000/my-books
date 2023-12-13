@@ -88,7 +88,6 @@ public class ReviewService {
     public void editReview(Long reviewId, Long userId, String content) {
         Review review = findReview(reviewId);
         review.editContent(content);
-        System.out.println("content = " + review.getContent());
     }
 
     @Transactional

@@ -5,6 +5,7 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import sungjin.mybooks.domain.common.annotation.DomainAuthorize;
+import sungjin.mybooks.domain.common.annotation.DomainId;
 import sungjin.mybooks.domain.common.annotation.UserId;
 import sungjin.mybooks.domain.common.domain.security.DomainAuthorizationManager;
 
@@ -20,7 +21,7 @@ public class DomainAuthorizeAspect {
     public void authorizeDomain(JoinPoint joinPoint, DomainAuthorize domainAuthorize) {
         Class<?> domainType = domainAuthorize.value();
         Long userId = getUserId(joinPoint);
-        Long domainId = getDomainId(joinPoint, domainType);
+        Long domainId = getDomainId(joinPoint, domainType.getSimpleName());
 
         authorizationManager.authorize(userId, domainType, domainId);
     }
@@ -31,9 +32,9 @@ public class DomainAuthorizeAspect {
                         .orElseThrow(() -> new RuntimeException("parameter not found")));
     }
 
-    private Long getDomainId(JoinPoint joinPoint, Class<?> domainType) {
-        String parameterName = domainType.getSimpleName()+"id";
-        return ParameterExtractor.extractByAnnotation(joinPoint, domainType)
+    private Long getDomainId(JoinPoint joinPoint, String domainName) {
+        String parameterName = domainName+"id";
+        return ParameterExtractor.extractByAnnotation(joinPoint, DomainId.class)
                 .orElseGet(() -> ParameterExtractor.extractByName(joinPoint, parameterName)
                         .orElseThrow(() -> new RuntimeException("parameter not found")));
     }

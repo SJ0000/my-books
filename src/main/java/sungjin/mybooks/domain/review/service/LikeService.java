@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sungjin.mybooks.domain.common.annotation.DomainAuthorize;
+import sungjin.mybooks.domain.common.annotation.DomainId;
 import sungjin.mybooks.domain.review.domain.Comment;
 import sungjin.mybooks.domain.review.domain.Like;
 import sungjin.mybooks.domain.review.domain.Review;
@@ -36,7 +37,6 @@ public class LikeService {
     }
 
     @Transactional
-    @DomainAuthorize(Comment.class)
     public void cancelLikeReview(Long userId, Long reviewId) {
         Like like = likeRepository.findByUserIdAndReviewId(userId, reviewId)
                 .orElseThrow(() -> new NotFound(Like.class, "reviewId, userId", reviewId + " " + userId));

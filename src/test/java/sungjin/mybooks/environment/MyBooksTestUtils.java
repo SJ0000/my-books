@@ -1,5 +1,9 @@
 package sungjin.mybooks.environment;
 
+import com.navercorp.fixturemonkey.FixtureMonkey;
+import com.navercorp.fixturemonkey.api.introspector.FieldReflectionArbitraryIntrospector;
+import com.navercorp.fixturemonkey.jakarta.validation.plugin.JakartaValidationPlugin;
+import net.jqwik.api.Arbitraries;
 import org.springframework.test.util.ReflectionTestUtils;
 import sungjin.mybooks.domain.book.domain.Book;
 import sungjin.mybooks.domain.review.domain.Comment;
@@ -17,25 +21,35 @@ import java.util.stream.IntStream;
 
 public class MyBooksTestUtils {
 
-    public static User createUser(String password) {
-        return User.builder()
-                .name("test-user")
-                .password(password)
-                .email("abcd@efgh.com")
+    private final static FixtureMonkey fixtureMonkey;
+
+    static {
+        fixtureMonkey = FixtureMonkey.builder()
+                .objectIntrospector(FieldReflectionArbitraryIntrospector.INSTANCE)
+                .plugin(new JakartaValidationPlugin())
                 .build();
+    }
+
+    public static User createUser(String password) {
+        return fixtureMonkey.giveMeBuilder(User.class)
+                .setNull("id")
+                .setNotNull("email")
+                .setNotNull("name")
+                .set("password",password)
+                .sample();
     }
 
     public static User createUser() {
-        return createUser("password");
+        return createUser(Arbitraries.strings().sample());
     }
 
     public static Book createBook() {
-        return Book.builder()
-                .title("test book")
-                .author("author1 author2")
-                .isbn("1234567890123")
-                .thumbnail("https://sub.domain.com/test.jpg")
-                .build();
+        Book sample = fixtureMonkey.giveMeBuilder(Book.class)
+                .setNull("id")
+                .set("isbn", Arbitraries.strings().numeric().ofLength(13))
+                .sample();
+        System.out.println("isbn " + sample.getIsbn());
+        return sample;
     }
 
     public static List<Book> createBooks(int count) {

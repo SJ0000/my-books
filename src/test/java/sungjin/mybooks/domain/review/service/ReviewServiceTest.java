@@ -99,7 +99,7 @@ class ReviewServiceTest {
     }
 
     @Test
-    @DisplayName("리뷰의 소유가 리뷰를 수정할 경우, 수정이 되어야 한다.")
+    @DisplayName("리뷰를 수정한다.")
     void editReviewTest(){
         // given
         long userId = 1L;
@@ -118,21 +118,5 @@ class ReviewServiceTest {
 
         // then
         assertThat(review.getContent()).isEqualTo(newContent);
-    }
-
-    @Test
-    @DisplayName("리뷰의 소유자가 아닌데 수정을 시도할 경우 Unauthorized Exception 발생")
-    void editReviewNotOwnerTest(){
-        long userId = 1L;
-        User user = MyBooksTestUtils.createUser();
-        ReflectionTestUtils.setField(user,"id",userId);
-        Review review = MyBooksTestUtils.createReview(
-                user, MyBooksTestUtils.createBook(),"review contents");
-
-        given(reviewRepository.findById(anyLong()))
-                .willReturn(Optional.of(review));
-
-        assertThatThrownBy(()->reviewService.editReview(1L,userId+1,"edit review contents"))
-                .isInstanceOf(Unauthorized.class);
     }
 }

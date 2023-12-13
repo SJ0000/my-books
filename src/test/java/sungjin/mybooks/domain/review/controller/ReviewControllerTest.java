@@ -236,7 +236,7 @@ class ReviewControllerTest {
     }
 
     @Test
-    @DisplayName("POST /review/{id}/like 호출시 리뷰에 like를 추가 후 201 CREATED로 응답")
+    @DisplayName("POST /reviews/{id}/like 호출시 리뷰에 like를 추가 후 201 CREATED로 응답")
     void likeReview() throws Exception {
         // given
         User user = MyBooksTestUtils.createUser();
@@ -259,7 +259,7 @@ class ReviewControllerTest {
     }
 
     @Test
-    @DisplayName("POST /review/{id}/like 호출시 리뷰에 like를 추가 후 201 CREATED로 응답")
+    @DisplayName("DELETE /reviews/{id}/like 호출시 리뷰에 like를 추가 후 201 CREATED로 응답")
     void cancelLikeReview() throws Exception {
         // given
         User user = MyBooksTestUtils.createUser();

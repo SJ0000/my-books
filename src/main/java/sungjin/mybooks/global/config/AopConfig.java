@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration;
 import sungjin.mybooks.domain.common.aop.DomainAuthorizeAspect;
 import sungjin.mybooks.domain.common.domain.security.DomainAuthorizationManager;
 import sungjin.mybooks.domain.common.domain.security.handler.CommentAuthorizeHandler;
-import sungjin.mybooks.domain.common.domain.security.handler.LikeAuthorizeHandler;
 import sungjin.mybooks.domain.common.domain.security.handler.ReviewAuthorizeHandler;
 import sungjin.mybooks.domain.review.domain.Comment;
 import sungjin.mybooks.domain.review.domain.Like;
@@ -35,7 +34,6 @@ public class AopConfig {
         DomainAuthorizationManager manager = new DomainAuthorizationManager(userRepository);
         manager.addHandler(Review.class,new ReviewAuthorizeHandler(reviewRepository));
         manager.addHandler(Comment.class,new CommentAuthorizeHandler(commentRepository));
-        manager.addHandler(Like.class,new LikeAuthorizeHandler(likeRepository));
         return manager;
     }
 }
