@@ -69,7 +69,7 @@ class ReviewControllerTest {
         List<Book> books = MyBooksTestUtils.createBooks(3);
         bookRepository.saveAll(books);
         books.forEach(book -> {
-            reviewRepository.save(MyBooksTestUtils.createReview(user, book, "review"));
+            reviewRepository.save(MyBooksTestUtils.createReview(user, book));
         });
 
 
@@ -85,22 +85,23 @@ class ReviewControllerTest {
     @DisplayName("GET /reviews 에서 query 검색시 검색 조건에 맞는 사용자의 리뷰를 Model에 전달한다.")
     void userReviewsBookTitle() throws Exception {
         // given
+        String query = "book";
         User user = MyBooksTestUtils.createUser();
         userRepository.save(user);
-        List<Book> books = MyBooksTestUtils.createBooks(3);
+        List<Book> books = MyBooksTestUtils.createBooks(3,query);
         bookRepository.saveAll(books);
         books.forEach(book -> {
-            reviewRepository.save(MyBooksTestUtils.createReview(user, book, "review"));
+            reviewRepository.save(MyBooksTestUtils.createReview(user, book));
         });
 
         Session session = authService.createSession(user.getId());
-        String query = "book";
+
         // expected
         mockMvc.perform(get("/reviews")
                         .queryParam("query", query)
                         .cookie(new Cookie(CookieNames.SESSION_ID, session.getId())))
                 .andExpect(model().attributeExists("reviews", "page"))
-                .andExpect(model().attribute("reviews", hasItem(hasProperty("bookTitle", containsString("book")))))
+                .andExpect(model().attribute("reviews", hasItem(hasProperty("bookTitle", containsString(query)))))
                 .andExpect(view().name("review-list"));
     }
 
@@ -112,7 +113,7 @@ class ReviewControllerTest {
         userRepository.save(user);
         Book book = MyBooksTestUtils.createBook();
         bookRepository.save(book);
-        Review review = MyBooksTestUtils.createReview(user, book, "review");
+        Review review = MyBooksTestUtils.createReview(user, book);
         reviewRepository.save(review);
 
         // expected
@@ -130,6 +131,7 @@ class ReviewControllerTest {
 
         Session session = authService.createSession(user.getId());
         String isbn = "9791161571577";
+
         // expected
         mockMvc.perform(get("/review-create")
                         .queryParam("isbn", isbn)
@@ -173,7 +175,7 @@ class ReviewControllerTest {
         userRepository.save(user);
         Book book = MyBooksTestUtils.createBook();
         bookRepository.save(book);
-        Review review = MyBooksTestUtils.createReview(user, book, "review content 1");
+        Review review = MyBooksTestUtils.createReview(user, book);
         reviewRepository.save(review);
 
         Session session = authService.createSession(user.getId());
@@ -194,7 +196,7 @@ class ReviewControllerTest {
         userRepository.save(user);
         Book book = MyBooksTestUtils.createBook();
         bookRepository.save(book);
-        Review review = MyBooksTestUtils.createReview(user, book, "review content 1");
+        Review review = MyBooksTestUtils.createReview(user, book);
         reviewRepository.save(review);
 
         Session session = authService.createSession(user.getId());
@@ -224,7 +226,7 @@ class ReviewControllerTest {
         userRepository.save(user);
         Book book = MyBooksTestUtils.createBook();
         bookRepository.save(book);
-        Review review = MyBooksTestUtils.createReview(user, book, "review content 1");
+        Review review = MyBooksTestUtils.createReview(user, book);
         reviewRepository.save(review);
 
         Session session = authService.createSession(user.getId());
@@ -243,7 +245,7 @@ class ReviewControllerTest {
         userRepository.save(user);
         Book book = MyBooksTestUtils.createBook();
         bookRepository.save(book);
-        Review review = MyBooksTestUtils.createReview(user, book, "review content 1");
+        Review review = MyBooksTestUtils.createReview(user, book);
         reviewRepository.save(review);
 
         Session session = authService.createSession(user.getId());
@@ -266,7 +268,7 @@ class ReviewControllerTest {
         userRepository.save(user);
         Book book = MyBooksTestUtils.createBook();
         bookRepository.save(book);
-        Review review = MyBooksTestUtils.createReview(user, book, "review content 1");
+        Review review = MyBooksTestUtils.createReview(user, book);
         reviewRepository.save(review);
 
         likeRepository.save(new Like(review, user));
@@ -289,7 +291,7 @@ class ReviewControllerTest {
         userRepository.save(reviewWriter);
         Book book = MyBooksTestUtils.createBook();
         bookRepository.save(book);
-        Review review = MyBooksTestUtils.createReview(reviewWriter, book, "review content 1");
+        Review review = MyBooksTestUtils.createReview(reviewWriter, book);
         reviewRepository.save(review);
 
         User commentWriter = MyBooksTestUtils.createUser();
@@ -318,7 +320,7 @@ class ReviewControllerTest {
         userRepository.save(reviewWriter);
         Book book = MyBooksTestUtils.createBook();
         bookRepository.save(book);
-        Review review = MyBooksTestUtils.createReview(reviewWriter, book, "review content 1");
+        Review review = MyBooksTestUtils.createReview(reviewWriter, book);
         reviewRepository.save(review);
         User commentWriter = MyBooksTestUtils.createUser();
         userRepository.save(commentWriter);

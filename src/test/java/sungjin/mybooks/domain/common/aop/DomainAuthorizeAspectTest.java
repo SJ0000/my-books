@@ -39,7 +39,7 @@ class DomainAuthorizeAspectTest {
         userRepository.save(user);
         Book book = MyBooksTestUtils.createBook();
         bookRepository.save(book);
-        Review review = MyBooksTestUtils.createReview(user, book, "123123123");
+        Review review = MyBooksTestUtils.createReview(user, book);
         reviewRepository.save(review);
 
         String newContents = "new contents";
@@ -59,7 +59,7 @@ class DomainAuthorizeAspectTest {
         userRepository.save(user);
         Book book = MyBooksTestUtils.createBook();
         bookRepository.save(book);
-        Review review = MyBooksTestUtils.createReview(user, book, "123123123");
+        Review review = MyBooksTestUtils.createReview(user, book);
         reviewRepository.save(review);
 
         // expected

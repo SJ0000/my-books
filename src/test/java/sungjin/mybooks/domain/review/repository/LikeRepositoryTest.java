@@ -35,7 +35,7 @@ class LikeRepositoryTest {
         userRepository.save(user);
         Book book = MyBooksTestUtils.createBook();
         bookRepository.save(book);
-        Review review = MyBooksTestUtils.createReview(user, book, "content");
+        Review review = MyBooksTestUtils.createReview(user, book);
         reviewRepository.save(review);
     }
 
@@ -47,7 +47,7 @@ class LikeRepositoryTest {
         userRepository.save(user);
         Book book = MyBooksTestUtils.createBook();
         bookRepository.save(book);
-        Review review = MyBooksTestUtils.createReview(user, book, "content");
+        Review review = MyBooksTestUtils.createReview(user, book);
         reviewRepository.save(review);
 
         likeRepository.save(Like.builder()

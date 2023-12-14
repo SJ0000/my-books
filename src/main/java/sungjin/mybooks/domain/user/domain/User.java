@@ -1,10 +1,7 @@
 package sungjin.mybooks.domain.user.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import sungjin.mybooks.domain.common.domain.BaseTimeEntity;
 
 @Entity
@@ -31,5 +28,7 @@ public class User extends BaseTimeEntity {
     public boolean isCorrectPassword(String password){
         return this.password.equals(password);
     }
+
+
 
 }

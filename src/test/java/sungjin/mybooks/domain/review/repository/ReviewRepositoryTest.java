@@ -35,16 +35,17 @@ class ReviewRepositoryTest {
         User user = MyBooksTestUtils.createUser();
         userRepository.save(user);
 
-        List<Book> books = MyBooksTestUtils.createBooks(3);
+        String titleContains = "book";
+        List<Book> books = MyBooksTestUtils.createBooks(3,titleContains);
         bookRepository.saveAll(books);
 
         books.forEach((book) -> {
-            Review userBook = MyBooksTestUtils.createReview(user, book, "content");
+            Review userBook = MyBooksTestUtils.createReview(user, book);
             reviewRepository.save(userBook);
         });
 
         // when
-        Page<Review> result = reviewRepository.findAllByBookTitle(user.getId(), "test book", PageRequest.of(0, 10));
+        Page<Review> result = reviewRepository.findAllByBookTitle(user.getId(), titleContains, PageRequest.of(0, 10));
 
         // then
         assertThat(result.getTotalElements()).isEqualTo(3);
@@ -62,7 +63,7 @@ class ReviewRepositoryTest {
         bookRepository.saveAll(books);
 
         books.forEach(book -> {
-            Review review = MyBooksTestUtils.createReview(user, book, "content");
+            Review review = MyBooksTestUtils.createReview(user, book);
             ReflectionTestUtils.setField(review, "createdAt", MyBooksTestUtils.randomDateTime());
             reviewRepository.save(review);
         });

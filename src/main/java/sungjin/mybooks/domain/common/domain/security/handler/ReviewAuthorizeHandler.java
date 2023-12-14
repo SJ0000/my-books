@@ -1,6 +1,7 @@
 package sungjin.mybooks.domain.common.domain.security.handler;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationContext;
 import sungjin.mybooks.domain.review.domain.Review;
 import sungjin.mybooks.domain.review.repository.ReviewRepository;
 import sungjin.mybooks.domain.user.domain.User;
@@ -17,7 +18,7 @@ public class ReviewAuthorizeHandler implements DomainAuthorizeHandler {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new NotFound(Review.class, "id", reviewId));
 
-        if(!user.equals(review.getUser()))
+        if(!user.getId().equals(review.getUser().getId()))
             throw new Unauthorized();
     }
 }

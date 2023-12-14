@@ -55,8 +55,7 @@ class ReviewServiceTest {
                     List<Review> reviews = IntStream.range(1, 11)
                             .mapToObj((i) -> MyBooksTestUtils.createReview(
                                     MyBooksTestUtils.createUser(),
-                                    MyBooksTestUtils.createBook(),
-                                    "content" + i))
+                                    MyBooksTestUtils.createBook()))
                             .toList();
                     return new PageImpl<>(reviews,PageRequest.of(currentPage,pageSize),totalCount);
                 });
@@ -83,8 +82,7 @@ class ReviewServiceTest {
                     List<Review> reviews = IntStream.range(1, 11)
                             .mapToObj((i) -> MyBooksTestUtils.createReview(
                                     MyBooksTestUtils.createUser(),
-                                    MyBooksTestUtils.createBook(),
-                                    "content" + i))
+                                    MyBooksTestUtils.createBook()))
                             .toList();
                     return new PageImpl<>(reviews,PageRequest.of(currentPage,pageSize),totalCount);
                 });
@@ -106,7 +104,7 @@ class ReviewServiceTest {
         User user = MyBooksTestUtils.createUser();
         ReflectionTestUtils.setField(user,"id",userId);
         Review review = MyBooksTestUtils.createReview(
-                user, MyBooksTestUtils.createBook(),"review contents");
+                user, MyBooksTestUtils.createBook());
 
         given(reviewRepository.findById(anyLong()))
                 .willReturn(Optional.of(review));

@@ -1,5 +1,6 @@
 package sungjin.mybooks.environment;
 
+import com.navercorp.fixturemonkey.ArbitraryBuilder;
 import com.navercorp.fixturemonkey.FixtureMonkey;
 import com.navercorp.fixturemonkey.api.introspector.FieldReflectionArbitraryIntrospector;
 import com.navercorp.fixturemonkey.jakarta.validation.plugin.JakartaValidationPlugin;
@@ -31,44 +32,53 @@ public class MyBooksTestUtils {
     }
 
     public static User createUser(String password) {
-        return fixtureMonkey.giveMeBuilder(User.class)
-                .setNull("id")
-                .setNotNull("email")
-                .setNotNull("name")
-                .set("password",password)
+        return getUserBuilder()
+                .set("password", password)
                 .sample();
     }
 
     public static User createUser() {
-        return createUser(Arbitraries.strings().sample());
+        return getUserBuilder()
+                .sample();
+    }
+
+    private static ArbitraryBuilder<User> getUserBuilder() {
+        return fixtureMonkey.giveMeBuilder(User.class)
+                .setNull("id")
+                .setNotNull("email")
+                .setNotNull("name")
+                .set("name",Arbitraries.strings().ascii());
     }
 
     public static Book createBook() {
-        Book sample = fixtureMonkey.giveMeBuilder(Book.class)
-                .setNull("id")
-                .set("isbn", Arbitraries.strings().numeric().ofLength(13))
-                .sample();
-        System.out.println("isbn " + sample.getIsbn());
-        return sample;
+        return getBookBuilder().sample();
     }
 
     public static List<Book> createBooks(int count) {
-        return IntStream.range(1, count + 1).mapToObj((i) ->
-                Book.builder()
-                        .title("test book " + i)
-                        .author("author1 author2")
-                        .isbn("1234567890123")
-                        .thumbnail("https://sub.domain.com/test" + i + ".jpg")
-                        .build()
-        ).collect(Collectors.toList());
+        return getBookBuilder().sampleList(count);
     }
 
-    public static Review createReview(User user, Book book, String content) {
-        return Review.builder()
-                .user(user)
-                .book(book)
-                .content(content)
-                .build();
+    public static List<Book> createBooks(int count,String titleContains) {
+        return getBookBuilder()
+                .set("title",Arbitraries.strings().withChars(titleContains))
+                .sampleList(count);
+    }
+
+    private static ArbitraryBuilder<Book> getBookBuilder(){
+        return fixtureMonkey.giveMeBuilder(Book.class)
+                .setNull("id")
+                .set("isbn", Arbitraries.strings().numeric().ofLength(13))
+                .set("title",Arbitraries.strings().ascii());
+    }
+
+
+    public static Review createReview(User user, Book book) {
+        return fixtureMonkey.giveMeBuilder(Review.class)
+                .setNull("id")
+                .set("user",user)
+                .set("book",book)
+                .set("content", Arbitraries.strings().ascii())
+                .sample();
     }
 
     public static Comment createComment(User user, Review review, String content) {

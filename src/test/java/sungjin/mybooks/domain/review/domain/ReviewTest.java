@@ -12,7 +12,7 @@ class ReviewTest {
     @DisplayName("리뷰 수정")
     void editContentTest(){
         // given
-        Review review = MyBooksTestUtils.createReview(null, null, "origin Review");
+        Review review = MyBooksTestUtils.createReview(null, null);
         String newReview = "new review";
 
         // when
