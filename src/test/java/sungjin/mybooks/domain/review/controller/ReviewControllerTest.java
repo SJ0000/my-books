@@ -109,11 +109,9 @@ class ReviewControllerTest {
     @DisplayName("GET /reviews/{id} 호출시 Review Id와 일치하는 리뷰를 Model에 전달한다.")
     void getReview() throws Exception {
         // given
-        User user = MyBooksTestUtils.createUser();
-        userRepository.save(user);
-        Book book = MyBooksTestUtils.createBook();
-        bookRepository.save(book);
-        Review review = MyBooksTestUtils.createReview(user, book);
+        Review review = MyBooksTestUtils.createReview();
+        userRepository.save(review.getUser());
+        bookRepository.save(review.getBook());
         reviewRepository.save(review);
 
         // expected
@@ -130,7 +128,7 @@ class ReviewControllerTest {
         userRepository.save(user);
 
         Session session = authService.createSession(user.getId());
-        String isbn = "9791161571577";
+        String isbn = "9791161571577"; // 실제 등록된 책의 isbn
 
         // expected
         mockMvc.perform(get("/review-create")
@@ -171,14 +169,12 @@ class ReviewControllerTest {
     @DisplayName("GET /review/edit 호출시 id가 일치하는 review를 model에 전달한다.")
     void editReviewForm() throws Exception {
         // given
-        User user = MyBooksTestUtils.createUser();
-        userRepository.save(user);
-        Book book = MyBooksTestUtils.createBook();
-        bookRepository.save(book);
-        Review review = MyBooksTestUtils.createReview(user, book);
+        Review review = MyBooksTestUtils.createReview();
+        userRepository.save(review.getUser());
+        bookRepository.save(review.getBook());
         reviewRepository.save(review);
 
-        Session session = authService.createSession(user.getId());
+        Session session = authService.createSession(review.getUser().getId());
 
         // expected
         mockMvc.perform(get("/review/edit")
@@ -192,14 +188,12 @@ class ReviewControllerTest {
     @DisplayName("POST /review/edit 호출시 리뷰를 수정 후 수정된 리뷰 페이지로 redirect 한다")
     void editReview() throws Exception {
         // given
-        User user = MyBooksTestUtils.createUser();
-        userRepository.save(user);
-        Book book = MyBooksTestUtils.createBook();
-        bookRepository.save(book);
-        Review review = MyBooksTestUtils.createReview(user, book);
+        Review review = MyBooksTestUtils.createReview();
+        userRepository.save(review.getUser());
+        bookRepository.save(review.getBook());
         reviewRepository.save(review);
 
-        Session session = authService.createSession(user.getId());
+        Session session = authService.createSession(review.getUser().getId());
 
         String content = "edit review content";
         // when
@@ -222,14 +216,12 @@ class ReviewControllerTest {
     @DisplayName("DELETE /review/{id} 호출시 리뷰를 삭제 후 204 NO CONTENT 로 응답")
     void deleteReview() throws Exception {
         // given
-        User user = MyBooksTestUtils.createUser();
-        userRepository.save(user);
-        Book book = MyBooksTestUtils.createBook();
-        bookRepository.save(book);
-        Review review = MyBooksTestUtils.createReview(user, book);
+        Review review = MyBooksTestUtils.createReview();
+        userRepository.save(review.getUser());
+        bookRepository.save(review.getBook());
         reviewRepository.save(review);
 
-        Session session = authService.createSession(user.getId());
+        Session session = authService.createSession(review.getUser().getId());
 
         // expected
         mockMvc.perform(delete("/reviews/{id}", review.getId())
@@ -241,14 +233,12 @@ class ReviewControllerTest {
     @DisplayName("POST /reviews/{id}/like 호출시 리뷰에 like를 추가 후 201 CREATED로 응답")
     void likeReview() throws Exception {
         // given
-        User user = MyBooksTestUtils.createUser();
-        userRepository.save(user);
-        Book book = MyBooksTestUtils.createBook();
-        bookRepository.save(book);
-        Review review = MyBooksTestUtils.createReview(user, book);
+        Review review = MyBooksTestUtils.createReview();
+        userRepository.save(review.getUser());
+        bookRepository.save(review.getBook());
         reviewRepository.save(review);
 
-        Session session = authService.createSession(user.getId());
+        Session session = authService.createSession(review.getUser().getId());
 
         // expected
         mockMvc.perform(post("/reviews/{id}/like", review.getId())
@@ -256,7 +246,7 @@ class ReviewControllerTest {
                 .andExpect(status().isCreated());
 
         Like like = likeRepository.findAll().get(0);
-        assertThat(like.getUser()).isEqualTo(user);
+        assertThat(like.getUser()).isEqualTo(review.getUser());
         assertThat(like.getReview()).isEqualTo(review);
     }
 
@@ -264,22 +254,20 @@ class ReviewControllerTest {
     @DisplayName("DELETE /reviews/{id}/like 호출시 리뷰에 like를 추가 후 201 CREATED로 응답")
     void cancelLikeReview() throws Exception {
         // given
-        User user = MyBooksTestUtils.createUser();
-        userRepository.save(user);
-        Book book = MyBooksTestUtils.createBook();
-        bookRepository.save(book);
-        Review review = MyBooksTestUtils.createReview(user, book);
+        Review review = MyBooksTestUtils.createReview();
+        userRepository.save(review.getUser());
+        bookRepository.save(review.getBook());
         reviewRepository.save(review);
 
-        likeRepository.save(new Like(review, user));
-        Session session = authService.createSession(user.getId());
+        likeRepository.save(new Like(review, review.getUser()));
+        Session session = authService.createSession(review.getUser().getId());
 
         // expected
         mockMvc.perform(delete("/reviews/{id}/like", review.getId())
                         .cookie(new Cookie(CookieNames.SESSION_ID, session.getId())))
                 .andExpect(status().isNoContent());
 
-        Optional<Like> optionalLike = likeRepository.findByUserIdAndReviewId(user.getId(), review.getId());
+        Optional<Like> optionalLike = likeRepository.findByUserIdAndReviewId(review.getUser().getId(), review.getId());
         assertThat(optionalLike.isEmpty()).isTrue();
     }
 
@@ -287,11 +275,9 @@ class ReviewControllerTest {
     @DisplayName("POST /reviews/{id}/comment 호출시 리뷰에 comment 추가 후 /reviews/{id} redirect")
     void addComment() throws Exception {
         // given
-        User reviewWriter = MyBooksTestUtils.createUser();
-        userRepository.save(reviewWriter);
-        Book book = MyBooksTestUtils.createBook();
-        bookRepository.save(book);
-        Review review = MyBooksTestUtils.createReview(reviewWriter, book);
+        Review review = MyBooksTestUtils.createReview();
+        userRepository.save(review.getUser());
+        bookRepository.save(review.getBook());
         reviewRepository.save(review);
 
         User commentWriter = MyBooksTestUtils.createUser();
@@ -316,15 +302,14 @@ class ReviewControllerTest {
     @DisplayName("DELETE /comments/{id} 호출시 리뷰 삭제 후 204 NO CONTENT 응답")
     void removeComment() throws Exception {
         // given
-        User reviewWriter = MyBooksTestUtils.createUser();
-        userRepository.save(reviewWriter);
-        Book book = MyBooksTestUtils.createBook();
-        bookRepository.save(book);
-        Review review = MyBooksTestUtils.createReview(reviewWriter, book);
+        Review review = MyBooksTestUtils.createReview();
+        userRepository.save(review.getUser());
+        bookRepository.save(review.getBook());
         reviewRepository.save(review);
+
         User commentWriter = MyBooksTestUtils.createUser();
         userRepository.save(commentWriter);
-        Comment comment = MyBooksTestUtils.createComment(commentWriter, review, "111");
+        Comment comment = MyBooksTestUtils.createComment(commentWriter, review);
         commentRepository.save(comment);
 
         Session session = authService.createSession(commentWriter.getId());

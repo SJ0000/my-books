@@ -40,6 +40,7 @@ class ReviewRepositoryTest {
         bookRepository.saveAll(books);
 
         books.forEach((book) -> {
+            System.out.println("title = " + book.getTitle());
             Review userBook = MyBooksTestUtils.createReview(user, book);
             reviewRepository.save(userBook);
         });

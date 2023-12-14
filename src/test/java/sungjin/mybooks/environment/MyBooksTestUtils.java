@@ -19,18 +19,23 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static net.jqwik.api.Arbitraries.*;
+
 
 public class MyBooksTestUtils {
 
     private final static FixtureMonkey fixtureMonkey;
 
+    //region ctor
     static {
         fixtureMonkey = FixtureMonkey.builder()
                 .objectIntrospector(FieldReflectionArbitraryIntrospector.INSTANCE)
                 .plugin(new JakartaValidationPlugin())
                 .build();
     }
+    //endregion
 
+    //region user
     public static User createUser(String password) {
         return getUserBuilder()
                 .set("password", password)
@@ -45,11 +50,13 @@ public class MyBooksTestUtils {
     private static ArbitraryBuilder<User> getUserBuilder() {
         return fixtureMonkey.giveMeBuilder(User.class)
                 .setNull("id")
-                .setNotNull("email")
-                .setNotNull("name")
-                .set("name",Arbitraries.strings().ascii());
+                .set("email", strings().ofMaxLength(255))
+                .set("name",strings().ofMaxLength(255))
+                .set("name", strings().ascii().ofMaxLength(255));
     }
+    //endregion
 
+    //region book
     public static Book createBook() {
         return getBookBuilder().sample();
     }
@@ -58,36 +65,54 @@ public class MyBooksTestUtils {
         return getBookBuilder().sampleList(count);
     }
 
-    public static List<Book> createBooks(int count,String titleContains) {
-        return getBookBuilder()
-                .set("title",Arbitraries.strings().withChars(titleContains))
-                .sampleList(count);
+    public static List<Book> createBooks(int count, String titleContains) {
+        List<Book> books = getBookBuilder().sampleList(count);
+        books.forEach(book -> {
+            ReflectionTestUtils.setField(book, "title", book.getTitle() + titleContains);
+        });
+        return books;
     }
 
-    private static ArbitraryBuilder<Book> getBookBuilder(){
+    private static ArbitraryBuilder<Book> getBookBuilder() {
         return fixtureMonkey.giveMeBuilder(Book.class)
                 .setNull("id")
-                .set("isbn", Arbitraries.strings().numeric().ofLength(13))
-                .set("title",Arbitraries.strings().ascii());
+                .set("isbn", strings().numeric().ofLength(13))
+                .set("title", strings().ascii().ofMaxLength(255));
     }
+    //endregion
 
-
-    public static Review createReview(User user, Book book) {
-        return fixtureMonkey.giveMeBuilder(Review.class)
-                .setNull("id")
-                .set("user",user)
-                .set("book",book)
-                .set("content", Arbitraries.strings().ascii())
+    //region review
+    public static Review createReview() {
+        return getReviewBuilder()
+                .set("user", getUserBuilder().sample())
+                .set("book", getBookBuilder().sample())
                 .sample();
     }
 
-    public static Comment createComment(User user, Review review, String content) {
-        return Comment.builder()
-                .user(user)
-                .review(review)
-                .content(content)
-                .build();
+    public static Review createReview(User user, Book book) {
+        return getReviewBuilder()
+                .set("user", user)
+                .set("book", book)
+                .sample();
     }
+
+    public static ArbitraryBuilder<Review> getReviewBuilder() {
+        return fixtureMonkey.giveMeBuilder(Review.class)
+                .setNull("id")
+                .set("content", strings().ofMinLength(256).ofMaxLength(1000));
+    }
+
+    //endregion
+
+    //region comment
+    public static Comment createComment(User user, Review review) {
+        return fixtureMonkey.giveMeBuilder(Comment.class)
+                .setNull("id")
+                .set("user", user)
+                .set("review", review)
+                .sample();
+    }
+    //endregion
 
     public static LocalDateTime randomDateTime() {
         long bound = System.currentTimeMillis();
