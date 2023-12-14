@@ -18,7 +18,7 @@ public class ReviewAuthorizeHandler implements DomainAuthorizeHandler {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new NotFound(Review.class, "id", reviewId));
 
-        if(!user.getId().equals(review.getUser().getId()))
+        if(!user.equals(review.getUser()))
             throw new Unauthorized();
     }
 }
