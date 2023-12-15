@@ -12,7 +12,7 @@ import sungjin.mybooks.domain.user.dto.SignUp;
 import sungjin.mybooks.domain.user.encrypt.PasswordEncoder;
 import sungjin.mybooks.domain.user.repository.UserRepository;
 import sungjin.mybooks.environment.BypassPasswordEncoder;
-import sungjin.mybooks.environment.MyBooksTestUtils;
+import sungjin.mybooks.environment.fixture.Fixtures;
 import sungjin.mybooks.global.exception.InvalidLoginInformation;
 
 import java.util.Optional;
@@ -34,7 +34,7 @@ class UserServiceTest {
     @DisplayName("회원가입시 중복 이메일일 경우 RuntimeException 발생")
     void signUpEmailDuplicated() {
         // given
-        User user = MyBooksTestUtils.createUser();
+        User user = Fixtures.user().create();
         BDDMockito.given(userRepository.findByEmail(Mockito.anyString()))
                 .willReturn(Optional.of(user));
 
@@ -53,7 +53,7 @@ class UserServiceTest {
     void validateForLoginTest() throws Exception {
         // given
         String password = "password";
-        User user = MyBooksTestUtils.createUser(password);
+        User user = Fixtures.user().create(password);
 
         BDDMockito.given(userRepository.findByEmail(Mockito.anyString()))
                 .willReturn(Optional.of(user));

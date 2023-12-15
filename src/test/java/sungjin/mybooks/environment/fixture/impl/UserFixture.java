@@ -2,36 +2,38 @@ package sungjin.mybooks.environment.fixture.impl;
 
 import com.navercorp.fixturemonkey.ArbitraryBuilder;
 import sungjin.mybooks.domain.user.domain.User;
-import sungjin.mybooks.environment.fixture.AbstractFixture;
+import sungjin.mybooks.environment.fixture.EntityFixture;
 
 import static net.jqwik.api.Arbitraries.strings;
 
 
-public class UserFixture extends AbstractFixture {
+public class UserFixture extends EntityFixture<User> {
 
-    private UserFixture() {
+
+    @Override
+    public User create() {
+        return getBuilder()
+                .sample();
     }
 
-    static {
-        instance = new UserFixture();
-    }
-
-    public User createUser(String password) {
-        return getUserBuilder()
+    public User create(String password) {
+        return getBuilder()
                 .set("password", password)
                 .sample();
     }
 
-    public User createUser() {
-        return getUserBuilder()
+    public User create(String email, String password) {
+        return getBuilder()
+                .set("email",email)
+                .set("password", password)
                 .sample();
     }
 
-    private ArbitraryBuilder<User> getUserBuilder() {
+    private ArbitraryBuilder<User> getBuilder() {
         return fixtureMonkey.giveMeBuilder(User.class)
                 .setNull("id")
                 .set("email", strings().ofMaxLength(255))
                 .set("name", strings().ofMaxLength(255))
-                .set("name", strings().ascii().ofMaxLength(255));
+                .set("password", strings().ascii().ofMaxLength(255));
     }
 }

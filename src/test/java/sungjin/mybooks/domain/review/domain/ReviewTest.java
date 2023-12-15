@@ -2,9 +2,10 @@ package sungjin.mybooks.domain.review.domain;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import sungjin.mybooks.environment.MyBooksTestUtils;
+import sungjin.mybooks.environment.fixture.Fixtures;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static sungjin.mybooks.environment.MyBooksTestUtils.createRandomString;
 
 class ReviewTest {
 
@@ -12,8 +13,8 @@ class ReviewTest {
     @DisplayName("리뷰 수정")
     void editContentTest(){
         // given
-        Review review = MyBooksTestUtils.createReview(null, null);
-        String newReview = "new review";
+        Review review = Fixtures.review().create(null, null);
+        String newReview = createRandomString(250);
 
         // when
         review.editContent(newReview);

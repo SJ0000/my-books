@@ -1,7 +1,7 @@
 package sungjin.mybooks.domain.user.domain;
 
 import org.junit.jupiter.api.Test;
-import sungjin.mybooks.environment.MyBooksTestUtils;
+import sungjin.mybooks.environment.fixture.Fixtures;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -11,7 +11,7 @@ class UserTest {
     void isCorrectPasswordTest(){
         // given
         String password = "password";
-        User user = MyBooksTestUtils.createUser(password);
+        User user = Fixtures.user().create(password);
 
         // expected
         assertThat(user.isCorrectPassword(password)).isTrue();

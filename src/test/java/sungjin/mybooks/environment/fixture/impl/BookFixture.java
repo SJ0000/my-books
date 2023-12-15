@@ -1,26 +1,19 @@
 package sungjin.mybooks.environment.fixture.impl;
 
 import com.navercorp.fixturemonkey.ArbitraryBuilder;
-import com.navercorp.fixturemonkey.FixtureMonkey;
 import org.springframework.test.util.ReflectionTestUtils;
 import sungjin.mybooks.domain.book.domain.Book;
-import sungjin.mybooks.environment.fixture.AbstractFixture;
-import sungjin.mybooks.environment.fixture.Fixtures;
+import sungjin.mybooks.environment.fixture.EntityFixture;
 
 import java.util.List;
 
 import static net.jqwik.api.Arbitraries.strings;
 
-public class BookFixture extends AbstractFixture {
+public class BookFixture extends EntityFixture<Book> {
 
-    private BookFixture() {
-    }
 
-    static {
-        instance = new BookFixture();
-    }
-
-    public Book createBook() {
+    @Override
+    public Book create() {
         return getBookBuilder().sample();
     }
 

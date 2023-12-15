@@ -1,6 +1,7 @@
 package sungjin.mybooks.domain.review.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.net.MediaType;
 import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,6 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import sungjin.mybooks.domain.book.domain.Book;
 import sungjin.mybooks.domain.book.repository.BookRepository;
 import sungjin.mybooks.domain.review.domain.Comment;
@@ -22,7 +25,7 @@ import sungjin.mybooks.domain.user.domain.Session;
 import sungjin.mybooks.domain.user.domain.User;
 import sungjin.mybooks.domain.user.repository.UserRepository;
 import sungjin.mybooks.domain.user.service.AuthService;
-import sungjin.mybooks.environment.MyBooksTestUtils;
+import sungjin.mybooks.environment.fixture.Fixtures;
 import sungjin.mybooks.global.util.CookieNames;
 
 import java.util.List;
@@ -33,6 +36,7 @@ import static org.hamcrest.Matchers.*;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static sungjin.mybooks.environment.MyBooksTestUtils.createRandomString;
 
 /**
  * Controller Test는 통합테스트로 작성
@@ -64,12 +68,12 @@ class ReviewControllerTest {
     @DisplayName("GET /reviews 호출시 사용자의 리뷰를 Model에 전달한다.")
     void userReviews() throws Exception {
         // given
-        User user = MyBooksTestUtils.createUser();
+        User user = Fixtures.user().create();
         userRepository.save(user);
-        List<Book> books = MyBooksTestUtils.createBooks(3);
+        List<Book> books = Fixtures.book().createBooks(3);
         bookRepository.saveAll(books);
         books.forEach(book -> {
-            reviewRepository.save(MyBooksTestUtils.createReview(user, book));
+            reviewRepository.save(Fixtures.review().create(user, book));
         });
 
 
@@ -86,12 +90,12 @@ class ReviewControllerTest {
     void userReviewsBookTitle() throws Exception {
         // given
         String query = "book";
-        User user = MyBooksTestUtils.createUser();
+        User user = Fixtures.user().create();
         userRepository.save(user);
-        List<Book> books = MyBooksTestUtils.createBooks(3,query);
+        List<Book> books = Fixtures.book().createBooks(3,query);
         bookRepository.saveAll(books);
         books.forEach(book -> {
-            reviewRepository.save(MyBooksTestUtils.createReview(user, book));
+            reviewRepository.save(Fixtures.review().create(user, book));
         });
 
         Session session = authService.createSession(user.getId());
@@ -109,7 +113,7 @@ class ReviewControllerTest {
     @DisplayName("GET /reviews/{id} 호출시 Review Id와 일치하는 리뷰를 Model에 전달한다.")
     void getReview() throws Exception {
         // given
-        Review review = MyBooksTestUtils.createReview();
+        Review review = Fixtures.review().create();
         userRepository.save(review.getUser());
         bookRepository.save(review.getBook());
         reviewRepository.save(review);
@@ -124,7 +128,7 @@ class ReviewControllerTest {
     @DisplayName("GET /review-create 호출시 book을 Model에 담아 전달해야 한다.")
     void reviewCreateForm() throws Exception {
         // given
-        User user = MyBooksTestUtils.createUser();
+        User user = Fixtures.user().create();
         userRepository.save(user);
 
         Session session = authService.createSession(user.getId());
@@ -140,15 +144,15 @@ class ReviewControllerTest {
 
     @Test
     @DisplayName("POST /review 호출시 리뷰를 생성 후 생성된 리뷰 페이지로 redirect 한다")
-    void createReview() throws Exception {
+    void createReviewTest() throws Exception {
         // given
-        User user = MyBooksTestUtils.createUser();
+        User user = Fixtures.user().create();
         userRepository.save(user);
-        Book book = MyBooksTestUtils.createBook();
+        Book book = Fixtures.book().create();
         bookRepository.save(book);
         Session session = authService.createSession(user.getId());
 
-        String content = "review content 1";
+        String content = createRandomString(200);
         // when
         ResultActions result = mockMvc.perform(post("/review")
                 .param("bookId", book.getId().toString())
@@ -169,7 +173,7 @@ class ReviewControllerTest {
     @DisplayName("GET /review/edit 호출시 id가 일치하는 review를 model에 전달한다.")
     void editReviewForm() throws Exception {
         // given
-        Review review = MyBooksTestUtils.createReview();
+        Review review = Fixtures.review().create();
         userRepository.save(review.getUser());
         bookRepository.save(review.getBook());
         reviewRepository.save(review);
@@ -188,19 +192,21 @@ class ReviewControllerTest {
     @DisplayName("POST /review/edit 호출시 리뷰를 수정 후 수정된 리뷰 페이지로 redirect 한다")
     void editReview() throws Exception {
         // given
-        Review review = MyBooksTestUtils.createReview();
+        Review review = Fixtures.review().create();
         userRepository.save(review.getUser());
         bookRepository.save(review.getBook());
         reviewRepository.save(review);
 
         Session session = authService.createSession(review.getUser().getId());
 
-        String content = "edit review content";
+        MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
+        String content = createRandomString(200);
+        formData.add("content",content);
         // when
         ResultActions result = mockMvc.perform(post("/review/edit")
                 .param("id", review.getId().toString())
                 .contentType(APPLICATION_FORM_URLENCODED)
-                .content("content=" + content)
+                .content("content="+content)
                 .cookie(new Cookie(CookieNames.SESSION_ID, session.getId())));
 
         // then
@@ -216,7 +222,7 @@ class ReviewControllerTest {
     @DisplayName("DELETE /review/{id} 호출시 리뷰를 삭제 후 204 NO CONTENT 로 응답")
     void deleteReview() throws Exception {
         // given
-        Review review = MyBooksTestUtils.createReview();
+        Review review = Fixtures.review().create();
         userRepository.save(review.getUser());
         bookRepository.save(review.getBook());
         reviewRepository.save(review);
@@ -233,7 +239,7 @@ class ReviewControllerTest {
     @DisplayName("POST /reviews/{id}/like 호출시 리뷰에 like를 추가 후 201 CREATED로 응답")
     void likeReview() throws Exception {
         // given
-        Review review = MyBooksTestUtils.createReview();
+        Review review = Fixtures.review().create();
         userRepository.save(review.getUser());
         bookRepository.save(review.getBook());
         reviewRepository.save(review);
@@ -254,7 +260,7 @@ class ReviewControllerTest {
     @DisplayName("DELETE /reviews/{id}/like 호출시 리뷰에 like를 추가 후 201 CREATED로 응답")
     void cancelLikeReview() throws Exception {
         // given
-        Review review = MyBooksTestUtils.createReview();
+        Review review = Fixtures.review().create();
         userRepository.save(review.getUser());
         bookRepository.save(review.getBook());
         reviewRepository.save(review);
@@ -275,14 +281,14 @@ class ReviewControllerTest {
     @DisplayName("POST /reviews/{id}/comment 호출시 리뷰에 comment 추가 후 /reviews/{id} redirect")
     void addComment() throws Exception {
         // given
-        Review review = MyBooksTestUtils.createReview();
+        Review review = Fixtures.review().create();
         userRepository.save(review.getUser());
         bookRepository.save(review.getBook());
         reviewRepository.save(review);
 
-        User commentWriter = MyBooksTestUtils.createUser();
+        User commentWriter = Fixtures.user().create();
         userRepository.save(commentWriter);
-        String comment = "good review";
+        String comment = createRandomString(200);
         Session session = authService.createSession(commentWriter.getId());
 
         // expected
@@ -302,14 +308,14 @@ class ReviewControllerTest {
     @DisplayName("DELETE /comments/{id} 호출시 리뷰 삭제 후 204 NO CONTENT 응답")
     void removeComment() throws Exception {
         // given
-        Review review = MyBooksTestUtils.createReview();
+        Review review = Fixtures.review().create();
         userRepository.save(review.getUser());
         bookRepository.save(review.getBook());
         reviewRepository.save(review);
 
-        User commentWriter = MyBooksTestUtils.createUser();
+        User commentWriter = Fixtures.user().create();
         userRepository.save(commentWriter);
-        Comment comment = MyBooksTestUtils.createComment(commentWriter, review);
+        Comment comment = Fixtures.comment().create(commentWriter, review);
         commentRepository.save(comment);
 
         Session session = authService.createSession(commentWriter.getId());

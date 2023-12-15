@@ -13,6 +13,7 @@ import sungjin.mybooks.domain.review.domain.Review;
 import sungjin.mybooks.domain.user.domain.User;
 import sungjin.mybooks.domain.user.repository.UserRepository;
 import sungjin.mybooks.environment.MyBooksTestUtils;
+import sungjin.mybooks.environment.fixture.Fixtures;
 
 import java.util.List;
 
@@ -32,16 +33,16 @@ class ReviewRepositoryTest {
     @DisplayName("특정 사용자의 리뷰를 책 제목으로 검색하여 조회한다.")
     void findAllByBookTitleTest() throws Exception {
         // given
-        User user = MyBooksTestUtils.createUser();
+        User user = Fixtures.user().create();
         userRepository.save(user);
 
         String titleContains = "book";
-        List<Book> books = MyBooksTestUtils.createBooks(3,titleContains);
+        List<Book> books = Fixtures.book().createBooks(3,titleContains);
         bookRepository.saveAll(books);
 
         books.forEach((book) -> {
             System.out.println("title = " + book.getTitle());
-            Review userBook = MyBooksTestUtils.createReview(user, book);
+            Review userBook = Fixtures.review().create(user,book);
             reviewRepository.save(userBook);
         });
 
@@ -57,15 +58,15 @@ class ReviewRepositoryTest {
     @DisplayName("특정 사용자의 리뷰를 최신순으로 조회한다.")
     void findRecentReviewsTest() throws Exception {
         // given
-        User user = MyBooksTestUtils.createUser();
+        User user = Fixtures.user().create();
         userRepository.save(user);
 
-        List<Book> books = MyBooksTestUtils.createBooks(20);
+        List<Book> books = Fixtures.book().createBooks(20);
         bookRepository.saveAll(books);
 
         books.forEach(book -> {
-            Review review = MyBooksTestUtils.createReview(user, book);
-            ReflectionTestUtils.setField(review, "createdAt", MyBooksTestUtils.randomDateTime());
+            Review review = Fixtures.review().create(user, book);
+            ReflectionTestUtils.setField(review, "createdAt", MyBooksTestUtils.createRandomDateTime());
             reviewRepository.save(review);
         });
 

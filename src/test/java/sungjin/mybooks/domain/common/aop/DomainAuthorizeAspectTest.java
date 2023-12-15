@@ -5,17 +5,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import sungjin.mybooks.domain.book.domain.Book;
 import sungjin.mybooks.domain.book.repository.BookRepository;
 import sungjin.mybooks.domain.review.domain.Review;
 import sungjin.mybooks.domain.review.repository.ReviewRepository;
 import sungjin.mybooks.domain.review.service.ReviewService;
-import sungjin.mybooks.domain.user.domain.User;
 import sungjin.mybooks.domain.user.repository.UserRepository;
-import sungjin.mybooks.environment.MyBooksTestUtils;
+import sungjin.mybooks.environment.fixture.Fixtures;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static sungjin.mybooks.environment.MyBooksTestUtils.createRandomString;
 
 @SpringBootTest
 class DomainAuthorizeAspectTest {
@@ -35,16 +34,14 @@ class DomainAuthorizeAspectTest {
     @Transactional
     void authorizeSuccess() throws Exception {
         // given
-        User user = MyBooksTestUtils.createUser();
-        userRepository.save(user);
-        Book book = MyBooksTestUtils.createBook();
-        bookRepository.save(book);
-        Review review = MyBooksTestUtils.createReview(user, book);
+        Review review = Fixtures.review().create();
+        userRepository.save(review.getUser());
+        bookRepository.save(review.getBook());
         reviewRepository.save(review);
 
-        String newContents = "new contents";
+        String newContents = createRandomString(200);
         // when
-        reviewService.editReview(review.getId(),user.getId(),newContents);
+        reviewService.editReview(review.getId(),review.getUser().getId(),newContents);
 
         // then
         assertThat(review.getContent()).isEqualTo(newContents);
@@ -55,15 +52,13 @@ class DomainAuthorizeAspectTest {
     @Transactional
     void authorizeFail() throws Exception {
         // given
-        User user = MyBooksTestUtils.createUser();
-        userRepository.save(user);
-        Book book = MyBooksTestUtils.createBook();
-        bookRepository.save(book);
-        Review review = MyBooksTestUtils.createReview(user, book);
+        Review review = Fixtures.review().create();
+        userRepository.save(review.getUser());
+        bookRepository.save(review.getBook());
         reviewRepository.save(review);
 
         // expected
-        assertThatThrownBy(()-> reviewService.editReview(review.getId(),user.getId()+1,"1"))
+        assertThatThrownBy(()-> reviewService.editReview(review.getId(),review.getUser().getId()+1,"1"))
                 .isInstanceOf(RuntimeException.class);
     }
 }

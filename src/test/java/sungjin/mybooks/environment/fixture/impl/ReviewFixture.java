@@ -4,28 +4,22 @@ import com.navercorp.fixturemonkey.ArbitraryBuilder;
 import sungjin.mybooks.domain.book.domain.Book;
 import sungjin.mybooks.domain.review.domain.Review;
 import sungjin.mybooks.domain.user.domain.User;
-import sungjin.mybooks.environment.fixture.AbstractFixture;
+import sungjin.mybooks.environment.fixture.EntityFixture;
 import sungjin.mybooks.environment.fixture.Fixtures;
 
 import static net.jqwik.api.Arbitraries.strings;
 
-public class ReviewFixture extends AbstractFixture {
+public class ReviewFixture extends EntityFixture<Review> {
 
-    private ReviewFixture() {
-    }
-
-    static {
-        instance = new ReviewFixture();
-    }
-
-    public Review createReview() {
+    @Override
+    public Review create() {
         return getReviewBuilder()
-                .set("user", Fixtures.user().createUser())
-                .set("book", Fixtures.book().createBook())
+                .set("user", Fixtures.user().create())
+                .set("book", Fixtures.book().create())
                 .sample();
     }
 
-    public Review createReview(User user, Book book) {
+    public Review create(User user, Book book) {
         return getReviewBuilder()
                 .set("user", user)
                 .set("book", book)

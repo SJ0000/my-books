@@ -10,7 +10,7 @@ import java.util.Objects;
 @Getter
 @Table(name = "USERS")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EqualsAndHashCode(of = {"id"})
+@EqualsAndHashCode(of = {"id"}, callSuper = false)
 public class User extends BaseTimeEntity {
 
     @Id
@@ -29,7 +29,6 @@ public class User extends BaseTimeEntity {
     }
 
     public boolean isCorrectPassword(String password){
-        return this.password.equals(password);
+        return password.equals(this.password);
     }
-
 }

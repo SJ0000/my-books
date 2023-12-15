@@ -1,22 +1,17 @@
 package sungjin.mybooks.environment.fixture.impl;
 
 import sungjin.mybooks.domain.review.domain.Like;
-import sungjin.mybooks.environment.fixture.AbstractFixture;
+import sungjin.mybooks.environment.fixture.EntityFixture;
 import sungjin.mybooks.environment.fixture.Fixtures;
 
-public class LikeFixture extends AbstractFixture {
-    private LikeFixture() {
-    }
+public class LikeFixture extends EntityFixture<Like> {
 
-    static {
-        instance = new LikeFixture();
-    }
-
-    public Like createLike(){
+    @Override
+    public Like create(){
         return fixtureMonkey.giveMeBuilder(Like.class)
                 .setNull("id")
-                .set("review", Fixtures.review().createReview())
-                .set("user", Fixtures.user().createUser())
+                .set("review", Fixtures.review().create())
+                .set("user", Fixtures.user().create())
                 .sample();
     }
 }

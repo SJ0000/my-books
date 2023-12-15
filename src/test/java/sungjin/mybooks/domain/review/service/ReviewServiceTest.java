@@ -17,15 +17,13 @@ import sungjin.mybooks.domain.review.model.ReviewModel;
 import sungjin.mybooks.domain.review.repository.ReviewRepository;
 import sungjin.mybooks.domain.user.domain.User;
 import sungjin.mybooks.domain.user.service.UserService;
-import sungjin.mybooks.environment.MyBooksTestUtils;
-import sungjin.mybooks.global.exception.Unauthorized;
+import sungjin.mybooks.environment.fixture.Fixtures;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.anyLong;
 import static org.mockito.BDDMockito.given;
 
@@ -53,9 +51,9 @@ class ReviewServiceTest {
         given(reviewRepository.findRecentReviews(Mockito.anyLong(),Mockito.any(PageRequest.class)))
                 .willAnswer((answer)->{
                     List<Review> reviews = IntStream.range(1, 11)
-                            .mapToObj((i) -> MyBooksTestUtils.createReview(
-                                    MyBooksTestUtils.createUser(),
-                                    MyBooksTestUtils.createBook()))
+                            .mapToObj((i) -> Fixtures.review().create(
+                                    Fixtures.user().create(),
+                                    Fixtures.book().create()))
                             .toList();
                     return new PageImpl<>(reviews,PageRequest.of(currentPage,pageSize),totalCount);
                 });
@@ -80,9 +78,9 @@ class ReviewServiceTest {
         given(reviewRepository.findRecentReviews(Mockito.anyLong(),Mockito.any(PageRequest.class)))
                 .willAnswer((answer)->{
                     List<Review> reviews = IntStream.range(1, 11)
-                            .mapToObj((i) -> MyBooksTestUtils.createReview(
-                                    MyBooksTestUtils.createUser(),
-                                    MyBooksTestUtils.createBook()))
+                            .mapToObj((i) -> Fixtures.review().create(
+                                    Fixtures.user().create(),
+                                    Fixtures.book().create()))
                             .toList();
                     return new PageImpl<>(reviews,PageRequest.of(currentPage,pageSize),totalCount);
                 });
@@ -101,10 +99,10 @@ class ReviewServiceTest {
     void editReviewTest(){
         // given
         long userId = 1L;
-        User user = MyBooksTestUtils.createUser();
+        User user = Fixtures.user().create();
         ReflectionTestUtils.setField(user,"id",userId);
-        Review review = MyBooksTestUtils.createReview(
-                user, MyBooksTestUtils.createBook());
+        Review review = Fixtures.review().create(
+                user, Fixtures.book().create());
 
         given(reviewRepository.findById(anyLong()))
                 .willReturn(Optional.of(review));

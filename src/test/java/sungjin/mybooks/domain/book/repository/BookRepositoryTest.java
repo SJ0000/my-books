@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import sungjin.mybooks.domain.book.domain.Book;
-import sungjin.mybooks.environment.MyBooksTestUtils;
+import sungjin.mybooks.environment.fixture.Fixtures;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -18,7 +18,7 @@ class BookRepositoryTest {
     @Test
     @DisplayName("isbn으로 도서를 조회한다.")
     void findByIsbnTest(){
-        Book book = MyBooksTestUtils.createBook();
+        Book book = Fixtures.book().create();
         String isbn = book.getIsbn();
         bookRepository.save(book);
 

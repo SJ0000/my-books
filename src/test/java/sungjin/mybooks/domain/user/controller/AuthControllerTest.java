@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.Cookie;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -19,6 +20,7 @@ import sungjin.mybooks.domain.user.repository.SessionRepository;
 import sungjin.mybooks.domain.user.repository.UserRepository;
 import sungjin.mybooks.domain.user.service.AuthService;
 import sungjin.mybooks.environment.MyBooksTestUtils;
+import sungjin.mybooks.environment.fixture.Fixtures;
 import sungjin.mybooks.global.util.CookieNames;
 
 import java.util.Optional;
@@ -56,21 +58,17 @@ class AuthControllerTest {
 
     ObjectMapper om = new ObjectMapper();
 
-    @Test
+    // @Test
+    @RepeatedTest(10)
     @DisplayName("로그인 성공 후 세션 ID를 저장한 쿠키를 담아 응답. Status = 302, Redirect = /")
     void login() throws Exception {
         // given
-        String password = "test-user-password";
-        String encodedPassword = passwordEncoder.encode(password);
-        User user = MyBooksTestUtils.createUser(encodedPassword);
+        Login login = Fixtures.dto().create(Login.class);
+        String encodedPassword = passwordEncoder.encode(login.getPassword());
+        User user = Fixtures.user().create(login.getEmail(),encodedPassword);
         userRepository.save(user);
 
         // expected
-        Login login = Login.builder()
-                .email(user.getEmail())
-                .password(password)
-                .build();
-
         mockMvc.perform(post("/login")
                         .accept(APPLICATION_JSON)
                         .contentType(APPLICATION_FORM_URLENCODED)
@@ -84,14 +82,7 @@ class AuthControllerTest {
     @DisplayName("회원가입 성공시 status는 302로 응답하고, 로그인 화면으로 redirect한다")
     void signup() throws Exception {
         // given
-        String email = "1234@naver.com";
-        String password = "alphabet";
-        String name = "sj";
-        SignUp signUp = SignUp.builder()
-                .email(email)
-                .password(password)
-                .name(name)
-                .build();
+        SignUp signUp = Fixtures.dto().create(SignUp.class);
 
         // expected
         mockMvc.perform(post("/signup")
@@ -100,18 +91,18 @@ class AuthControllerTest {
                 .andExpect(status().isFound())
                 .andExpect(header().string("location", Matchers.startsWith("/login")));
 
-        User user = userRepository.findByEmail(email).get();
+        User user = userRepository.findByEmail(signUp.getEmail()).get();
 
-        assertThat(user.getName()).isEqualTo(name);
-        assertThat(user.getEmail()).isEqualTo(email);
-        assertThat(user.getPassword()).isNotEqualTo(password);
+        assertThat(user.getName()).isEqualTo(signUp.getName());
+        assertThat(user.getEmail()).isEqualTo(signUp.getEmail());
+        assertThat(user.getPassword()).isNotEqualTo(signUp.getPassword());
     }
 
     @Test
     @DisplayName("로그아웃시 세션 정보는 삭제되어야 한다.")
     void logout() throws Exception {
         // given
-        User user = MyBooksTestUtils.createUser();
+        User user = Fixtures.user().create();
         userRepository.save(user);
         Session session = authService.createSession(user.getId());
 
