@@ -14,6 +14,7 @@ import java.beans.ConstructorProperties;
 public class Login {
 
     @Email
+    @Size(max = 255)
     @NotBlank(message = "이메일을 입력해주세요.")
     private String email;
 

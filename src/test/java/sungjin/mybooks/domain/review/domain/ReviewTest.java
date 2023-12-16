@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import sungjin.mybooks.environment.fixture.Fixtures;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static sungjin.mybooks.environment.MyBooksTestUtils.createRandomString;
 
 class ReviewTest {
 
@@ -14,7 +13,7 @@ class ReviewTest {
     void editContentTest(){
         // given
         Review review = Fixtures.review().create(null, null);
-        String newReview = createRandomString(250);
+        String newReview = Fixtures.api().createString(250);
 
         // when
         review.editContent(newReview);

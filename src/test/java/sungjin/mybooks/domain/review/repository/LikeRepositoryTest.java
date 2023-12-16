@@ -7,8 +7,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.transaction.annotation.Transactional;
 import sungjin.mybooks.domain.book.repository.BookRepository;
 import sungjin.mybooks.domain.review.domain.Like;
-import sungjin.mybooks.domain.review.domain.Review;
-import sungjin.mybooks.domain.user.domain.User;
 import sungjin.mybooks.domain.user.repository.UserRepository;
 import sungjin.mybooks.environment.fixture.Fixtures;
 

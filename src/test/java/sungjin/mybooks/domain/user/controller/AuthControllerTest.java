@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.Cookie;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -26,8 +25,8 @@ import sungjin.mybooks.global.util.CookieNames;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.http.MediaType.MULTIPART_FORM_DATA;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -58,8 +57,7 @@ class AuthControllerTest {
 
     ObjectMapper om = new ObjectMapper();
 
-    // @Test
-    @RepeatedTest(10)
+    @Test
     @DisplayName("로그인 성공 후 세션 ID를 저장한 쿠키를 담아 응답. Status = 302, Redirect = /")
     void login() throws Exception {
         // given
@@ -71,8 +69,8 @@ class AuthControllerTest {
         // expected
         mockMvc.perform(post("/login")
                         .accept(APPLICATION_JSON)
-                        .contentType(APPLICATION_FORM_URLENCODED)
-                        .content(MyBooksTestUtils.toFormData(login)))
+                        .contentType(MULTIPART_FORM_DATA)
+                        .params(MyBooksTestUtils.toMultiValueMap(login)))
                 .andExpect(status().isFound())
                 .andExpect(header().string("location","/"))
                 .andExpect(cookie().exists(CookieNames.SESSION_ID));
@@ -86,8 +84,8 @@ class AuthControllerTest {
 
         // expected
         mockMvc.perform(post("/signup")
-                        .contentType(APPLICATION_FORM_URLENCODED)
-                        .content(MyBooksTestUtils.toFormData(signUp)))
+                        .contentType(MULTIPART_FORM_DATA)
+                        .params(MyBooksTestUtils.toMultiValueMap(signUp)))
                 .andExpect(status().isFound())
                 .andExpect(header().string("location", Matchers.startsWith("/login")));
 

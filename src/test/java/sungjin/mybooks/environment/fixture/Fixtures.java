@@ -15,6 +15,7 @@ public class Fixtures {
     private static final Map<Class<?>, EntityFixture<?>> entityFixtures;
 
     private static final DtoFixture dtoFixture;
+    private static final ApiFixture apiFixture;
 
     static{
         entityFixtures = new HashMap<>();
@@ -24,6 +25,7 @@ public class Fixtures {
         entityFixtures.put(Comment.class,new CommentFixture());
         entityFixtures.put(Like.class,new LikeFixture());
         dtoFixture = new DtoFixture();
+        apiFixture = new ApiFixture();
     }
 
     public static UserFixture user(){
@@ -49,5 +51,7 @@ public class Fixtures {
     public static DtoFixture dto(){
         return dtoFixture;
     }
+
+    public static ApiFixture api(){return apiFixture;}
 
 }

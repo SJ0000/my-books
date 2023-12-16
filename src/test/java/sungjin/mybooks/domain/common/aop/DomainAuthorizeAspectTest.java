@@ -14,7 +14,6 @@ import sungjin.mybooks.environment.fixture.Fixtures;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static sungjin.mybooks.environment.MyBooksTestUtils.createRandomString;
 
 @SpringBootTest
 class DomainAuthorizeAspectTest {
@@ -39,7 +38,7 @@ class DomainAuthorizeAspectTest {
         bookRepository.save(review.getBook());
         reviewRepository.save(review);
 
-        String newContents = createRandomString(200);
+        String newContents = Fixtures.api().createString(200);
         // when
         reviewService.editReview(review.getId(),review.getUser().getId(),newContents);
 

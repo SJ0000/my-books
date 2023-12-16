@@ -1,17 +1,13 @@
 package sungjin.mybooks.environment.fixture;
 
-import com.navercorp.fixturemonkey.ArbitraryBuilder;
 import com.navercorp.fixturemonkey.FixtureMonkey;
 import com.navercorp.fixturemonkey.api.introspector.FieldReflectionArbitraryIntrospector;
-import com.navercorp.fixturemonkey.jakarta.validation.plugin.JakartaValidationPlugin;
-import net.jqwik.api.Arbitraries;
 
-public abstract class EntityFixture<T> {
+public abstract class EntityFixture<T> extends MyBooksFixture{
 
-    protected final FixtureMonkey fixtureMonkey;
-
-    protected EntityFixture() {
-        fixtureMonkey = FixtureMonkey.builder()
+    @Override
+    protected FixtureMonkey createFixtureMonkey() {
+        return FixtureMonkey.builder()
                 .objectIntrospector(FieldReflectionArbitraryIntrospector.INSTANCE)
                 .build();
     }

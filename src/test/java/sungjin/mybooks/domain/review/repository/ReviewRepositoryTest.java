@@ -66,7 +66,7 @@ class ReviewRepositoryTest {
 
         books.forEach(book -> {
             Review review = Fixtures.review().create(user, book);
-            ReflectionTestUtils.setField(review, "createdAt", MyBooksTestUtils.createRandomDateTime());
+            ReflectionTestUtils.setField(review, "createdAt", Fixtures.api().createDateTime());
             reviewRepository.save(review);
         });
 

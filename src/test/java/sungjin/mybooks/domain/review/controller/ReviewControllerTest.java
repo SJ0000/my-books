@@ -1,7 +1,6 @@
 package sungjin.mybooks.domain.review.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.net.MediaType;
 import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -36,7 +35,6 @@ import static org.hamcrest.Matchers.*;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static sungjin.mybooks.environment.MyBooksTestUtils.createRandomString;
 
 /**
  * Controller Test는 통합테스트로 작성
@@ -152,7 +150,7 @@ class ReviewControllerTest {
         bookRepository.save(book);
         Session session = authService.createSession(user.getId());
 
-        String content = createRandomString(200);
+        String content = Fixtures.api().createString(200);
         // when
         ResultActions result = mockMvc.perform(post("/review")
                 .param("bookId", book.getId().toString())
@@ -200,7 +198,7 @@ class ReviewControllerTest {
         Session session = authService.createSession(review.getUser().getId());
 
         MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
-        String content = createRandomString(200);
+        String content = Fixtures.api().createString(200);
         formData.add("content",content);
         // when
         ResultActions result = mockMvc.perform(post("/review/edit")
@@ -288,7 +286,7 @@ class ReviewControllerTest {
 
         User commentWriter = Fixtures.user().create();
         userRepository.save(commentWriter);
-        String comment = createRandomString(200);
+        String comment = Fixtures.api().createString(200);
         Session session = authService.createSession(commentWriter.getId());
 
         // expected
