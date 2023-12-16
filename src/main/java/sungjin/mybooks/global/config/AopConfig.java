@@ -8,7 +8,6 @@ import sungjin.mybooks.domain.common.domain.security.DomainAuthorizationManager;
 import sungjin.mybooks.domain.common.domain.security.handler.CommentAuthorizeHandler;
 import sungjin.mybooks.domain.common.domain.security.handler.ReviewAuthorizeHandler;
 import sungjin.mybooks.domain.review.domain.Comment;
-import sungjin.mybooks.domain.review.domain.Like;
 import sungjin.mybooks.domain.review.domain.Review;
 import sungjin.mybooks.domain.review.repository.CommentRepository;
 import sungjin.mybooks.domain.review.repository.LikeRepository;

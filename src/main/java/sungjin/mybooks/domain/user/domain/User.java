@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import sungjin.mybooks.domain.common.domain.BaseTimeEntity;
 
-import java.util.Objects;
-
 @Entity
 @Getter
 @Table(name = "USERS")
