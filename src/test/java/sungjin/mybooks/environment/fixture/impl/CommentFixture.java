@@ -1,6 +1,7 @@
 package sungjin.mybooks.environment.fixture.impl;
 
 import com.navercorp.fixturemonkey.ArbitraryBuilder;
+import org.springframework.test.util.ReflectionTestUtils;
 import sungjin.mybooks.domain.review.domain.Comment;
 import sungjin.mybooks.domain.review.domain.Review;
 import sungjin.mybooks.domain.user.domain.User;
@@ -18,10 +19,10 @@ public class CommentFixture extends EntityFixture<Comment> {
     }
 
     public Comment create(User user, Review review) {
-        return getBuilder()
-                .set("user", user)
-                .set("review", review)
-                .sample();
+        Comment comment = getBuilder().sample();
+        ReflectionTestUtils.setField(comment,"user",user);
+        ReflectionTestUtils.setField(comment,"review",review);
+        return comment;
     }
 
     private ArbitraryBuilder<Comment> getBuilder() {
