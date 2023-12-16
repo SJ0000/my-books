@@ -66,7 +66,7 @@ public class ReviewController {
     }
 
     @AuthenticationRequired
-    @PostMapping("/review")
+    @PostMapping("/reviews")
     public String createReview(@RequestParam Long bookId, String content, UserSession userSession) {
         Long userId = userSession.getUserId();
         Long id = reviewService.writeReview(userId, bookId, content);

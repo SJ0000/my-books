@@ -1,6 +1,7 @@
 package sungjin.mybooks.domain.review.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,6 +25,7 @@ import sungjin.mybooks.domain.user.domain.Session;
 import sungjin.mybooks.domain.user.domain.User;
 import sungjin.mybooks.domain.user.repository.UserRepository;
 import sungjin.mybooks.domain.user.service.AuthService;
+import sungjin.mybooks.environment.MyBooksTestUtils;
 import sungjin.mybooks.environment.fixture.Fixtures;
 import sungjin.mybooks.global.util.CookieNames;
 
@@ -33,6 +35,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
+import static org.springframework.http.MediaType.MULTIPART_FORM_DATA;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -48,10 +51,6 @@ class ReviewControllerTest {
     @Autowired
     MockMvc mockMvc;
     @Autowired
-    UserRepository userRepository;
-    @Autowired
-    BookRepository bookRepository;
-    @Autowired
     ReviewRepository reviewRepository;
     @Autowired
     LikeRepository likeRepository;
@@ -61,19 +60,19 @@ class ReviewControllerTest {
     AuthService authService;
     @Autowired
     ObjectMapper om;
+    @Autowired
+    EntityManager em;
 
     @Test
     @DisplayName("GET /reviews 호출시 사용자의 리뷰를 Model에 전달한다.")
     void userReviews() throws Exception {
         // given
         User user = Fixtures.user().create();
-        userRepository.save(user);
         List<Book> books = Fixtures.book().createBooks(3);
-        bookRepository.saveAll(books);
-        books.forEach(book -> {
-            reviewRepository.save(Fixtures.review().create(user, book));
-        });
+        List<Review> reviews = books.stream()
+                .map(book -> Fixtures.review().create(user, book)).toList();
 
+        reviews.forEach(review -> MyBooksTestUtils.saveCascade(em, review));
 
         Session session = authService.createSession(user.getId());
         // expected
@@ -89,15 +88,13 @@ class ReviewControllerTest {
         // given
         String query = "book";
         User user = Fixtures.user().create();
-        userRepository.save(user);
         List<Book> books = Fixtures.book().createBooks(3,query);
-        bookRepository.saveAll(books);
-        books.forEach(book -> {
-            reviewRepository.save(Fixtures.review().create(user, book));
-        });
+        List<Review> reviews = books.stream()
+                .map(book -> Fixtures.review().create(user, book)).toList();
+
+        reviews.forEach(review -> MyBooksTestUtils.saveCascade(em, review));
 
         Session session = authService.createSession(user.getId());
-
         // expected
         mockMvc.perform(get("/reviews")
                         .queryParam("query", query)
@@ -112,9 +109,7 @@ class ReviewControllerTest {
     void getReview() throws Exception {
         // given
         Review review = Fixtures.review().create();
-        userRepository.save(review.getUser());
-        bookRepository.save(review.getBook());
-        reviewRepository.save(review);
+        MyBooksTestUtils.saveCascade(em,review);
 
         // expected
         mockMvc.perform(get("/reviews/{id}", review.getId()))
@@ -127,7 +122,7 @@ class ReviewControllerTest {
     void reviewCreateForm() throws Exception {
         // given
         User user = Fixtures.user().create();
-        userRepository.save(user);
+        em.persist(user);
 
         Session session = authService.createSession(user.getId());
         String isbn = "9791161571577"; // 실제 등록된 책의 isbn
@@ -141,18 +136,19 @@ class ReviewControllerTest {
     }
 
     @Test
-    @DisplayName("POST /review 호출시 리뷰를 생성 후 생성된 리뷰 페이지로 redirect 한다")
+    @DisplayName("POST /reviews 호출시 리뷰를 생성 후 생성된 리뷰 페이지로 redirect 한다")
     void createReviewTest() throws Exception {
         // given
         User user = Fixtures.user().create();
-        userRepository.save(user);
         Book book = Fixtures.book().create();
-        bookRepository.save(book);
+        em.persist(user);
+        em.persist(book);
+
         Session session = authService.createSession(user.getId());
 
         String content = Fixtures.api().createString(200);
         // when
-        ResultActions result = mockMvc.perform(post("/review")
+        ResultActions result = mockMvc.perform(post("/reviews")
                 .param("bookId", book.getId().toString())
                 .contentType(APPLICATION_FORM_URLENCODED)
                 .content("content=" + content)
@@ -172,9 +168,7 @@ class ReviewControllerTest {
     void editReviewForm() throws Exception {
         // given
         Review review = Fixtures.review().create();
-        userRepository.save(review.getUser());
-        bookRepository.save(review.getBook());
-        reviewRepository.save(review);
+        MyBooksTestUtils.saveCascade(em,review);
 
         Session session = authService.createSession(review.getUser().getId());
 
@@ -191,15 +185,11 @@ class ReviewControllerTest {
     void editReview() throws Exception {
         // given
         Review review = Fixtures.review().create();
-        userRepository.save(review.getUser());
-        bookRepository.save(review.getBook());
-        reviewRepository.save(review);
+        MyBooksTestUtils.saveCascade(em,review);
 
         Session session = authService.createSession(review.getUser().getId());
-
-        MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
         String content = Fixtures.api().createString(200);
-        formData.add("content",content);
+
         // when
         ResultActions result = mockMvc.perform(post("/review/edit")
                 .param("id", review.getId().toString())
@@ -221,9 +211,7 @@ class ReviewControllerTest {
     void deleteReview() throws Exception {
         // given
         Review review = Fixtures.review().create();
-        userRepository.save(review.getUser());
-        bookRepository.save(review.getBook());
-        reviewRepository.save(review);
+        MyBooksTestUtils.saveCascade(em,review);
 
         Session session = authService.createSession(review.getUser().getId());
 
@@ -238,9 +226,7 @@ class ReviewControllerTest {
     void likeReview() throws Exception {
         // given
         Review review = Fixtures.review().create();
-        userRepository.save(review.getUser());
-        bookRepository.save(review.getBook());
-        reviewRepository.save(review);
+        MyBooksTestUtils.saveCascade(em,review);
 
         Session session = authService.createSession(review.getUser().getId());
 
@@ -255,23 +241,20 @@ class ReviewControllerTest {
     }
 
     @Test
-    @DisplayName("DELETE /reviews/{id}/like 호출시 리뷰에 like를 추가 후 201 CREATED로 응답")
+    @DisplayName("DELETE /reviews/{id}/like 호출시 like 삭제 후 204 NO_CONTENT 응답")
     void cancelLikeReview() throws Exception {
         // given
-        Review review = Fixtures.review().create();
-        userRepository.save(review.getUser());
-        bookRepository.save(review.getBook());
-        reviewRepository.save(review);
+        Like like = Fixtures.like().create();
+        MyBooksTestUtils.saveCascade(em,like);
 
-        likeRepository.save(new Like(review, review.getUser()));
-        Session session = authService.createSession(review.getUser().getId());
+        Session session = authService.createSession(like.getUser().getId());
 
         // expected
-        mockMvc.perform(delete("/reviews/{id}/like", review.getId())
+        mockMvc.perform(delete("/reviews/{id}/like", like.getReview().getId())
                         .cookie(new Cookie(CookieNames.SESSION_ID, session.getId())))
                 .andExpect(status().isNoContent());
 
-        Optional<Like> optionalLike = likeRepository.findByUserIdAndReviewId(review.getUser().getId(), review.getId());
+        Optional<Like> optionalLike = likeRepository.findByUserIdAndReviewId(like.getReview().getUser().getId(), like.getReview().getId());
         assertThat(optionalLike.isEmpty()).isTrue();
     }
 
@@ -280,12 +263,10 @@ class ReviewControllerTest {
     void addComment() throws Exception {
         // given
         Review review = Fixtures.review().create();
-        userRepository.save(review.getUser());
-        bookRepository.save(review.getBook());
-        reviewRepository.save(review);
+        MyBooksTestUtils.saveCascade(em,review);
 
         User commentWriter = Fixtures.user().create();
-        userRepository.save(commentWriter);
+        em.persist(commentWriter);
         String comment = Fixtures.api().createString(200);
         Session session = authService.createSession(commentWriter.getId());
 
@@ -306,17 +287,10 @@ class ReviewControllerTest {
     @DisplayName("DELETE /comments/{id} 호출시 리뷰 삭제 후 204 NO CONTENT 응답")
     void removeComment() throws Exception {
         // given
-        Review review = Fixtures.review().create();
-        userRepository.save(review.getUser());
-        bookRepository.save(review.getBook());
-        reviewRepository.save(review);
+        Comment comment = Fixtures.comment().create();
+        MyBooksTestUtils.saveCascade(em, comment);
 
-        User commentWriter = Fixtures.user().create();
-        userRepository.save(commentWriter);
-        Comment comment = Fixtures.comment().create(commentWriter, review);
-        commentRepository.save(comment);
-
-        Session session = authService.createSession(commentWriter.getId());
+        Session session = authService.createSession(comment.getUser().getId());
         // expected
         mockMvc.perform(delete("/comments/{id}", comment.getId())
                         .cookie(new Cookie(CookieNames.SESSION_ID, session.getId())))

@@ -7,7 +7,7 @@
 <nav th:replace="(~{fragments/nav :: nav})"></nav>
 <div class="container mt-5 w-75">
     <div class="row">
-        <form id="review-form" th:action="@{/review(bookId=${book.id})}" method="post">
+        <form id="review-form" th:action="@{/reviews(bookId=${book.id})}" method="post">
             <header class="mb-4">
                 <h1 class="fw-bolder mb-1" th:text="${book.title}">BOOK TITLE</h1>
             </header>

@@ -1,5 +1,6 @@
 package sungjin.mybooks.domain.common.aop;
 
+import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import sungjin.mybooks.domain.review.domain.Review;
 import sungjin.mybooks.domain.review.repository.ReviewRepository;
 import sungjin.mybooks.domain.review.service.ReviewService;
 import sungjin.mybooks.domain.user.repository.UserRepository;
+import sungjin.mybooks.environment.MyBooksTestUtils;
 import sungjin.mybooks.environment.fixture.Fixtures;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -19,14 +21,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class DomainAuthorizeAspectTest {
 
     @Autowired
-    UserRepository userRepository;
-    @Autowired
-    BookRepository bookRepository;
-    @Autowired
-    ReviewRepository reviewRepository;
+    ReviewService reviewService;
 
     @Autowired
-    ReviewService reviewService;
+    EntityManager em;
 
     @Test
     @DisplayName("적절한 사용자가 접근한 경우 ReviewService에서 수정이 인가되어야 한다.")
@@ -34,13 +32,11 @@ class DomainAuthorizeAspectTest {
     void authorizeSuccess() throws Exception {
         // given
         Review review = Fixtures.review().create();
-        userRepository.save(review.getUser());
-        bookRepository.save(review.getBook());
-        reviewRepository.save(review);
+        MyBooksTestUtils.saveCascade(em, review);
 
         String newContents = Fixtures.api().createString(200);
         // when
-        reviewService.editReview(review.getId(),review.getUser().getId(),newContents);
+        reviewService.editReview(review.getId(), review.getUser().getId(), newContents);
 
         // then
         assertThat(review.getContent()).isEqualTo(newContents);
@@ -52,12 +48,10 @@ class DomainAuthorizeAspectTest {
     void authorizeFail() throws Exception {
         // given
         Review review = Fixtures.review().create();
-        userRepository.save(review.getUser());
-        bookRepository.save(review.getBook());
-        reviewRepository.save(review);
+        MyBooksTestUtils.saveCascade(em, review);
 
         // expected
-        assertThatThrownBy(()-> reviewService.editReview(review.getId(),review.getUser().getId()+1,"1"))
+        assertThatThrownBy(() -> reviewService.editReview(review.getId(), review.getUser().getId() + 1, "1"))
                 .isInstanceOf(RuntimeException.class);
     }
 }

@@ -34,7 +34,6 @@ class ReviewRepositoryTest {
         // given
         User user = Fixtures.user().create();
         userRepository.save(user);
-
         String titleContains = "book";
         List<Book> books = Fixtures.book().createBooks(3,titleContains);
         bookRepository.saveAll(books);

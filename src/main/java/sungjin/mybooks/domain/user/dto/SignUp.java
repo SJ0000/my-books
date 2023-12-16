@@ -15,9 +15,11 @@ public class SignUp {
 
     @Email
     @NotBlank
+    @Size(max = 100)
     private String email;
 
     @NotBlank
+    @Size(max = 100)
     private String name;
 
     @Size(min = 10, max = 20)
