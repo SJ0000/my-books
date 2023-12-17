@@ -31,7 +31,6 @@ public class UserFixture extends EntityFixture<User> {
 
     private ArbitraryBuilder<User> getBuilder() {
         return fixtureMonkey.giveMeBuilder(User.class)
-                .setNull("id")
                 .set("email", strings().ofMaxLength(255))
                 .set("name", strings().ofMaxLength(255))
                 .set("password", strings().ascii().ofMaxLength(255));

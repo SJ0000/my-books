@@ -31,7 +31,6 @@ public class ReviewFixture extends EntityFixture<Review> {
 
     private ArbitraryBuilder<Review> getReviewBuilder() {
         return fixtureMonkey.giveMeBuilder(Review.class)
-                .setNull("id")
                 .set("content", strings().ofMinLength(256).ofMaxLength(1000));
     }
 }

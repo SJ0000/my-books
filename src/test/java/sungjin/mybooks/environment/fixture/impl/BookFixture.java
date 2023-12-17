@@ -31,7 +31,6 @@ public class BookFixture extends EntityFixture<Book> {
 
     private ArbitraryBuilder<Book> getBookBuilder() {
         return fixtureMonkey.giveMeBuilder(Book.class)
-                .setNull("id")
                 .set("isbn", strings().numeric().ofLength(13))
                 .set("title", strings().ascii().ofMaxLength(255));
     }

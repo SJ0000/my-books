@@ -2,14 +2,15 @@ package sungjin.mybooks.environment.fixture;
 
 import com.navercorp.fixturemonkey.FixtureMonkey;
 import com.navercorp.fixturemonkey.api.introspector.BuilderArbitraryIntrospector;
+import com.navercorp.fixturemonkey.api.introspector.FieldReflectionArbitraryIntrospector;
 import com.navercorp.fixturemonkey.jakarta.validation.plugin.JakartaValidationPlugin;
 
 public class DtoFixture extends MyBooksFixture{
 
     @Override
-    protected FixtureMonkey createFixtureMonkey() {
+    protected FixtureMonkey onCreateFixtureMonkey() {
         return FixtureMonkey.builder()
-                .objectIntrospector(BuilderArbitraryIntrospector.INSTANCE)
+                .objectIntrospector(FieldReflectionArbitraryIntrospector.INSTANCE)
                 .plugin(new JakartaValidationPlugin())
                 .build();
     }

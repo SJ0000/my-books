@@ -4,6 +4,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.redis.core.RedisHash;
@@ -27,6 +28,7 @@ public class Session {
 
     private LocalDateTime expireDate;
 
+    @Builder
     public Session(String id, Long userId, Long timeToLiveSeconds) {
         this.id = id;
         this.userId = userId;

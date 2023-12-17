@@ -26,7 +26,6 @@ public class CommentFixture extends EntityFixture<Comment> {
     }
 
     private ArbitraryBuilder<Comment> getBuilder() {
-        return fixtureMonkey.giveMeBuilder(Comment.class)
-                .setNull("id");
+        return fixtureMonkey.giveMeBuilder(Comment.class);
     }
 }

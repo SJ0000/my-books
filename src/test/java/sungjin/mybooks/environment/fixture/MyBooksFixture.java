@@ -7,8 +7,8 @@ public abstract class MyBooksFixture {
     protected final FixtureMonkey fixtureMonkey;
 
     protected MyBooksFixture() {
-        fixtureMonkey = createFixtureMonkey();
+        fixtureMonkey = onCreateFixtureMonkey();
     }
 
-    protected abstract FixtureMonkey createFixtureMonkey();
+    protected abstract FixtureMonkey onCreateFixtureMonkey();
 }

@@ -9,7 +9,6 @@ public class LikeFixture extends EntityFixture<Like> {
     @Override
     public Like create(){
         return fixtureMonkey.giveMeBuilder(Like.class)
-                .setNull("id")
                 .set("review", Fixtures.review().create())
                 .set("user", Fixtures.user().create())
                 .sample();
